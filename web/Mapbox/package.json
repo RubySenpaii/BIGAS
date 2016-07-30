@@ -1,0 +1,11 @@
+{
+  "name": "mapbox-dist",
+  "version": "1.6.1",
+  "description": "Compiled version of Mapbox.js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
