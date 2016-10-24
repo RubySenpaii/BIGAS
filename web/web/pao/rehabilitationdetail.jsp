@@ -52,7 +52,7 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Intervention Detail</h2>
+                                    <h2>Rehabilitation Detail</h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
@@ -77,10 +77,12 @@
                                             <div class="col-md-6">
                                                 <div class="project_detail">
                                                     <br/>
-                                                    <p class="title">Problem</p>
-                                                    <p>Low production</p>
+                                                    <p class="title">Purpose</p>
+                                                    <p>Eradicate rat</p>
                                                     <p class="title">Date Reported</p>
                                                     <p>October 14, 2016</p>
+                                                    <p class="title">Seeds - Amount Provided</p>
+                                                    <p>PCB-002 - 50kg</p>
                                                 </div><br/>
                                             </div>
                                             
@@ -91,6 +93,8 @@
                                                     <p>John Tiberan</p>
                                                     <p class="title">Start Date</p>
                                                     <p>October 19, 2016</p>
+                                                    <p class="title">Seeds - Amount Allocated</p>
+                                                    <p>No seeds allocated.</p>
                                                 </div><br/>
                                             </div>
 
@@ -98,7 +102,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 40%">Barangay</th>
-                                                        <th style="width: 60%">No of Farmers</th>
+                                                        <th style="width: 30%">No of Farmers</th>
+                                                        <th style="width: 30%">Amount Received</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -118,12 +123,13 @@
                                                 </ul>
                                                 
                                                 <div id="myTabContent" class="tab-content">
-                                                    <div role="tabpanel" class="tab-pane fade active in" id="accomplishmentReport" aria-labelledby="home-tab">
+                                                    <div role="tabpanel" class="tab-pane fade active in" id="accomplishmentReports" aria-labelledby="home-tab">
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Farmer Name</th>
+                                                                    <th>Procedure No</th>
                                                                     <th>Date</th>
+                                                                    <th>Farmer Name</th>
                                                                     <th>Comments</th>
                                                                 </tr>
                                                             </thead>

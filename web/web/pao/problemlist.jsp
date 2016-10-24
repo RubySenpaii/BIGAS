@@ -68,25 +68,11 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Rat Infestation</td>
-                                                <td>Rats destroying crops.</td>
-                                                <td>San Rafael</td>
-                                                <td>10/13/2016</td>
-                                                <td><button>Deploy Intervention</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Rat Infestation</td>
-                                                <td>Rats destroying crops.</td>
-                                                <td>San Isidro</td>
-                                                <td>10/13/2016</td>
-                                                <td><a href="">Rat Hunting</a></td>
-                                            </tr>
-                                            <tr>
                                                 <td>Low Production</td>
                                                 <td>Signs of low production due to seed planting.</td>
                                                 <td>San Isidro</td>
                                                 <td>10/13/2016</td>
-                                                <td><a href="interventionrecommend.jsp" class="btn btn-sm">Deploy Intervention</a></td>
+                                                <td><a href="interventionrecommend.jsp" class="btn btn-default">Deploy Intervention</a></td>
                                             </tr>
                                         </tbody>
                                     </table>

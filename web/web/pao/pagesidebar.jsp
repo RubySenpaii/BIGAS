@@ -44,14 +44,14 @@
                                 <li><a href="rehabilitation.jsp">Rehabilitation</a></li>
                             </ul>
                         </li>
-                        <li><a href="pestanddamages.jsp"><i class="fa fa-bug"></i> Damage Monitoring</a></li>
+                        <li><a href="damagemonitoring.jsp"><i class="fa fa-bug"></i> Damage Monitoring</a></li>
                         <li><a><i class="fa fa-database"></i> Data Management <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a href="paoemployee.jsp">PAO Employee</a></li>
                                 <!--<li><a href="../pages-database/maoemployee.jsp">MAO Employee</a></li>
                                 <li><a href="../pages-database/ricemechanization.jsp">Technician List</a></li>-->
                                 <li><a href="farmerlist.jsp">Farmers List</a></li>
-                                <li><a href="">Pest and Diseases</a></li>
+                                <li><a href="pestanddiseases.jsp">Pest and Diseases</a></li>
                             </ul>
                         </li>
                         <li><a><i class="fa fa-bar-chart"></i> Reports <span class="fa fa-chevron-down"></span></a>

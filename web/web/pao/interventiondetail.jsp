@@ -118,12 +118,13 @@
                                                 </ul>
                                                 
                                                 <div id="myTabContent" class="tab-content">
-                                                    <div role="tabpanel" class="tab-pane fade active in" id="accomplishmentReport" aria-labelledby="home-tab">
+                                                    <div role="tabpanel" class="tab-pane fade active in" id="accomplishmentReports" aria-labelledby="home-tab">
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Farmer Name</th>
+                                                                    <th>Procedure No</th>
                                                                     <th>Date</th>
+                                                                    <th>Farmer Name</th>
                                                                     <th>Comments</th>
                                                                 </tr>
                                                             </thead>

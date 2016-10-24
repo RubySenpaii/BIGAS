@@ -69,6 +69,26 @@
                                                 <th>Remarks</th>
                                             </tr>
                                         </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><a href="rehabilitationdetail.jsp">R001</a></td>
+                                                <td>Aid the victims of Typhoon Karen</td>
+                                                <td>San Rafael</td>
+                                                <td>20 Farmers</td>
+                                                <td>PCB001 30kg</td>
+                                                <td>October 24, 2016</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>R002</td>
+                                                <td>Eradicate rat infestation</td>
+                                                <td>San Rafael</td>
+                                                <td>20 Farmers</td>
+                                                <td>N/A</td>
+                                                <td>October 24, 2016</td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>

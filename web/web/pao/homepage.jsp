@@ -327,7 +327,7 @@
                                 </div>
                                 <div class="x_content">
                                     <div class="btn-group-vertical">
-                                        <a href="createintervention.jsp" class="btn btn-default">Create Provision</a><br>
+                                        <a href="createprograms1.jsp" class="btn btn-default">Create Program</a><br>
                                         <a href="problemlist.jsp" class="btn btn-default">Show Problem Log</a><br>
                                         <button type="button" class="btn btn-default" data-toggle="modal" data-target=".disaster-alert-modal">Create Disaster Alert</button><br/>
 
