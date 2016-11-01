@@ -7,10 +7,14 @@ package servlet.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import objects.Employee;
 
 /**
  *
@@ -31,16 +35,41 @@ public abstract class BaseServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            servletAction(request, response);
+            HttpSession session = request.getSession();
+            ServletContext context = getServletContext();
+
+            if (request.getParameter("action") != null) {
+                String action = request.getParameter("action");
+                session.setAttribute("action", action);
+                System.out.println("Action Attempted: " + action);
+
+                Employee userLogged = (Employee) session.getAttribute("userLogged");
+
+                if (action.equals("attemptLogin") || userLogged.getFlag() == 1) {
+                    servletAction(request, response);
+                } else {
+                    System.out.println("Error: Unauthorized Access! You will now be automatically logged out.");
+                    session.invalidate();
+                    RequestDispatcher rd = context.getRequestDispatcher("/web/ogin.jsp");
+                    rd.forward(request, response);
+                }
+            } else {
+                System.out.println("Error: No Action Sent! You will now be automatically logged out.");
+                session.invalidate();
+                RequestDispatcher rd = context.getRequestDispatcher("/web/login.jsp");
+                rd.forward(request, response);
+            }
         }
     }
-    
+
     /**
-     * Abstract method will be used in child class for logic. Extension of processRequest method.
+     * Abstract method will be used in child class for logic. Extension of
+     * processRequest method.
+     *
      * @param request servlet request
      * @param response servlet response
      */
-    protected abstract void servletAction(HttpServletRequest request, HttpServletResponse response);
+    protected abstract void servletAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

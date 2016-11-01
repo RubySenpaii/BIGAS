@@ -19,26 +19,26 @@
         <title>B.I.G.A.S. System | Map Overview</title>
 
         <!-- Bootstrap -->
-        <link href="../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome -->
-        <link href="../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <!-- iCheck -->
-        <link href="../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
         <!-- bootstrap-progressbar -->
-        <link href="../../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
 
         <!-- Custom Theme Style -->
-        <link href="../../build/css/custom.min.css" rel="stylesheet">
+        <link href="/BIGAS/build/css/custom.min.css" rel="stylesheet">
 
         <!--Google Map Responsive -->
-        <link href="../../web/css/maps/googlemaps.css" rel="stylesheet">
+        <link href="/BIGAS/web/css/maps/googlemaps.css" rel="stylesheet">
 
         <!-- jQuery -->
-        <script src="../../vendors/jquery/dist/jquery.min.js"></script>
+        <script src="/BIGAS/vendors/jquery/dist/jquery.min.js"></script>
         <!--highchart.js -->
-        <script src="../js/highchart/highcharts.js"></script>
-        <script src="../js/highchart/modules/data.js"></script>
-        <script src="../js/highchart/modules/drilldown.js"></script>
+        <script src="/BIGAS/web/js/highchart/highcharts.js"></script>
+        <script src="/BIGAS/web/js/highchart/modules/data.js"></script>
+        <script src="/BIGAS/web/js/highchart/modules/drilldown.js"></script>
 
         <script>
             $(function () {
@@ -371,15 +371,15 @@
     </body>
 
     <!-- Bootstrap -->
-    <script src="../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/BIGAS/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
-    <script src="../../vendors/fastclick/lib/fastclick.js"></script>
+    <script src="/BIGAS/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
-    <script src="../../vendors/nprogress/nprogress.js"></script>
+    <script src="/BIGAS/vendors/nprogress/nprogress.js"></script>
     <!-- bootstrap-progressbar -->
-    <script src="../../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="/BIGAS/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="../../build/js/custom.min.js"></script>
+    <script src="/BIGAS/build/js/custom.min.js"></script>
 </html>
 

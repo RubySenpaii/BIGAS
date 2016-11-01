@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objects.Barangay;
 import objects.Farm;
+import objects.Municipality;
 
 /**
  *
@@ -21,87 +23,91 @@ import objects.Farm;
  */
 public class FarmDAO {
 
-    public ArrayList<Farm> getFarms() {
-        ArrayList<Farm> farms = new ArrayList<>();
+    public boolean addFarm(Farm farm) {
         try {
-            DBConnectionFactory db = DBConnectionFactory.getInstance();
-            Connection conn = db.getConnection();
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
 
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Farm");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO " + Farm.TABLE_NAME + " "
+                    + "(" + Farm.COLUMN_BARANGAY_ID + ", " + Farm.COLUMN_ECOSYSTEM + ", " + Farm.COLUMN_FARM_AREA + ", " + Farm.COLUMN_FARM_ID + ", " + Farm.COLUMN_FARM_NAME
+                    + ", " + Farm.COLUMN_LATITUDE + ", " + Farm.COLUMN_LONGITUDE + ", " + Farm.COLUMN_FARM_UPDATED + ") "
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setInt(1, farm.getBarangayID());
+            ps.setString(2, farm.getEcosystem());
+            ps.setDouble(3, farm.getFarmArea());
+            ps.setInt(4, farm.getFarmID());
+            ps.setString(5, farm.getFarmName());
+            ps.setDouble(6, farm.getLatitude());
+            ps.setDouble(7, farm.getLongtitude());
+            ps.setInt(8, farm.getFarmUpdated());
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-
-            }
-
+            ps.executeUpdate();
             ps.close();
-            rs.close();
             conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(FarmDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException x) {
+            Logger.getLogger(FarmDAO.class.getName()).log(Level.SEVERE, null, x);
+            return false;
         }
-        return farms;
+        return true;
     }
 
-    public ArrayList<Farm> getFarmsInMunicipality(int municipalID) {
+    public ArrayList<Farm> getListOfFarms() {
         ArrayList<Farm> farms = new ArrayList<>();
         try {
-            DBConnectionFactory db = DBConnectionFactory.getInstance();
-            Connection conn = db.getConnection();
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
 
-            PreparedStatement ps = conn.prepareStatement("SELECT F.*\n"
-                    + "FROM Farm F JOIN Barangay B ON F.BarangayID = B.BarangayID\n"
-                    + "			JOIN Municipality M ON B.MunicipalityID = M.MunicipalityID\n"
-                    + "WHERE M.MunicipalityID = ?");
-            ps.setInt(1, municipalID);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Farm.TABLE_NAME);
 
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Farm farm = new Farm();
-                farm.setFarmID(rs.getInt("FarmID"));
-                farm.setBarangayID(rs.getInt("BarangayID"));
-                farm.setFarmName(rs.getString("FarmName"));
-                farm.setFarmArea(rs.getDouble("FarmArea"));
-                farm.setEcosystem(rs.getString("Ecosystem"));
-                farms.add(farm);
-            }
+            farms = getDataFromResultSet(rs);
 
-            ps.close();
             rs.close();
+            ps.close();
             conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(FarmDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException x) {
+            Logger.getLogger(SeedTypeDAO.class.getName()).log(Level.SEVERE, null, x);
         }
         return farms;
     }
     
-    public ArrayList<Farm> getFarmsInBarangay(String barangayName) {
+    public ArrayList<Farm> getListOfFarmsInMunicipal(String municipality) {
         ArrayList<Farm> farms = new ArrayList<>();
         try {
-            DBConnectionFactory db = DBConnectionFactory.getInstance();
-            Connection conn = db.getConnection();
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
 
-            PreparedStatement ps = conn.prepareStatement("SELECT F.*\n"
-                    + "FROM Farm F JOIN Barangay B ON F.BarangayID = B.BarangayID\n"
-                    + "WHERE B.BarangayName = ?");
-            ps.setString(1, barangayName);
+            PreparedStatement ps = conn.prepareStatement("SELECT * "
+                    + "FROM " + Farm.TABLE_NAME + " F JOIN " + Barangay.TABLE_NAME + " B ON F.BarangayID = B.BarangayID "
+                    + "JOIN " + Municipality.TABLE_NAME + " M on M.MunicipalityID = B.MunicipalityID "
+                    + "WHERE M.MunicipalityName = ?");
+            ps.setString(1, municipality);
 
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Farm farm = new Farm();
-                farm.setFarmID(rs.getInt("FarmID"));
-                farm.setBarangayID(rs.getInt("BarangayID"));
-                farm.setFarmName(rs.getString("FarmName"));
-                farm.setFarmArea(rs.getDouble("FarmArea"));
-                farm.setEcosystem(rs.getString("Ecosystem"));
-                farms.add(farm);
-            }
+            farms = getDataFromResultSet(rs);
 
-            ps.close();
             rs.close();
+            ps.close();
             conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(FarmDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException x) {
+            Logger.getLogger(SeedTypeDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return farms;
+    }
+
+    private ArrayList<Farm> getDataFromResultSet(ResultSet rs) throws SQLException {
+        ArrayList<Farm> farms = new ArrayList<>();
+        while (rs.next()) {
+            Farm farm = new Farm();
+            farm.setBarangayID(rs.getInt(Farm.COLUMN_BARANGAY_ID));
+            farm.setEcosystem(rs.getString(Farm.COLUMN_ECOSYSTEM));
+            farm.setFarmArea(rs.getDouble(Farm.COLUMN_FARM_AREA));
+            farm.setFarmID(rs.getInt(Farm.COLUMN_FARM_ID));
+            farm.setFarmName(rs.getString(Farm.COLUMN_FARM_NAME));
+            farm.setLatitude(rs.getDouble(Farm.COLUMN_LATITUDE));
+            farm.setLongtitude(rs.getDouble(Farm.COLUMN_LONGITUDE));
+            farm.setFarmUpdated(rs.getInt(Farm.COLUMN_FARM_UPDATED));
+            farms.add(farm);
         }
         return farms;
     }

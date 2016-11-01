@@ -21,96 +21,70 @@ import objects.Farmer;
  */
 public class FarmerDAO {
 
-    public ArrayList<Farmer> getFarmers() {
+    public boolean addFarmer(Farmer farmer) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO " + Farmer.TABLE_NAME + " "
+                    + "(" + Farmer.COLUMN_ADDRESS + ", " + Farmer.COLUMN_BIRTHDAY + ", " + Farmer.COLUMN_CONTACT_NO + ", " + Farmer.COLUMN_FARMER_ID + ", "
+                    + Farmer.COLUMN_FARM_ID + ", " + Farmer.COLUMN_FIRST_NAME + ", " + Farmer.COLUMN_FLAG + ", " + Farmer.COLUMN_LAST_NAME + ", " + Farmer.COLUMN_MIDDLE_NAME + ") "
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, farmer.getAddress());
+            ps.setString(2, farmer.getBirthday());
+            ps.setString(3, farmer.getContactNo());
+            ps.setInt(4, farmer.getFarmerID());
+            ps.setInt(5, farmer.getFarmID());
+            ps.setString(6, farmer.getFirstName());
+            ps.setInt(7, farmer.getFlag());
+            ps.setString(8, farmer.getLastName());
+            ps.setString(9, farmer.getMiddleName());
+
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(FarmerDAO.class.getName()).log(Level.SEVERE, null, x);
+            return false;
+        }
+        return true;
+    }
+
+    public ArrayList<Farmer> getListOfFarmers() {
         ArrayList<Farmer> farmers = new ArrayList<>();
         try {
-            DBConnectionFactory db = DBConnectionFactory.getInstance();
-            Connection conn = db.getConnection();
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
 
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Farmer");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Farmer.TABLE_NAME);
 
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Farmer farmer = new Farmer();
-                farmer.setFarmerID(rs.getInt("FarmerID"));
-                farmer.setFarmID(rs.getInt("FarmID"));
-                farmer.setLastName(rs.getString("LastName"));
-                farmer.setFirstName(rs.getString("FirstName"));
-                farmer.setMiddleName(rs.getString("MiddleName"));
-                farmer.setAddress(rs.getString("Address"));
-                farmer.setContactNo(rs.getString("ContactNo"));
-                farmer.setBirthday(rs.getString("Birthday"));
-                farmers.add(farmer);
-            }
+            farmers = getDataFromResultSet(rs);
 
-            ps.close();
             rs.close();
+            ps.close();
             conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(FarmerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException x) {
+            Logger.getLogger(FarmerDAO.class.getName()).log(Level.SEVERE, null, x);
         }
         return farmers;
     }
-    
-    public ArrayList<Farmer> getFarmersOnFarm(int farmID) {
+
+    private ArrayList<Farmer> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<Farmer> farmers = new ArrayList<>();
-        try {
-            DBConnectionFactory db = DBConnectionFactory.getInstance();
-            Connection conn = db.getConnection();
-
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Farmer WHERE FarmID = ?");
-            ps.setInt(1, farmID);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Farmer farmer = new Farmer();
-                farmer.setFarmerID(rs.getInt("FarmerID"));
-                farmer.setFarmID(rs.getInt("FarmID"));
-                farmer.setLastName(rs.getString("LastName"));
-                farmer.setFirstName(rs.getString("FirstName"));
-                farmer.setMiddleName(rs.getString("MiddleName"));
-                farmer.setAddress(rs.getString("Address"));
-                farmer.setContactNo(rs.getString("ContactNo"));
-                farmer.setBirthday(rs.getString("Birthday"));
-                farmers.add(farmer);
-            }
-
-            ps.close();
-            rs.close();
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(FarmerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        while (rs.next()) {
+            Farmer farmer = new Farmer();
+            farmer.setAddress(rs.getString(Farmer.COLUMN_ADDRESS));
+            farmer.setBirthday(rs.getString(Farmer.COLUMN_BIRTHDAY));
+            farmer.setContactNo(rs.getString(Farmer.COLUMN_CONTACT_NO));
+            farmer.setFarmID(rs.getInt(Farmer.COLUMN_FARMER_ID));
+            farmer.setFarmerID(rs.getInt(Farmer.COLUMN_FARM_ID));
+            farmer.setFirstName(rs.getString(Farmer.COLUMN_FIRST_NAME));
+            farmer.setFlag(rs.getInt(Farmer.COLUMN_FLAG));
+            farmer.setLastName(rs.getString(Farmer.COLUMN_LAST_NAME));
+            farmer.setMiddleName(rs.getString(Farmer.COLUMN_MIDDLE_NAME));
+            farmers.add(farmer);
         }
         return farmers;
-    }
-    
-    public Farmer getFarmerWithID(int farmerID) {
-        Farmer farmer = new Farmer();
-        try {
-            DBConnectionFactory db = DBConnectionFactory.getInstance();
-            Connection conn = db.getConnection();
-
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Farmer WHERE FarmerID = ?");
-            ps.setInt(1, farmerID);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                farmer.setFarmerID(rs.getInt("FarmerID"));
-                farmer.setFarmID(rs.getInt("FarmID"));
-                farmer.setLastName(rs.getString("LastName"));
-                farmer.setFirstName(rs.getString("FirstName"));
-                farmer.setMiddleName(rs.getString("MiddleName"));
-                farmer.setAddress(rs.getString("Address"));
-                farmer.setContactNo(rs.getString("ContactNo"));
-                farmer.setBirthday(rs.getString("Birthday"));
-            }
-
-            ps.close();
-            rs.close();
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(FarmerDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return farmer;
     }
 }

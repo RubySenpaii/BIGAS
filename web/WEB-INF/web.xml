@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>MobileLogin</servlet-name>
+        <servlet-class>servlet.mobile.MobileLogin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MobileDatabaseSync</servlet-name>
+        <servlet-class>servlet.mobile.MobileDatabaseSync</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>servlet.web.Login</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProblemLog</servlet-name>
+        <servlet-class>servlet.web.ProblemLog</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MobileLogin</servlet-name>
+        <url-pattern>/MobileLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MobileDatabaseSync</servlet-name>
+        <url-pattern>/MobileDatabaseSync</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProblemLog</servlet-name>
+        <url-pattern>/ProblemLog</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

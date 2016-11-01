@@ -1,83 +1,93 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package objects;
 
 /**
- *
- * @author RubySenpaii
+ * Created by Josiah on 27/10/2016.
  */
+
 public class Municipality {
-    final static String TABLE_MUNICIPALITY = "Municipality";
-    final static String COLUMN_MUNICIPALITYID = "MunicipalityID";
-    final static String COLUMN_MUNICIPALITYNAME = "MunicipalityName";
-    final static String COLUMN_DISTRICT = "District";
-    final static String COLUMN_AREA = "Area";
-    
+
+    public static final String TABLE_NAME = "Municipality";
+    public static final String COLUMN_MUNICIPALITY_ID = "MunicipalityID";
+    public static final String COLUMN_MUNICIPALITY_NAME = "MunicipalityName";
+    public static final String COLUMN_DISTRICT = "District";
+    public static final String COLUMN_AREA = "Area";
+    public static final String COLUMN_LONGITUDE = "Longitude";
+    public static final String COLUMN_LATITUDE = "Latitude";
+
     private int municipalityID;
     private String municipalityName;
-    private int district;
+    private int disctrict;
     private double area;
-    
+    private double longitude;
+    private double latitude;
+
     public Municipality() {
-        
     }
 
-    /**
-     * @return the municipalityID
-     */
+    public Municipality(int municipalityID, String municipalityName, int disctrict, double area) {
+        this.municipalityID = municipalityID;
+        this.municipalityName = municipalityName;
+        this.disctrict = disctrict;
+        this.area = area;
+    }
+
     public int getMunicipalityID() {
         return municipalityID;
     }
 
-    /**
-     * @param municipalityID the municipalityID to set
-     */
     public void setMunicipalityID(int municipalityID) {
         this.municipalityID = municipalityID;
     }
 
-    /**
-     * @return the municipalityName
-     */
     public String getMunicipalityName() {
         return municipalityName;
     }
 
-    /**
-     * @param municipalityName the municipalityName to set
-     */
     public void setMunicipalityName(String municipalityName) {
         this.municipalityName = municipalityName;
     }
 
-    /**
-     * @return the district
-     */
-    public int getDistrict() {
-        return district;
+    public int getDisctrict() {
+        return disctrict;
     }
 
-    /**
-     * @param district the district to set
-     */
-    public void setDistrict(int district) {
-        this.district = district;
+    public void setDisctrict(int disctrict) {
+        this.disctrict = disctrict;
     }
 
-    /**
-     * @return the area
-     */
     public double getArea() {
         return area;
     }
 
-    /**
-     * @param area the area to set
-     */
     public void setArea(double area) {
         this.area = area;
+    }
+
+    /**
+     * @return the longitude
+     */
+    public double getLongitude() {
+        return longitude;
+    }
+
+    /**
+     * @param longitude the longitude to set
+     */
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    /**
+     * @return the latitude
+     */
+    public double getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * @param latitude the latitude to set
+     */
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }

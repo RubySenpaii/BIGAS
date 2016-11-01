@@ -1,50 +1,38 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package objects;
 
 /**
- *
- * @author RubySenpaii
+ * Created by Josiah on 27/10/2016.
  */
+
 public class SeedType {
-    final static String TABLE_SEEDTYPE = "SeedType";
-    final static String COLUMN_SEEDTYPEID = "SeedTypeID";
-    final static String COLUMN_TYPENAME = "TypeName";
-    
+
+    public static final String TABLE_NAME = "SeedType";
+    public static final String COLUMN_SEED_TYPE_ID = "SeedtypeID";
+    public static final String COLUMN_TYPE_NAME = "TypeName";
+
     private int seedTypeID;
     private String typeName;
-    
+
     public SeedType() {
-        
     }
 
-    /**
-     * @return the seedTypeID
-     */
+    public SeedType(int seedTypeID, String typeName) {
+        this.seedTypeID = seedTypeID;
+        this.typeName = typeName;
+    }
+
     public int getSeedTypeID() {
         return seedTypeID;
     }
 
-    /**
-     * @param seedTypeID the seedTypeID to set
-     */
     public void setSeedTypeID(int seedTypeID) {
         this.seedTypeID = seedTypeID;
     }
 
-    /**
-     * @return the typeName
-     */
     public String getTypeName() {
         return typeName;
     }
 
-    /**
-     * @param typeName the typeName to set
-     */
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }

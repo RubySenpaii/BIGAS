@@ -21,59 +21,58 @@ import objects.Barangay;
  */
 public class BarangayDAO {
 
-    public ArrayList<Barangay> getBarangays() {
+    public boolean addBarangay(Barangay barangay) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO " + Barangay.TABLE_NAME + " "
+                    + "(" + Barangay.COLUMN_BARANGAY_ID + ", " + Barangay.COLUMN_BARANGAY_NAME + ", " + Barangay.COLUMN_MUNICIPALITY_ID + ", " + Barangay.COLUMN_AREA + ") "
+                    + "VALUES(?, ?, ?, ?)");
+            ps.setInt(1, barangay.getBarangayID());
+            ps.setString(2, barangay.getBarangayName());
+            ps.setInt(3, barangay.getMunicipalityID());
+            ps.setDouble(4, barangay.getArea());
+
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(BarangayDAO.class.getName()).log(Level.SEVERE, null, x);
+            return false;
+        }
+        return true;
+    }
+
+    public ArrayList<Barangay> getListOfBarangayz() {
         ArrayList<Barangay> barangays = new ArrayList<>();
         try {
-            DBConnectionFactory db = DBConnectionFactory.getInstance();
-            Connection conn = db.getConnection();
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
 
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Barangay");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Barangay.TABLE_NAME);
 
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Barangay barangay = new Barangay();
-                barangay.setBarangayID(rs.getInt("BarangayID"));
-                barangay.setBarangayName(rs.getString("BarangayName"));
-                barangay.setMunicipalityID(rs.getInt("MunicipalityID"));
-                barangay.setArea(rs.getDouble("Area"));
-                barangays.add(barangay);
-            }
+            barangays = getDataFromResultSet(rs);
 
-            ps.close();
             rs.close();
+            ps.close();
             conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(BarangayDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException x) {
+            Logger.getLogger(BarangayDAO.class.getName()).log(Level.SEVERE, null, x);
         }
         return barangays;
     }
 
-    public ArrayList<Barangay> getBarangaysFromMunicipality(String municipalityName) {
+    private ArrayList<Barangay> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<Barangay> barangays = new ArrayList<>();
-        try {
-            DBConnectionFactory db = DBConnectionFactory.getInstance();
-            Connection conn = db.getConnection();
-
-            PreparedStatement ps = conn.prepareStatement("SELECT B.*\n"
-                    + "FROM Barangay B JOIN Municipality M ON B.MunicipalityID = M.MunicipalityID\n"
-                    + "WHERE M.MunicipalityName = ?");
-            ps.setString(1, municipalityName);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Barangay barangay = new Barangay();
-                barangay.setBarangayID(rs.getInt("BarangayID"));
-                barangay.setBarangayName(rs.getString("BarangayName"));
-                barangay.setMunicipalityID(rs.getInt("MunicipalityID"));
-                barangay.setArea(rs.getDouble("Area"));
-                barangays.add(barangay);
-            }
-
-            ps.close();
-            rs.close();
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(BarangayDAO.class.getName()).log(Level.SEVERE, null, ex);
+        while (rs.next()) {
+            Barangay barangay = new Barangay();
+            barangay.setArea(rs.getDouble(Barangay.COLUMN_AREA));
+            barangay.setBarangayID(rs.getInt(Barangay.COLUMN_BARANGAY_ID));
+            barangay.setBarangayName(rs.getString(Barangay.COLUMN_BARANGAY_NAME));
+            barangay.setMunicipalityID(rs.getInt(Barangay.COLUMN_MUNICIPALITY_ID));
+            barangays.add(barangay);
         }
         return barangays;
     }
