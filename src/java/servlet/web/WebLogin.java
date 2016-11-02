@@ -19,7 +19,7 @@ import objects.Employee;
  *
  * @author RubySenpaii
  */
-public class Login extends BaseServlet {
+public class WebLogin extends BaseServlet {
 
     @Override
     protected void servletAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -37,7 +37,7 @@ public class Login extends BaseServlet {
 
             if (employee.getAuthority().equals("PAO")) {
                 System.out.println("Directing to PAO homepage - View Problem List");
-                path = "/web/pao/problemlist.jsp";
+                path = "/web/pao/provincestatus.jsp";
             } else if (employee.getAuthority().equals("MAO")) {
                 path = "/web/mao/";
             }

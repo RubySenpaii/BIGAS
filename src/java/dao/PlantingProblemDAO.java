@@ -35,7 +35,7 @@ public class PlantingProblemDAO {
             ps.setString(2, plantingProblem.getDateReported());
             ps.setInt(3, plantingProblem.getEmployeeID());
             ps.setString(4, plantingProblem.getImage());
-            ps.setString(5, plantingProblem.getPlantingReportID());
+            ps.setInt(5, plantingProblem.getPlantingReportID());
             ps.setInt(6, plantingProblem.getProblemID());
             ps.setInt(7, plantingProblem.getProblemReportID());
 
@@ -77,7 +77,7 @@ public class PlantingProblemDAO {
             plantingProblem.setDateReported(rs.getString(PlantingProblem.COLUMN_DATE_REPORTED));
             plantingProblem.setEmployeeID(rs.getInt(PlantingProblem.COLUMN_EMPLOYEE_ID));
             plantingProblem.setImage(rs.getString(PlantingProblem.COLUMN_IMAGE));
-            plantingProblem.setPlantingReportID(rs.getString(PlantingProblem.COLUMN_PLANTING_REPORT_ID));
+            plantingProblem.setPlantingReportID(rs.getInt(PlantingProblem.COLUMN_PLANTING_REPORT_ID));
             plantingProblem.setProblemID(rs.getInt(PlantingProblem.COLUMN_PROBLEM_ID));
             plantingProblem.setProblemReportID(rs.getInt(PlantingProblem.COLUMN_PROBLEM_REPORT_ID));
             plantingProblems.add(plantingProblem);

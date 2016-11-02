@@ -39,6 +39,19 @@
 
         <script type="text/javascript">
             $(function () {
+                var values;
+
+                $.ajax({
+                    url: "PAOProvinceStatus",
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        values = data;
+                        alert(values[0].districtShare.length);
+                    },
+                    async: false
+                });
+
                 $('#productionGraph').highcharts({
                     chart: {
                         type: 'line'
@@ -71,6 +84,86 @@
                         }]
                 });
 
+                var districtTotal = [];
+                var districts = [];
+
+                var d1Production = 0;
+                var d2Production = 0;
+                var d3Production = 0;
+                var d4Production = 0;
+
+                var d1 = [];
+                var d2 = [];
+                var d3 = [];
+                var d4 = [];
+                for (var a = 0; a < values[0].districtShare.length; a++) {
+                    item2 = {};
+                    if (values[0].districtShare[a].district === "District 1") {
+                        d1Production += values[0].districtShare[a].productionYield;
+
+                        item2["name"] = values[0].districtShare[a].municipality;
+                        item2["y"] = values[0].districtShare[a].productionYield;
+                        item2["drilldown"] = a;
+                        d1.push(item2);
+                    } else if (values[0].districtShare[a].district === "District 2") {
+                        d2Production += values[0].districtShare[a].productionYield;
+
+                        item2["name"] = values[0].districtShare[a].municipality;
+                        item2["y"] = values[0].districtShare[a].productionYield;
+                        item2["drilldown"] = a;
+                        d2.push(item2);
+                    } else if (values[0].districtShare[a].district === "District 3") {
+                        d3Production += values[0].districtShare[a].productionYield;
+
+                        item2["name"] = values[0].districtShare[a].municipality;
+                        item2["y"] = values[0].districtShare[a].productionYield;
+                        item2["drilldown"] = a;
+                        d3.push(item2);
+                    } else {
+                        d4Production += values[0].districtShare[a].productionYield;
+
+                        item2["name"] = values[0].districtShare[a].municipality;
+                        item2["y"] = values[0].districtShare[a].productionYield;
+                        item2["drilldown"] = a;
+                        d4.push(item2);
+                    }
+                }
+
+                for (var a = 0; a < 4; a++) {
+                    item = {};
+                    itemTotals = {};
+                    itemTotals['name'] = "District " + (a + 1);
+                    itemTotals['drilldown'] = "District " + (a + 1);
+                    item["type"] = 'column';
+                    if (a === 1) {
+                        item["name"] = "District 1";
+                        item["id"] = "District 1";
+                        item["data"] = d1;
+                        itemTotals['y'] = d1Production;
+                    } else if (a === 1) {
+                        item["name"] = "District 2";
+                        item["id"] = "District 2";
+                        item["data"] = d2;
+                        item["type"] = 'column';
+                        itemTotals['y'] = d2Production;
+                    } else if (a === 1) {
+                        item["name"] = "District 3";
+                        item["id"] = "District 3";
+                        item["data"] = d3;
+                        item["type"] = 'column';
+                        itemTotals['y'] = d3Production;
+                    } else {
+                        item["name"] = "District 4";
+                        item["id"] = "District 4";
+                        item["data"] = d4;
+                        item["type"] = 'column';
+                        itemTotals['y'] = d4Production;
+                    }
+                    districts.push(item);
+                    districtTotal.push(itemTotals);
+                }
+
+                alert(districts[0].name + districts[0].id + districts[0].data[0].name);
                 $('#districtproduction').highcharts({
                     chart: {
                         type: 'column'
@@ -88,7 +181,6 @@
                         title: {
                             text: 'Total percent market share'
                         }
-
                     },
                     legend: {
                         enabled: false
@@ -108,176 +200,10 @@
                     },
                     series: [{
                             name: 'Brands',
-                            colorByPoint: true,
-                            data: [{
-                                    name: 'District I',
-                                    y: 56.33,
-                                    drilldown: 'District I'
-                                }, {
-                                    name: 'District II',
-                                    y: 24.03,
-                                    drilldown: 'District II'
-                                }, {
-                                    name: 'District III',
-                                    y: 10.38,
-                                    drilldown: 'District III'
-                                }, {
-                                    name: 'District IV',
-                                    y: 4.77,
-                                    drilldown: 'District IV'
-                                }]
+                            data: districtTotal
                         }],
                     drilldown: {
-                        series: [{
-                                name: 'District I',
-                                id: 'District I',
-                                data: [
-                                    [
-                                        'Municipality1',
-                                        24.13
-                                    ],
-                                    [
-                                        'Municipality2',
-                                        17.2
-                                    ],
-                                    [
-                                        'Municipality3',
-                                        8.11
-                                    ],
-                                    [
-                                        'Municipality4',
-                                        5.33
-                                    ],
-                                    [
-                                        'Municipality5',
-                                        1.06
-                                    ],
-                                    [
-                                        'Municipality6',
-                                        0.5
-                                    ]
-                                ]
-                            }, {
-                                name: 'District II',
-                                id: 'District II',
-                                data: [
-                                    [
-                                        'Municipality7',
-                                        5
-                                    ],
-                                    [
-                                        'Municipality8',
-                                        4.32
-                                    ],
-                                    [
-                                        'Municipality9',
-                                        3.68
-                                    ],
-                                    [
-                                        'Municipality10',
-                                        2.96
-                                    ],
-                                    [
-                                        'Municipality11',
-                                        2.53
-                                    ],
-                                    [
-                                        'Municipality12',
-                                        1.45
-                                    ]
-                                ]
-                            }, {
-                                name: 'District III',
-                                id: 'District III',
-                                data: [
-                                    [
-                                        'v35',
-                                        2.76
-                                    ],
-                                    [
-                                        'v36',
-                                        2.32
-                                    ],
-                                    [
-                                        'v37',
-                                        2.31
-                                    ],
-                                    [
-                                        'v34',
-                                        1.27
-                                    ],
-                                    [
-                                        'v38',
-                                        1.02
-                                    ],
-                                    [
-                                        'v31',
-                                        0.33
-                                    ],
-                                    [
-                                        'v33',
-                                        0.22
-                                    ],
-                                    [
-                                        'v32',
-                                        0.15
-                                    ]
-                                ]
-                            }, {
-                                name: 'Safari',
-                                id: 'Safari',
-                                data: [
-                                    [
-                                        'v8.0',
-                                        2.56
-                                    ],
-                                    [
-                                        'v7.1',
-                                        0.77
-                                    ],
-                                    [
-                                        'v5.1',
-                                        0.42
-                                    ],
-                                    [
-                                        'v5.0',
-                                        0.3
-                                    ],
-                                    [
-                                        'v6.1',
-                                        0.29
-                                    ],
-                                    [
-                                        'v7.0',
-                                        0.26
-                                    ],
-                                    [
-                                        'v6.2',
-                                        0.17
-                                    ]
-                                ]
-                            }, {
-                                name: 'Opera',
-                                id: 'Opera',
-                                data: [
-                                    [
-                                        'v12.x',
-                                        0.34
-                                    ],
-                                    [
-                                        'v28',
-                                        0.24
-                                    ],
-                                    [
-                                        'v27',
-                                        0.17
-                                    ],
-                                    [
-                                        'v29',
-                                        0.16
-                                    ]
-                                ]
-                            }]
+                        series: districts
                     }
                 });
             });

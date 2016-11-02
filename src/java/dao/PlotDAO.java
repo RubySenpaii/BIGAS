@@ -65,6 +65,27 @@ public class PlotDAO {
         }
         return plots;
     }
+    
+    public ArrayList<Plot> getListOfPlotsFromFarm(int farmID) {
+        ArrayList<Plot> plots = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Plot.TABLE_NAME + " WHERE " + Plot.COLUMN_FARM_ID + " = ?");
+            ps.setInt(1, farmID);
+
+            ResultSet rs = ps.executeQuery();
+            plots = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(PlotDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return plots;
+    }
 
     private ArrayList<Plot> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<Plot> plots = new ArrayList<>();

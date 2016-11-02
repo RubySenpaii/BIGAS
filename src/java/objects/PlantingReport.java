@@ -11,7 +11,7 @@ public class PlantingReport {
     public static final String COLUMN_SEASON = "Season";
     public static final String COLUMN_YEAR = "Year";
     public static final String COLUMN_PLANTING_METHOD = "PlantingMethod";
-    public static final String COLUMN_DATE_REPORTED = "DateReported";
+    public static final String COLUMN_DATE_PLANTED = "DatePlanted";
     public static final String COLUMN_SEED_VARIETY_ID = "SeedVarietyID";
     public static final String COLUMN_SEED_PLANTED = "SeedPlanted";
     public static final String COLUMN_AMOUNT_HARVESTED = "AmountHarvested";
@@ -21,20 +21,20 @@ public class PlantingReport {
     private String season;
     private String year;
     private String plantingMethod;
-    private String dateReported;
-    private int seedVarietyID;
+    private String datePlanted;
+    private String seedVarietyID;
     private double seedPlanted;
     private double amountHarvested;
 
     public PlantingReport() {
     }
 
-    public PlantingReport(int plantingReportID, int plotID, String season, String year, String dateReported, int seedVarietyID, double seedPlanted, double amountHarvested, String plantingMethod) {
+    public PlantingReport(int plantingReportID, int plotID, String season, String year, String datePlanted, String seedVarietyID, double seedPlanted, double amountHarvested, String plantingMethod) {
         this.plantingReportID = plantingReportID;
         this.plotID = plotID;
         this.season = season;
         this.year = year;
-        this.dateReported = dateReported;
+        this.datePlanted = datePlanted;
         this.seedVarietyID = seedVarietyID;
         this.seedPlanted = seedPlanted;
         this.amountHarvested = amountHarvested;
@@ -73,19 +73,19 @@ public class PlantingReport {
         this.year = year;
     }
 
-    public String getDateReported() {
-        return dateReported;
+    public String getDatePlanted() {
+        return datePlanted;
     }
 
-    public void setDateReported(String dateReported) {
-        this.dateReported = dateReported;
+    public void setDatePlanted(String datePlanted) {
+        this.datePlanted = datePlanted;
     }
 
-    public int getSeedVarietyID() {
+    public String getSeedVarietyID() {
         return seedVarietyID;
     }
 
-    public void setSeedVarietyID(int seedVarietyID) {
+    public void setSeedVarietyID(String seedVarietyID) {
         this.seedVarietyID = seedVarietyID;
     }
 

@@ -16,7 +16,7 @@ public class PlantingProblem {
     public static final String COLUMN_IMAGE = "Image";
 
     private int problemReportID;
-    private String plantingReportID;
+    private int plantingReportID;
     private int employeeID;
     private int problemID;
     private String dateReported;
@@ -26,7 +26,7 @@ public class PlantingProblem {
     public PlantingProblem() {
     }
 
-    public PlantingProblem(int problemReportID, String plantingReportID, int employeeID, int problemID, String dateReported, double areaAffected) {
+    public PlantingProblem(int problemReportID, int plantingReportID, int employeeID, int problemID, String dateReported, double areaAffected) {
         this.problemReportID = problemReportID;
         this.plantingReportID = plantingReportID;
         this.employeeID = employeeID;
@@ -43,11 +43,11 @@ public class PlantingProblem {
         this.problemID = problemID;
     }
 
-    public String getPlantingReportID() {
+    public int getPlantingReportID() {
         return plantingReportID;
     }
 
-    public void setPlantingReportID(String plantingReportID) {
+    public void setPlantingReportID(int plantingReportID) {
         this.plantingReportID = plantingReportID;
     }
 
