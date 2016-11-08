@@ -16,6 +16,7 @@ public class GenericObject {
     private String attribute4;
     private String attribute5;
     private String attribute6;
+    private String attribute7;
 
     /**
      * @return the attribute1
@@ -99,5 +100,19 @@ public class GenericObject {
      */
     public void setAttribute6(String attribute6) {
         this.attribute6 = attribute6;
+    }
+
+    /**
+     * @return the attribute7
+     */
+    public String getAttribute7() {
+        return attribute7;
+    }
+
+    /**
+     * @param attribute7 the attribute7 to set
+     */
+    public void setAttribute7(String attribute7) {
+        this.attribute7 = attribute7;
     }
 }

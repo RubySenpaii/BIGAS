@@ -64,7 +64,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 30px">#</th>
-                                                        <th style="width: 85%">Steps</th>
+                                                        <th style="width: 25%">Phase</th>
+                                                        <th style="width: 60%">Activity</th>
                                                         <th style="width: 15%">Status</th>
                                                     </tr>
                                                 </thead>
@@ -124,7 +125,8 @@
                                                                 <tr>
                                                                     <th>Procedure No</th>
                                                                     <th>Date</th>
-                                                                    <th>Farmer Name</th>
+                                                                    <th>Reported By</th>
+                                                                    <th>Farm</th>
                                                                     <th>Comments</th>
                                                                 </tr>
                                                             </thead>
@@ -135,9 +137,10 @@
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Feedback Type</th>
-                                                                    <th>Rating</th>
-                                                                    <th>Date Filled</th>
+                                                                    <th>Question</th>
+                                                                    <th>Lowest Rating</th>
+                                                                    <th>Highest Rating</th>
+                                                                    <th>Average Rating</th>
                                                                     <th>Comments</th>
                                                                 </tr>
                                                             </thead>

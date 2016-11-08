@@ -1,6 +1,6 @@
 <%-- 
-    Document   : interventionrecommend
-    Created on : Oct 12, 2016, 9:18:09 PM
+    Document   : targetproduction
+    Created on : Nov 3, 2016, 9:50:00 PM
     Author     : RubySenpaii
 --%>
 
@@ -48,40 +48,55 @@
                 <!-- page content -->
                 <div class="right_col" role="main">
                     <div class="row">
-                        <!--problem list-->
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Intervention Recommendation</h2>
+                                    <h2>Production Details</h2>
+
+
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <h4>Municipal Detail</h4>
-
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Farm Name</th>
-                                                    <th>Barangay</th>
-                                                    <th>Seeds Planted</th>
-                                                    <th>Planted Area</th>
-                                                    <th>Harvested Amount</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <form class="form-horizontal form-label-left">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Target Production</label>
+                                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                                        <input type="number" class="form-control">
+                                                    </div>
+                                                    <button class="btn btn-sm">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-4 col-sm-4 col-xs-12">
-                                        <h4>Recommended Intervention</h4>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 40%">Intervention Name</th>
-                                                    <th style="width: 60%">Details</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <h2>Monthly Production Chart</h2>
+                                            <br/>
+                                            <div class="col-md-offset-3">
+                                                <label>Select Year: </label>
+                                                <select>
+                                                    <option>2015-2016</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <h2>Production Table Contributed by Municipals</h2>
+
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Municipal</th>
+                                                        <th>Planted Area</th>
+                                                        <th>Amount Harvested</th>
+                                                        <th>Damaged Area</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

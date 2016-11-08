@@ -69,6 +69,27 @@ public class ProgramDeployedDAO {
         }
         return programsDeployed;
     }
+    
+    public ProgramDeployed getProgramDeployedDetails(int programDeployedID) {
+        ArrayList<ProgramDeployed> programsDeployed = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + ProgramDeployed.TABLE_NAME + " WHERE " + ProgramDeployed.COLUMN_PROGRAM_DEPLOYED_ID + " = ?");
+            ps.setInt(1, programDeployedID);
+
+            ResultSet rs = ps.executeQuery();
+            programsDeployed = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(ProgramDeployedDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return programsDeployed.get(0);
+    }
 
     private ArrayList<ProgramDeployed> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<ProgramDeployed> programsDeployed = new ArrayList<>();

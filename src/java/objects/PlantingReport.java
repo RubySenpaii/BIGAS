@@ -15,6 +15,7 @@ public class PlantingReport {
     public static final String COLUMN_SEED_VARIETY_ID = "SeedVarietyID";
     public static final String COLUMN_SEED_PLANTED = "SeedPlanted";
     public static final String COLUMN_AMOUNT_HARVESTED = "AmountHarvested";
+    public static final String COLUMN_DATE_HARVESTED = "DateHarvested";
 
     private int plantingReportID;
     private int plotID;
@@ -25,11 +26,12 @@ public class PlantingReport {
     private String seedVarietyID;
     private double seedPlanted;
     private double amountHarvested;
+    private String dateHarvested;
 
     public PlantingReport() {
     }
 
-    public PlantingReport(int plantingReportID, int plotID, String season, String year, String datePlanted, String seedVarietyID, double seedPlanted, double amountHarvested, String plantingMethod) {
+    public PlantingReport(int plantingReportID, int plotID, String season, String year, String datePlanted, String seedVarietyID, double seedPlanted, double amountHarvested, String plantingMethod, String dateHarvested) {
         this.plantingReportID = plantingReportID;
         this.plotID = plotID;
         this.season = season;
@@ -39,6 +41,7 @@ public class PlantingReport {
         this.seedPlanted = seedPlanted;
         this.amountHarvested = amountHarvested;
         this.plantingMethod = plantingMethod;
+        this.dateHarvested = dateHarvested;
     }
 
     public int getPlantingReportID() {
@@ -117,5 +120,19 @@ public class PlantingReport {
      */
     public void setPlantingMethod(String plantingMethod) {
         this.plantingMethod = plantingMethod;
+    }
+
+    /**
+     * @return the dateHarvested
+     */
+    public String getDateHarvested() {
+        return dateHarvested;
+    }
+
+    /**
+     * @param dateHarvested the dateHarvested to set
+     */
+    public void setDateHarvested(String dateHarvested) {
+        this.dateHarvested = dateHarvested;
     }
 }

@@ -47,7 +47,6 @@
                     dataType: 'JSON',
                     success: function (data) {
                         values = data;
-                        alert(values[0].districtShare.length);
                     },
                     async: false
                 });
@@ -60,7 +59,7 @@
                         text: 'Actual vs Target'
                     },
                     xAxis: {
-                        categories: ['2010', '2011', '2012', '2013', '2014', '2015', '2016']
+                        categories: ['Jan2015', 'Feb2015', 'March2015', 'Apr2015', 'May2015', 'Jun2015']
                     },
                     yAxis: {
                         title: {
@@ -77,10 +76,10 @@
                     },
                     series: [{
                             name: 'Actual',
-                            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2]
+                            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5]
                         }, {
                             name: 'Target',
-                            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0]
+                            data: [40, 40, 40, 40, 40, 40]
                         }]
                 });
 
@@ -96,10 +95,11 @@
                 var d2 = [];
                 var d3 = [];
                 var d4 = [];
+                
                 for (var a = 0; a < values[0].districtShare.length; a++) {
                     item2 = {};
                     if (values[0].districtShare[a].district === "District 1") {
-                        d1Production += values[0].districtShare[a].productionYield;
+                        d1Production = d1Production + values[0].districtShare[a].productionYield;
 
                         item2["name"] = values[0].districtShare[a].municipality;
                         item2["y"] = values[0].districtShare[a].productionYield;
@@ -135,18 +135,18 @@
                     itemTotals['name'] = "District " + (a + 1);
                     itemTotals['drilldown'] = "District " + (a + 1);
                     item["type"] = 'column';
-                    if (a === 1) {
+                    if (a + 1 === 1) {
                         item["name"] = "District 1";
                         item["id"] = "District 1";
                         item["data"] = d1;
                         itemTotals['y'] = d1Production;
-                    } else if (a === 1) {
+                    } else if (a + 1 === 2) {
                         item["name"] = "District 2";
                         item["id"] = "District 2";
                         item["data"] = d2;
                         item["type"] = 'column';
                         itemTotals['y'] = d2Production;
-                    } else if (a === 1) {
+                    } else if (a + 1 === 3) {
                         item["name"] = "District 3";
                         item["id"] = "District 3";
                         item["data"] = d3;
@@ -163,7 +163,6 @@
                     districtTotal.push(itemTotals);
                 }
 
-                alert(districts[0].name + districts[0].id + districts[0].data[0].name);
                 $('#districtproduction').highcharts({
                     chart: {
                         type: 'column'
@@ -172,14 +171,14 @@
                         text: 'Browser market shares. January, 2015 to May, 2015'
                     },
                     subtitle: {
-                        text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
+                        text: '<a href="http://localhost:8084/BIGAS/WebLogin">For more info click here</a>'
                     },
                     xAxis: {
                         type: 'category'
                     },
                     yAxis: {
                         title: {
-                            text: 'Total percent market share'
+                            text: 'Production Yield'
                         }
                     },
                     legend: {
@@ -190,16 +189,64 @@
                             borderWidth: 0,
                             dataLabels: {
                                 enabled: true,
-                                format: '{point.y:.1f}%'
+                                format: '{point.y:.1f} MT/ha'
                             }
                         }
                     },
                     tooltip: {
                         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}MT/ha</b> produced<br/>'
                     },
                     series: [{
-                            name: 'Brands',
+                            name: 'District',
+                            data: districtTotal
+                        }],
+                    drilldown: {
+                        series: districts
+                    }
+                });
+                
+                $('#cropStagesProduction').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Browser market shares. January, 2015 to May, 2015'
+                    },
+                    subtitle: {
+                        text: '<a href="http://localhost:8084/BIGAS/WebLogin">For more info click here</a>'
+                    },
+                    xAxis: {
+                        type: 'category'
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Production Yield'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        series: {
+                            stacking: 'normal',
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                color: (Highcharts.theme && Highcarts.theme.dataLabelsColor) || 'white',
+                                format: '{point.y:.1f} MT/ha'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}MT/ha</b> produced<br/>'
+                    },
+                    series: [{
+                            name: 'District',
+                            data: districtTotal
+                        }, {
+                            name: 'District',
                             data: districtTotal
                         }],
                     drilldown: {
@@ -219,18 +266,9 @@
 
                 <!-- page content -->
                 <div class="right_col" role="main">
+                    <jsp:include page="notifications.jsp"/>
                     <div class="row">
-                        <!--Notifications / Alerts
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="alert alert-danger alert-dismissable fade in" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" arial-label="close">
-                                    <span aria-hidden="true">x</span>
-                                </button>
-                                <center><font size="4">Rat infestation reported. Deploy rehabilitation <a href="farmerlist.jsp">here</a>.</font></center>
-                            </div>
-                        </div>-->
-
-                        <div class="col-md-10 col-sm-10 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2>Annual Target and Production</h2>
@@ -239,79 +277,34 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <div id="productionGraph" style="min-width: 310px; height: 300px; margin: 0 auto"></div>
+                                    <div id="productionGraph" style="min-width: fit-content; height: 350px; margin: 0 auto"></div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-2 col-sm-2 col-xs-12">
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-7">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Actions</h2>
+                                    <h2>Production Share By District</h2>
 
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <div class="btn-group-vertical">
-                                        <a href="createprograms1.jsp" class="btn btn-default">Create Program</a><br>
-                                        <a href="problemlist.jsp" class="btn btn-default">Show Problem Log</a><br>
-                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target=".disaster-alert-modal">Create Disaster Alert</button><br/>
-
-                                        <div class="modal fade disaster-alert-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                                            <div class="modal-dialog modal-sm">
-                                                <div class="modal-content">
-                                                    <form class="form-horizontal form-label-left">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                                                            </button>
-                                                            <h4 class="modal-title" id="myModalLabel2">Create Disaster Alert</h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="message">Message: </label>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <textarea  id="message" class="form-control col-md-8 col-sm-8 col-xs-12"></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="date">Date </label>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <input type="text" id="date" class="form-control col-md-8 col-sm-8 col-xs-12">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="validity">Validity </label>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <input type="number" id="validity" class="form-control col-md-8 col-sm-8 col-xs-12">
-                                                                </div><br/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a href="createintervention.jsp" class="btn btn-default">Create Report</a><br>
-                                        <a href="createtargetproduction.jsp" class="btn btn-default">Set Target Production</a>
-                                    </div>
+                                    <div id="districtproduction" style="min-width: fit-content; height: 350px; margin: 0 auto"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Production Share</h2>
-
+                                    <h2>District Planting Stages</h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <div id="districtproduction" style="min-width: fit-content; height: 400px; margin: 0 auto"></div>
+                                    <div id="cropStagesProduction" style="min-width: fit-content; height: 400px; margin: 0 auto"></div>
                                 </div>
                             </div>
                         </div>

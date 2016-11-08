@@ -12,6 +12,7 @@ import dao.PlotDAO;
 import extra.GenericObject;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import objects.Farm;
 import objects.Municipality;
 import objects.PlantingReport;
@@ -45,16 +47,35 @@ public class PAOProvinceStatus extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("Attempting to connect to PAOProvinceStatus servlet");
-        JSONArray jarrayDistrict = new JSONArray();
+
+        //get additional info for populating charts
+        HttpSession session = request.getSession();
+        String season = (String) session.getAttribute("season");
 
         JSONObject jsonObjects = new JSONObject();
+        try {
+            jsonObjects.put("districtShare", getDistrictProductionShareData());
+            //jsonObjects.put("targetMonitoring", getActualVsTargetData(season));
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            System.out.println("data written for transfer");
+            response.getWriter().write("[" + jsonObjects.toString() + "]");
+        } catch (JSONException ex) {
+            Logger.getLogger(PAOProvinceStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    //this method will retrieve data for the drilldown of district production share
+    private JSONArray getDistrictProductionShareData() {
+        JSONArray jarrayDistrict = new JSONArray();
 
         /**
          * attr1 = district attr2 = municipalities attr3 = productionYield
          */
-        ArrayList<GenericObject> objects = new ArrayList<GenericObject>();
+        ArrayList<GenericObject> districtProductionShare = new ArrayList<GenericObject>();
 
-        System.out.println("Data gathered for district production share:");
+        System.out.println("Data gathering for district production share:");
         ArrayList<Municipality> municipalities = new MunicipalityDAO().getListOfMunicipalities();
         for (int a = 0; a < municipalities.size(); a++) {
             GenericObject object = new GenericObject();
@@ -79,30 +100,73 @@ public class PAOProvinceStatus extends HttpServlet {
             }
             object.setAttribute3(Double.toString(productionYield));
             System.out.println(object.getAttribute1() + " " + object.getAttribute2() + " " + object.getAttribute3());
-            objects.add(object);
+            districtProductionShare.add(object);
         }
 
-        for (int a = 0; a < objects.size(); a++) {
+        for (int a = 0; a < districtProductionShare.size(); a++) {
             try {
                 JSONObject districtShare = new JSONObject();
-                districtShare.put("district", objects.get(a).getAttribute1());
-                districtShare.put("municipality", objects.get(a).getAttribute2());
-                districtShare.put("productionYield", Double.parseDouble(objects.get(a).getAttribute3()));
+                districtShare.put("district", districtProductionShare.get(a).getAttribute1());
+                districtShare.put("municipality", districtProductionShare.get(a).getAttribute2());
+                districtShare.put("productionYield", Double.parseDouble(districtProductionShare.get(a).getAttribute3()));
                 jarrayDistrict.put(districtShare);
             } catch (JSONException ex) {
                 System.err.println(ex);
             }
         }
+        return jarrayDistrict;
+    }
 
-        try {
-            System.out.println("transferring data to json");
-            jsonObjects.put("districtShare", jarrayDistrict);
-        } catch (JSONException ex) {
-            Logger.getLogger(PAOProvinceStatus.class.getName()).log(Level.SEVERE, null, ex);
+    //this method will retrieve data for the line graph in monitoring the actual vs target
+    private JSONArray getActualVsTargetData(String season) {
+        JSONArray jarrayProduction = new JSONArray();
+
+        System.out.println("Data gathering for actual vs target:");
+        /**
+         * attr1 = month attr2 = value
+         */
+        ArrayList<GenericObject> actualVsTarget = new ArrayList<>();
+        for (int a = 0; a < 6; a++) {
+            GenericObject object = new GenericObject();
+            if (season.equals("Wet")) {
+                object.setAttribute1(new DateFormatSymbols().getMonths()[a]);
+                object.setAttribute2("0");
+            } else {
+                object.setAttribute1(new DateFormatSymbols().getMonths()[a + 6]);
+                object.setAttribute2("0");
+            }
         }
-        response.setContentType("application/json");
-        response.setCharacterEncoding("utf-8");
-        response.getWriter().write("[" + jsonObjects.toString() + "]");
+        ArrayList<Farm> farms = new FarmDAO().getListOfFarms();
+        for (int a = 0; a < farms.size(); a++) {
+            ArrayList<Plot> plots = new PlotDAO().getListOfPlotsFromFarm(farms.get(a).getFarmID());
+            for (int b = 0; b < plots.size(); b++) {
+                ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getYearListOfPlantingReportsFor(plots.get(b).getPlotID());
+                for (int c = 0; c < plantingReports.size(); c++) {
+                    int month = Integer.parseInt(plantingReports.get(c).getDateHarvested().substring(0, 2));
+                    int difference = 1;
+                    if (month < 7) {
+                        difference = 7;
+                    }
+                    if (month == 1 || month == 6) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - difference).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualVsTarget.get(month - difference).setAttribute2(String.valueOf(actualValue));
+                    }
+                }
+            }
+        }
+
+        for (int a = 0; a < actualVsTarget.size(); a++) {
+            try {
+                JSONObject object = new JSONObject();
+                object.put("month", actualVsTarget.get(a).getAttribute1());
+                object.put("value", Double.parseDouble(actualVsTarget.get(a).getAttribute2()));
+                jarrayProduction.put(object);
+            } catch (JSONException ex) {
+                Logger.getLogger(PAOProvinceStatus.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return jarrayProduction;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -64,6 +64,27 @@ public class ProgramProcedureDAO {
         }
         return programProcedures;
     }
+    
+    public ArrayList<ProgramProcedure> getListOfProgramProceduresForProgram(int programID) {
+        ArrayList<ProgramProcedure> programProcedures = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + ProgramProcedure.TABLE_NAME + " WHERE " + ProgramProcedure.COLUMN_PROGRAM_ID + " = ?");
+            ps.setInt(1, programID);
+
+            ResultSet rs = ps.executeQuery();
+            programProcedures = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(ProgramProcedureDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return programProcedures;
+    }
 
     private ArrayList<ProgramProcedure> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<ProgramProcedure> programProcedures = new ArrayList<>();

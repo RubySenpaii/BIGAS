@@ -27,11 +27,11 @@ public class PlotDAO {
             Connection conn = myFactory.getConnection();
 
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + Plot.TABLE_NAME + " "
-                    + "(" + Plot.COLUMN_FARM_ID + ", " + Plot.COLUMN_PLOT_ACTIVE + ", " + Plot.COLUMN_PLOT_ID + ", " + Plot.COLUMN_PLOT_PLANTED + ", "
+                    + "(" + Plot.COLUMN_FARM_ID + ", " + Plot.COLUMN_PLOT_NUMBER + ", " + Plot.COLUMN_PLOT_ID + ", " + Plot.COLUMN_PLOT_PLANTED + ", "
                     + Plot.COLUMN_PLOT_SIZE + ") "
                     + "VALUES(?, ?, ?, ?, ?)");
             ps.setInt(1, plot.getFarmID());
-            ps.setInt(2, plot.getPlotActive());
+            ps.setInt(2, plot.getPlotNumber());
             ps.setInt(3, plot.getPlotID());
             ps.setInt(4, plot.getPlotPlanted());
             ps.setDouble(5, plot.getPlotSize());
@@ -92,7 +92,7 @@ public class PlotDAO {
         while (rs.next()) {
             Plot plot = new Plot();
             plot.setFarmID(rs.getInt(Plot.COLUMN_FARM_ID));
-            plot.setPlotActive(rs.getInt(Plot.COLUMN_PLOT_ACTIVE));
+            plot.setPlotNumber(rs.getInt(Plot.COLUMN_PLOT_NUMBER));
             plot.setPlotID(rs.getInt(Plot.COLUMN_PLOT_ID));
             plot.setPlotPlanted(rs.getInt(Plot.COLUMN_PLOT_PLANTED));
             plot.setPlotSize(rs.getDouble(Plot.COLUMN_PLOT_SIZE));

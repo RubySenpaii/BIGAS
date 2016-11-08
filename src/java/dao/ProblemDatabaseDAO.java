@@ -65,6 +65,27 @@ public class ProblemDatabaseDAO {
         }
         return problems;
     }
+    
+    public ProblemDatabase getProblemWithProblemID(int problemID) {
+        ArrayList<ProblemDatabase> problems = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + ProblemDatabase.TABLE_NAME + " WHERE " + ProblemDatabase.COLUMN_PROBLEM_ID + " = ?");
+            ps.setInt(1, problemID);
+
+            ResultSet rs = ps.executeQuery();
+            problems = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(ProblemDatabaseDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return problems.get(0);
+    }
 
     private ArrayList<ProblemDatabase> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<ProblemDatabase> problems = new ArrayList<>();

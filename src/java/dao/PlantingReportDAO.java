@@ -29,8 +29,8 @@ public class PlantingReportDAO {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + PlantingReport.TABLE_NAME + " "
                     + "(" + PlantingReport.COLUMN_AMOUNT_HARVESTED + ", " + PlantingReport.COLUMN_DATE_PLANTED + ", " + PlantingReport.COLUMN_PLANTING_REPORT_ID + ", "
                     + PlantingReport.COLUMN_PLOT_ID + ", " + PlantingReport.COLUMN_SEASON + ", " + PlantingReport.COLUMN_SEED_PLANTED + ", "
-                    + PlantingReport.COLUMN_SEED_VARIETY_ID + ", " + PlantingReport.COLUMN_YEAR + ", " + PlantingReport.COLUMN_PLANTING_METHOD + ") "
-                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+                    + PlantingReport.COLUMN_SEED_VARIETY_ID + ", " + PlantingReport.COLUMN_YEAR + ", " + PlantingReport.COLUMN_PLANTING_METHOD +  ", " + PlantingReport.COLUMN_DATE_HARVESTED + ") "
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setDouble(1, plantingReport.getAmountHarvested());
             ps.setString(2, plantingReport.getDatePlanted());
             ps.setInt(3, plantingReport.getPlantingReportID());
@@ -40,6 +40,7 @@ public class PlantingReportDAO {
             ps.setString(7, plantingReport.getSeedVarietyID());
             ps.setString(8, plantingReport.getYear());
             ps.setString(9, plantingReport.getPlantingMethod());
+            ps.setString(10, plantingReport.getDateHarvested());
 
             ps.executeUpdate();
             ps.close();
@@ -127,6 +128,7 @@ public class PlantingReportDAO {
             plantingReport.setSeedVarietyID(rs.getString(PlantingReport.COLUMN_SEED_VARIETY_ID));
             plantingReport.setYear(rs.getString(PlantingReport.COLUMN_YEAR));
             plantingReport.setPlantingMethod(rs.getString(PlantingReport.COLUMN_PLANTING_METHOD));
+            plantingReport.setDateHarvested(rs.getString(PlantingReport.COLUMN_DATE_HARVESTED));
             plantingReports.add(plantingReport);
         }
         return plantingReports;

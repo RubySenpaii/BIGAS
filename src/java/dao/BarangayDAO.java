@@ -44,7 +44,7 @@ public class BarangayDAO {
         return true;
     }
 
-    public ArrayList<Barangay> getListOfBarangayz() {
+    public ArrayList<Barangay> getListOfBarangays() {
         ArrayList<Barangay> barangays = new ArrayList<>();
         try {
             DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
@@ -62,6 +62,27 @@ public class BarangayDAO {
             Logger.getLogger(BarangayDAO.class.getName()).log(Level.SEVERE, null, x);
         }
         return barangays;
+    }
+    
+    public Barangay getBarangayInfoWithBrgyID(int barangayID) {
+        ArrayList<Barangay> barangays = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Barangay.TABLE_NAME + " WHERE " + Barangay.COLUMN_BARANGAY_ID + " = ?");
+            ps.setInt(1, barangayID);
+
+            ResultSet rs = ps.executeQuery();
+            barangays = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(BarangayDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return barangays.get(0);
     }
 
     private ArrayList<Barangay> getDataFromResultSet(ResultSet rs) throws SQLException {

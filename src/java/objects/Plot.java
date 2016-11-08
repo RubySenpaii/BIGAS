@@ -11,13 +11,13 @@ public class Plot {
     public static final String COLUMN_FARM_ID = "FarmID";
     public static final String COLUMN_PLOT_SIZE = "PlotSize";
     public static final String COLUMN_PLOT_PLANTED = "PlotPlanted";
-    public static final String COLUMN_PLOT_ACTIVE = "PlotActive";
+    public static final String COLUMN_PLOT_NUMBER = "PlotNumber";
 
     private int plotID;
     private int farmID;
     private double plotSize;
     private int plotPlanted;
-    private int plotActive;
+    private int plotNumber;
 
     public Plot() {
     }
@@ -46,12 +46,12 @@ public class Plot {
         this.plotSize = plotSize;
     }
 
-    public Plot(int plotID, int farmID, double plotSize, int plotPlanted, int plotActive) {
+    public Plot(int plotID, int farmID, double plotSize, int plotPlanted, int plotNumber) {
         this.plotID = plotID;
         this.farmID = farmID;
         this.plotSize = plotSize;
         this.plotPlanted = plotPlanted;
-        this.plotActive = plotActive;
+        this.plotNumber = plotNumber;
     }
 
     /**
@@ -71,14 +71,14 @@ public class Plot {
     /**
      * @return the plotActive
      */
-    public int getPlotActive() {
-        return plotActive;
+    public int getPlotNumber() {
+        return plotNumber;
     }
 
     /**
      * @param plotActive the plotActive to set
      */
-    public void setPlotActive(int plotActive) {
-        this.plotActive = plotActive;
+    public void setPlotNumber(int plotNumber) {
+        this.plotNumber = plotNumber;
     }
 }

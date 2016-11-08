@@ -1,10 +1,10 @@
 <%-- 
-    Document   : problemlist
-    Created on : Oct 8, 2016, 6:21:06 PM
+    Document   : interventionrecommend
+    Created on : Oct 12, 2016, 9:18:09 PM
     Author     : RubySenpaii
 --%>
 
-<%@page import="extra.GenericObject"%>
+<%@page import="objects.ProgramPlan"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -54,37 +54,41 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Problems Logged</h2>
+                                    <h2>Intervention Recommendation</h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Problem Name</th>
-                                                <th>Problem Details</th>
-                                                <th>Municipality</th>
-                                                <th>Total Area Affected</th>
-                                                <th>Intervention Deployed</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <%
-                                                ArrayList<GenericObject> objects = (ArrayList<GenericObject>) session.getAttribute("problemLogs");
-                                                for (int a = 0; a < objects.size(); a++) {
-                                            %>
-                                            <tr>
-                                                <td><%=objects.get(a).getAttribute1()%></td>
-                                                <td><%=objects.get(a).getAttribute2()%></td>
-                                                <td><%=objects.get(a).getAttribute3()%></td>
-                                                <td><%=objects.get(a).getAttribute4()%></td>
-                                                <td><a href="/BIGAS/ProgramRecommendation?action=recommendProgram&problemIdentified=<%=objects.get(a).getAttribute1()%>&municipality=<%=objects.get(a).getAttribute3()%>&problemId=<%=objects.get(a).getAttribute7()%>"><%=objects.get(a).getAttribute5()%></a></td>
-                                            </tr>
-                                            <%
-                                                }
-                                            %>
-                                        </tbody>
-                                    </table>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <h4>List of Programs Available</h4>
+
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Program Name</th>
+                                                    <th>Type</th>
+                                                    <th>Description</th>
+                                                    <th>Purpose</th>
+                                                    <th>Handled By</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%
+                                                    ArrayList<ProgramPlan> programPlans = (ArrayList<ProgramPlan>) session.getAttribute("recommendedPrograms");
+                                                    for (int a = 0; a < programPlans.size(); a++) {
+                                                %>
+                                                <tr>
+                                                    <td><a href="/BIGAS/ProgramDeployment?action=deployProgram&programName=<%=programPlans.get(a).getProgramName()%>"><%=programPlans.get(a).getProgramName()%></a></td>
+                                                    <td><%=programPlans.get(a).getType()%></td>
+                                                    <td><%=programPlans.get(a).getDescription()%></td>
+                                                    <td><%=programPlans.get(a).getPurpose()%></td>
+                                                    <td><%=programPlans.get(a).getHeadedBy()%></td>
+                                                </tr>
+                                                <%
+                                                    }
+                                                %>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

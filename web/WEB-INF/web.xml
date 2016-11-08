@@ -24,6 +24,18 @@
         <servlet-name>PAOProvinceStatus</servlet-name>
         <servlet-class>servlet.ajax.PAOProvinceStatus</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>WebLogout</servlet-name>
+        <servlet-class>servlet.web.WebLogout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProgramRecommendation</servlet-name>
+        <servlet-class>servlet.web.ProgramRecommendation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProgramDeployment</servlet-name>
+        <servlet-class>servlet.web.ProgramDeployment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MobileLogin</servlet-name>
         <url-pattern>/MobileLogin</url-pattern>
@@ -47,6 +59,18 @@
     <servlet-mapping>
         <servlet-name>PAOProvinceStatus</servlet-name>
         <url-pattern>/PAOProvinceStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WebLogout</servlet-name>
+        <url-pattern>/WebLogout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProgramRecommendation</servlet-name>
+        <url-pattern>/ProgramRecommendation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProgramDeployment</servlet-name>
+        <url-pattern>/ProgramDeployment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

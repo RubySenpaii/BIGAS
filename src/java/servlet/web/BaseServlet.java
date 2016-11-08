@@ -50,7 +50,7 @@ public abstract class BaseServlet extends HttpServlet {
                 } else {
                     System.out.println("Error: Unauthorized Access! You will now be automatically logged out.");
                     session.invalidate();
-                    RequestDispatcher rd = context.getRequestDispatcher("/web/ogin.jsp");
+                    RequestDispatcher rd = context.getRequestDispatcher("/web/login.jsp");
                     rd.forward(request, response);
                 }
             } else {

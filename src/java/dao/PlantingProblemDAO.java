@@ -68,6 +68,27 @@ public class PlantingProblemDAO {
         }
         return plantingProblems;
     }
+    
+    public ArrayList<PlantingProblem> getListOfPlantingProblemsFromPlantingReport(int plantingReport) {
+        ArrayList<PlantingProblem> plantingProblems = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + PlantingProblem.TABLE_NAME + " WHERE " + PlantingProblem.COLUMN_PLANTING_REPORT_ID + " = ?");
+            ps.setInt(1, plantingReport);
+
+            ResultSet rs = ps.executeQuery();
+            plantingProblems = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(PlantingProblemDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return plantingProblems;
+    }
 
     private ArrayList<PlantingProblem> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<PlantingProblem> plantingProblems = new ArrayList<>();
