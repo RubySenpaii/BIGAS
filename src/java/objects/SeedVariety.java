@@ -10,7 +10,6 @@ public class SeedVariety {
     public static final String COLUMN_SEED_VARIETY_ID = "SeedVarietyID";
     public static final String COLUMN_VARIETY_NAME = "VarietyName";
     public static final String COLUMN_SEED_TYPE_ID = "SeedTypeID";
-    public static final String COLUMN_ACQUIRED = "Acquired";
     public static final String COLUMN_WATER_SOURCE = "WaterSource";
     public static final String COLUMN_AVG_YIELD = "AverageYield";
     public static final String COLUMN_MAXIMUM_YIELD = "MaximumYield";

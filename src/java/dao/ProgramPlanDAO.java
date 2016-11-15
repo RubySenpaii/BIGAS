@@ -29,7 +29,7 @@ public class ProgramPlanDAO {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + ProgramPlan.TABLE_NAME + " "
                     + "(" + ProgramPlan.COLUMN_DESCRIPTION + ", " + ProgramPlan.COLUMN_HEADED_BY + ", " + ProgramPlan.COLUMN_PROGRAM_ID + ", " 
                     + ProgramPlan.COLUMN_PROGRAM_NAME + ", " + ProgramPlan.COLUMN_TYPE + ", " + ProgramPlan.COLUMN_PURPOSE + ") "
-                    + "VALUES(?, ?, ?, ?, ?)");
+                    + "VALUES(?, ?, ?, ?, ?, ?)");
             ps.setString(1, programPlan.getDescription());
             ps.setString(2, programPlan.getHeadedBy());
             ps.setInt(3, programPlan.getProgramID());

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : employeedetails
-    Created on : Sep 28, 2016, 1:58:18 PM
+    Document   : createprogram4
+    Created on : Nov 9, 2016, 12:14:49 AM
     Author     : RubySenpaii
 --%>
 
@@ -51,24 +51,42 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Production Details</h2>
-
-
+                                    <h2>Create Program Plan</h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <table class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Municipality</th>
-                                                <th>No of Farmers</th>
-                                                <th>Total Farm Area</th>
-                                                <th>Total Production</th>
-                                                <th>Damages Incurred</th>
-                                                <th>No of Programs Conducted</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                                    <ul class="breadcrumb">
+                                        <li><a href="">Step 1: Program Plan Info</a></li>
+                                        <li><a href="">Step 2: Goals</a></li>
+                                        <li><a href="">Step 3: Activities</a></li>
+                                        <li>Step 4: Survey Questionnaire</li>
+                                    </ul>
+                                    
+                                    <form>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%">#</th>
+                                                    <th style="width: 30%">Type</th>
+                                                    <th style="width: 60%">Question</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><p style="font-size: 25px">1</p></td>
+                                                    <td>
+                                                        <select style="width: 100%; height: 100%; font-size: 25px">
+                                                            <option>Rating</option>
+                                                            <option>Comment</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <textarea style="width: 100%; resize: none; font-size: 20px" rows="2" maxlength="600"></textarea>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
                                 </div>
                             </div>
                         </div>

@@ -62,6 +62,27 @@ public class FertilizerDAO {
         }
         return fertilizers;
     }
+    
+    public Fertilizer getFertilizerDetails(int fertilizerID) {
+        ArrayList<Fertilizer> fertilizers = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Fertilizer.TABLE_NAME + " WHERE " + Fertilizer.COLUMN_FERTILIZER_ID + " = ?");
+            ps.setInt(1, fertilizerID);
+
+            ResultSet rs = ps.executeQuery();
+            fertilizers = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(FertilizerDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return fertilizers.get(0);
+    }
 
     private ArrayList<Fertilizer> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<Fertilizer> fertilizers = new ArrayList<>();

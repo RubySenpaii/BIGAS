@@ -98,6 +98,28 @@ public class EmployeeDAO {
         }
         return employees.get(0);
     }
+    
+    public Employee getEmployeeDetailsWithID(int employeeID) {
+        ArrayList<Employee> employees = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Employee.TABLE_NAME 
+                    + " WHERE " + Employee.COLUMN_EMPLOYEE_ID + " = ?");
+            ps.setInt(1, employeeID);
+
+            ResultSet rs = ps.executeQuery();
+            employees = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return employees.get(0);
+    }
 
     private ArrayList<Employee> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<Employee> employees = new ArrayList<>();

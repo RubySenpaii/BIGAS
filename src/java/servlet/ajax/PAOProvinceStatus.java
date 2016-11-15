@@ -80,7 +80,7 @@ public class PAOProvinceStatus extends HttpServlet {
         for (int a = 0; a < municipalities.size(); a++) {
             GenericObject object = new GenericObject();
             ArrayList<Farm> farms = new FarmDAO().getListOfFarmsInMunicipal(municipalities.get(a).getMunicipalityName());
-            object.setAttribute1("District " + municipalities.get(a).getDisctrict());
+            object.setAttribute1("District " + municipalities.get(a).getDistrict());
             object.setAttribute2(municipalities.get(a).getMunicipalityName());
             double productionYield = 0;
             for (int b = 0; b < farms.size(); b++) {
@@ -167,6 +167,16 @@ public class PAOProvinceStatus extends HttpServlet {
             }
         }
         return jarrayProduction;
+    }
+    
+    //this method will retrieve info for district planting share
+    private JSONArray getDistrictStagesValue() {
+        JSONArray jarrayDistrictStages = new JSONArray();
+        
+        System.out.println("retrieve data for district stages");
+        ArrayList<Municipality> municipalities = new MunicipalityDAO().getListOfMunicipalities();
+        
+        return jarrayDistrictStages;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

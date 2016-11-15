@@ -47,11 +47,24 @@ public abstract class BaseServlet extends HttpServlet {
 
                 if (action.equals("attemptLogin") || userLogged.getFlag() == 1) {
                     servletAction(request, response);
+
+                    if (((String) session.getAttribute("action")).equals("invalid") && session != null) {
+                        System.out.println("Invalid Action: " + action);
+                        System.out.println("Returning to provincial status page");
+                        RequestDispatcher rd = context.getRequestDispatcher("/ProvincialStatus?action=getProvincialStatus");
+                        rd.forward(request, response);
+                    }
                 } else {
-                    System.out.println("Error: Unauthorized Access! You will now be automatically logged out.");
-                    session.invalidate();
-                    RequestDispatcher rd = context.getRequestDispatcher("/web/login.jsp");
-                    rd.forward(request, response);
+                    try {
+                        System.out.println("Error: Unauthorized Access! You will now be automatically logged out.");
+                        session.invalidate();
+                        RequestDispatcher rd = context.getRequestDispatcher("/web/login.jsp");
+                        rd.forward(request, response);
+                    } catch(IllegalStateException x) {
+                        System.out.println("No session detected!");
+                        RequestDispatcher rd = context.getRequestDispatcher("/web/login.jsp");
+                        rd.forward(request, response);
+                    }
                 }
             } else {
                 System.out.println("Error: No Action Sent! You will now be automatically logged out.");

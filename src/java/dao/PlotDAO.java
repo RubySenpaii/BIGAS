@@ -21,7 +21,7 @@ import objects.Plot;
  */
 public class PlotDAO {
 
-    public boolean createAlert(Plot plot) {
+    public boolean createPlot(Plot plot) {
         try {
             DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
             Connection conn = myFactory.getConnection();

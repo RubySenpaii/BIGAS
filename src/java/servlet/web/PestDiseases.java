@@ -12,32 +12,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import objects.Employee;
 
 /**
  *
  * @author RubySenpaii
  */
-public class ProvinceStatus extends BaseServlet {
+public class PestDiseases extends BaseServlet {
 
     @Override
     protected void servletAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
         String action = (String) session.getAttribute("action");
-        Employee userLogged = (Employee) session.getAttribute("uesrLogged");
+        objects.Employee userLogged = (objects.Employee) session.getAttribute("userLogged");
 
         if (userLogged.getAuthority().equals("PAO")) {
             System.out.println(userLogged.getUsername() + " has authority level: " + userLogged.getAuthority());
-            if (action.equals("viewProvincialLevelFarmStatus")) {
-                System.out.println("Retrieving details of provincial status");
-                reviewProvincialStatusForPAO(request, response);
+            if (action.equals("viewFarmerList")) {
+                System.out.println("view farmer list");
+            } else {
+                session.setAttribute("action", "invalid");
             }
         }
-    }
-    
-    //go to farmstatus.jsp for pao
-    private void reviewProvincialStatusForPAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
     }
 }

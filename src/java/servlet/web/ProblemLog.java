@@ -16,12 +16,10 @@ import dao.ProgramPlanDAO;
 import dao.ProgramProblemDAO;
 import extra.GenericObject;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,8 +31,6 @@ import objects.PlantingReport;
 import objects.Plot;
 import objects.ProblemDatabase;
 import objects.ProgramDeployed;
-import objects.ProgramProblem;
-import servlet.web.BaseServlet;
 
 /**
  *
@@ -54,6 +50,8 @@ public class ProblemLog extends BaseServlet {
             if (action.equals("viewProblemLogs")) {
                 System.out.println("Retrieving summarize problem logs for PAO");
                 viewProblemLogsPAO(request, response);
+            } else {
+                session.setAttribute("action", "invalid");
             }
         }
     }
@@ -112,8 +110,8 @@ public class ProblemLog extends BaseServlet {
                                     problem.setAttribute5(programName);
                                     problem.setAttribute6(String.valueOf(programDeployedID));
                                 } else {
-                                    problem.setAttribute5("No programs deployeed.");
-                                    problem.setAttribute6(String.valueOf(-1));
+                                    problem.setAttribute5("No programs deployed.");
+                                    problem.setAttribute6(String.valueOf(0));
                                 }
                                 problem.setAttribute7(String.valueOf(problemInfo.getProblemID()));
                                 System.out.println(problem.getAttribute1() + " " + problem.getAttribute2() + " " + problem.getAttribute3() + " " + problem.getAttribute4() + " added.");

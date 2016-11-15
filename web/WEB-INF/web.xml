@@ -36,6 +36,34 @@
         <servlet-name>ProgramDeployment</servlet-name>
         <servlet-class>servlet.web.ProgramDeployment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateProgramPlan</servlet-name>
+        <servlet-class>servlet.web.CreateProgramPlan</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProvincialStatus</servlet-name>
+        <servlet-class>servlet.web.ProvincialStatus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewProgram</servlet-name>
+        <servlet-class>servlet.web.ViewProgram</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Damage</servlet-name>
+        <servlet-class>servlet.web.Damage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Employee</servlet-name>
+        <servlet-class>servlet.web.Employee</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Farmer</servlet-name>
+        <servlet-class>servlet.web.Farmer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PestDiseases</servlet-name>
+        <servlet-class>servlet.web.PestDiseases</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MobileLogin</servlet-name>
         <url-pattern>/MobileLogin</url-pattern>
@@ -71,6 +99,34 @@
     <servlet-mapping>
         <servlet-name>ProgramDeployment</servlet-name>
         <url-pattern>/ProgramDeployment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateProgramPlan</servlet-name>
+        <url-pattern>/CreateProgramPlan</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProvincialStatus</servlet-name>
+        <url-pattern>/ProvincialStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewProgram</servlet-name>
+        <url-pattern>/ViewProgram</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Damage</servlet-name>
+        <url-pattern>/Damage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Employee</servlet-name>
+        <url-pattern>/Employee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Farmer</servlet-name>
+        <url-pattern>/Farmer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PestDiseases</servlet-name>
+        <url-pattern>/PestDiseases</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

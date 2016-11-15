@@ -78,7 +78,19 @@
                                                 <td><%=objects.get(a).getAttribute2()%></td>
                                                 <td><%=objects.get(a).getAttribute3()%></td>
                                                 <td><%=objects.get(a).getAttribute4()%></td>
-                                                <td><a href="/BIGAS/ProgramRecommendation?action=recommendProgram&problemIdentified=<%=objects.get(a).getAttribute1()%>&municipality=<%=objects.get(a).getAttribute3()%>&problemId=<%=objects.get(a).getAttribute7()%>"><%=objects.get(a).getAttribute5()%></a></td>
+                                                <td>
+                                                    <%
+                                                        if (objects.get(a).getAttribute5().equals("No programs deployed.")) {
+                                                    %>
+                                                    <a href="/BIGAS/ProgramRecommendation?action=recommendProgram&problemIdentified=<%=objects.get(a).getAttribute1()%>&municipality=<%=objects.get(a).getAttribute3()%>&problemId=<%=objects.get(a).getAttribute7()%>"><%=objects.get(a).getAttribute5()%></a>
+                                                    <%
+                                                        } else {
+                                                    %>
+                                                    <a href="/BIGAS/ViewProgram?action=viewProgramDetails&deployedID=<%=objects.get(a).getAttribute6()%>"><%=objects.get(a).getAttribute5()%></a>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </td>
                                             </tr>
                                             <%
                                                 }

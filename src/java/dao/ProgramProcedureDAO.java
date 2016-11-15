@@ -71,7 +71,8 @@ public class ProgramProcedureDAO {
             DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
             Connection conn = myFactory.getConnection();
 
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + ProgramProcedure.TABLE_NAME + " WHERE " + ProgramProcedure.COLUMN_PROGRAM_ID + " = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + ProgramProcedure.TABLE_NAME + 
+                    " WHERE " + ProgramProcedure.COLUMN_PROGRAM_ID + " = ? ORDER BY " + ProgramProcedure.COLUMN_PROCEDURE_NO);
             ps.setInt(1, programID);
 
             ResultSet rs = ps.executeQuery();

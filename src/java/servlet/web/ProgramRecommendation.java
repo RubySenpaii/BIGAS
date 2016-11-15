@@ -40,6 +40,8 @@ public class ProgramRecommendation extends BaseServlet {
             if (action.equals("recommendProgram")) {
                 System.out.println("Retrieving programs for recommendation");
                 getRecommendedPrograms(request, response);
+            } else {
+                session.setAttribute("action", "invalid");
             }
         }
     }

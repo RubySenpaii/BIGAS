@@ -1,10 +1,10 @@
 <%-- 
-    Document   : farmerlist
-    Created on : Sep 23, 2016, 8:41:32 PM
+    Document   : programhistory
+    Created on : Nov 9, 2016, 7:34:37 PM
     Author     : RubySenpaii
 --%>
 
-<%@page import="objects.Farmer"%>
+<%@page import="extra.GenericObject"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -66,26 +66,31 @@
                                     <table id="datatable-buttons" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Full Name</th>
-                                                <th>Mobile No</th>
-                                                <th>Address</th>
-                                                <th>Actions</th>
+                                                <th style="width: 15%">Program Name</th>
+                                                <th style="width: 10%">Type</th>
+                                                <th style="width: 45%">Description</th>
+                                                <th style="width: 15%">Date Started</th>
+                                                <th style="width: 15%">Status</th>
+                                                <th style="width: 5%">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <%
-                                                ArrayList<Farmer> farmers = (ArrayList<Farmer>) session.getAttribute("farmers");
-                                                for (int a = 0; a < farmers.size(); a++) {
+                                                ArrayList<GenericObject> programs = (ArrayList<GenericObject>) session.getAttribute("programs");
+                                                for (int a = 0; a < programs.size(); a++) {
                                             %>
                                             <tr>
-                                                <td><%=farmers.get(a).getLastName() + ", " + farmers.get(a).getFirstName() + " " + farmers.get(a).getMiddleName()%></td>
-                                                <td><%=farmers.get(a).getContactNo()%></td>
-                                                <td><%=farmers.get(a).getAddress()%></td>
+                                                <td><%=programs.get(a).getAttribute1()%></td>
+                                                <td><%=programs.get(a).getAttribute2()%></td>
+                                                <td><%=programs.get(a).getAttribute3()%></td>
+                                                <td><%=programs.get(a).getAttribute4()%></td>
+                                                <td><%=programs.get(a).getAttribute5()%></td>
                                                 <td>
-                                                    <input type="hidden" name="farmerID" value="<%=farmers.get(a).getFarmID()%>">
-                                                    <button class="btn btn-success" type="submit" name="action" value="viewFarmer"><span class="glyphicon glyphicon-eye-open"></span></button>
-                                                    <button class="btn btn-warning" type="submit" name="action" value="editFarmer"><span class="glyphicon glyphicon-edit"></span></button>
-                                                    <button class="btn btn-danger" type="submit" name="action" value="flagFarmer"><span class="glyphicon glyphicon-flag"></span></button>
+                                                    <form action="ViewProgram">
+                                                        <input type="hidden" name="action" value="viewProgramDetails">
+                                                        <input type="hidden" name="deployedID" value="<%=programs.get(a).getAttribute6()%>">
+                                                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-eye-open"></span></button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             <%

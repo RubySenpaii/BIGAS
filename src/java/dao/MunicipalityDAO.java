@@ -31,7 +31,7 @@ public class MunicipalityDAO {
                     + Municipality.COLUMN_LONGITUDE + ", " + Municipality.COLUMN_MUNICIPALITY_ID + ", " + Municipality.COLUMN_MUNICIPALITY_NAME + ") "
                     + "VALUES(?, ?, ?, ?, ?, ?)");
             ps.setDouble(1, municipality.getArea());
-            ps.setInt(2, municipality.getDisctrict());
+            ps.setInt(2, municipality.getDistrict());
             ps.setDouble(3, municipality.getLatitude());
             ps.setDouble(4, municipality.getLongitude());
             ps.setInt(5, municipality.getMunicipalityID());
@@ -72,7 +72,7 @@ public class MunicipalityDAO {
         while (rs.next()) {
             Municipality municipality = new Municipality();
             municipality.setArea(rs.getDouble(Municipality.COLUMN_AREA));
-            municipality.setDisctrict(rs.getInt(Municipality.COLUMN_DISTRICT));
+            municipality.setDistrict(rs.getInt(Municipality.COLUMN_DISTRICT));
             municipality.setLatitude(rs.getDouble(Municipality.COLUMN_LATITUDE));
             municipality.setLongitude(rs.getDouble(Municipality.COLUMN_LONGITUDE));
             municipality.setMunicipalityID(rs.getInt(Municipality.COLUMN_MUNICIPALITY_ID));

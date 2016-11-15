@@ -65,6 +65,27 @@ public class ProgramProgressDAO {
         }
         return programProgresses;
     }
+    
+    public ArrayList<ProgramProgress> getListOfProgramProgressesForProgramDeployed(int programDeployed) {
+        ArrayList<ProgramProgress> programProgresses = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + ProgramProgress.TABLE_NAME + " WHERE " + ProgramProgress.COLUMN_PROGRAM_DEPLOYED_ID + " = ?");
+            ps.setInt(1, programDeployed);
+
+            ResultSet rs = ps.executeQuery();
+            programProgresses = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(ProgramProgressDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return programProgresses;
+    }
 
     private ArrayList<ProgramProgress> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<ProgramProgress> programProgresses = new ArrayList<>();

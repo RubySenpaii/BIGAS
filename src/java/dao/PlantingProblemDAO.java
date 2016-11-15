@@ -29,7 +29,7 @@ public class PlantingProblemDAO {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + PlantingProblem.TABLE_NAME + " "
                     + "(" + PlantingProblem.COLUMN_AREA_AFFECTED + ", " + PlantingProblem.COLUMN_DATE_REPORTED + ", " + PlantingProblem.COLUMN_EMPLOYEE_ID + ", " 
                     + PlantingProblem.COLUMN_IMAGE + ", " + PlantingProblem.COLUMN_PLANTING_REPORT_ID + ", " + PlantingProblem.COLUMN_PROBLEM_ID + ", " 
-                    + PlantingProblem.COLUMN_PROBLEM_REPORT_ID + ") "
+                    + PlantingProblem.COLUMN_PROBLEM_REPORT_ID + ", " + PlantingProblem.COLUMN_DATE_AFFECTED + ") "
                     + "VALUES(?, ?, ?, ?, ?, ?, ?)");
             ps.setDouble(1, plantingProblem.getAreaAffected());
             ps.setString(2, plantingProblem.getDateReported());
@@ -38,6 +38,7 @@ public class PlantingProblemDAO {
             ps.setInt(5, plantingProblem.getPlantingReportID());
             ps.setInt(6, plantingProblem.getProblemID());
             ps.setInt(7, plantingProblem.getProblemReportID());
+            ps.setString(8, plantingProblem.getDateAffected());
 
             ps.executeUpdate();
             ps.close();
@@ -89,6 +90,57 @@ public class PlantingProblemDAO {
         }
         return plantingProblems;
     }
+    
+    public ArrayList<PlantingProblem> getListOfPlantingProblemsReportedBy(int employeeID) {
+        ArrayList<PlantingProblem> plantingProblems = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + PlantingProblem.TABLE_NAME + " WHERE " + PlantingProblem.COLUMN_EMPLOYEE_ID + " = ?");
+            ps.setInt(1, employeeID);
+
+            ResultSet rs = ps.executeQuery();
+            plantingProblems = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(PlantingProblemDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return plantingProblems;
+    }
+    
+    public boolean hasPlantingProblemCreated(PlantingProblem plantingProblem) {
+        ArrayList<PlantingProblem> plantingProblems = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + PlantingProblem.TABLE_NAME + 
+                    " WHERE " + PlantingProblem.COLUMN_EMPLOYEE_ID + " = ? AND " + PlantingProblem.COLUMN_IMAGE + 
+                    " = ? AND " + PlantingProblem.COLUMN_PROBLEM_ID + " = ? AND " + PlantingProblem.COLUMN_PLANTING_REPORT_ID + " = ?");
+            ps.setInt(1, plantingProblem.getEmployeeID());
+            ps.setString(2, plantingProblem.getImage());
+            ps.setInt(3, plantingProblem.getProblemID());
+            ps.setInt(4, plantingProblem.getPlantingReportID());
+
+            ResultSet rs = ps.executeQuery();
+            plantingProblems = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(PlantingProblemDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        if (plantingProblems.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private ArrayList<PlantingProblem> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<PlantingProblem> plantingProblems = new ArrayList<>();
@@ -101,6 +153,7 @@ public class PlantingProblemDAO {
             plantingProblem.setPlantingReportID(rs.getInt(PlantingProblem.COLUMN_PLANTING_REPORT_ID));
             plantingProblem.setProblemID(rs.getInt(PlantingProblem.COLUMN_PROBLEM_ID));
             plantingProblem.setProblemReportID(rs.getInt(PlantingProblem.COLUMN_PROBLEM_REPORT_ID));
+            plantingProblem.setDateAffected(rs.getString(PlantingProblem.COLUMN_DATE_AFFECTED));
             plantingProblems.add(plantingProblem);
         }
         return plantingProblems;

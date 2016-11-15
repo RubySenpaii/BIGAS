@@ -10,6 +10,7 @@ public class Farm {
     public static final String COLUMN_FARM_ID = "FarmID";
     public static final String COLUMN_BARANGAY_ID = "BarangayID";
     public static final String COLUMN_FARM_NAME = "FarmName";
+    public static final String COLUMN_FARM_ADDRESS = "FarmAddress";
     public static final String COLUMN_FARM_AREA = "FarmArea";
     public static final String COLUMN_ECOSYSTEM = "Ecosystem";
     public static final String COLUMN_LATITUDE = "Latitude";
@@ -19,23 +20,24 @@ public class Farm {
     private int farmID;
     private int barangayID;
     private String farmName;
+    private String farmAddress;
     private double farmArea;
     private String ecosystem;
     private double latitude;
-    private double longtitude;
+    private double longitude;
     private int farmUpdated; 
 
     public Farm() {
     }
 
-    public Farm(int farmID, int barangayID, String farmName, double farmArea, String ecosystem, double latitude, double longtitude, int farmUpdated) {
+    public Farm(int farmID, int barangayID, String farmName, double farmArea, String ecosystem, double latitude, double longitude, int farmUpdated) {
         this.farmID = farmID;
         this.barangayID = barangayID;
         this.farmName = farmName;
         this.farmArea = farmArea;
         this.ecosystem = ecosystem;
         this.latitude = latitude;
-        this.longtitude = longtitude;
+        this.longitude = longitude;
         this.farmUpdated = farmUpdated;
     }
 
@@ -87,12 +89,12 @@ public class Farm {
         this.latitude = latitude;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     /**
@@ -107,5 +109,19 @@ public class Farm {
      */
     public void setFarmUpdated(int farmUpdated) {
         this.farmUpdated = farmUpdated;
+    }
+
+    /**
+     * @return the farmAddress
+     */
+    public String getFarmAddress() {
+        return farmAddress;
+    }
+
+    /**
+     * @param farmAddress the farmAddress to set
+     */
+    public void setFarmAddress(String farmAddress) {
+        this.farmAddress = farmAddress;
     }
 }

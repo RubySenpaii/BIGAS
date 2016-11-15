@@ -1,10 +1,10 @@
 <%-- 
-    Document   : farmerlist
-    Created on : Sep 23, 2016, 8:41:32 PM
+    Document   : employeedetails
+    Created on : Sep 28, 2016, 1:58:18 PM
     Author     : RubySenpaii
 --%>
 
-<%@page import="objects.Farmer"%>
+<%@page import="objects.Employee"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -35,7 +35,6 @@
         <!-- Datatables-->
         <link href="/BIGAS/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
         <link href="/BIGAS/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-
         <!-- jQuery -->
         <script src="/BIGAS/vendors/jquery/dist/jquery.min.js"></script>
         <!--highchart.js -->
@@ -57,42 +56,47 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Farmer List</h2>
-
-
+                                    <h2>Employee List</h2>
                                     <div class="clearfix"></div>
                                 </div>
+
                                 <div class="x_content">
-                                    <table id="datatable-buttons" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Full Name</th>
-                                                <th>Mobile No</th>
-                                                <th>Address</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <%
-                                                ArrayList<Farmer> farmers = (ArrayList<Farmer>) session.getAttribute("farmers");
-                                                for (int a = 0; a < farmers.size(); a++) {
-                                            %>
-                                            <tr>
-                                                <td><%=farmers.get(a).getLastName() + ", " + farmers.get(a).getFirstName() + " " + farmers.get(a).getMiddleName()%></td>
-                                                <td><%=farmers.get(a).getContactNo()%></td>
-                                                <td><%=farmers.get(a).getAddress()%></td>
-                                                <td>
-                                                    <input type="hidden" name="farmerID" value="<%=farmers.get(a).getFarmID()%>">
-                                                    <button class="btn btn-success" type="submit" name="action" value="viewFarmer"><span class="glyphicon glyphicon-eye-open"></span></button>
-                                                    <button class="btn btn-warning" type="submit" name="action" value="editFarmer"><span class="glyphicon glyphicon-edit"></span></button>
-                                                    <button class="btn btn-danger" type="submit" name="action" value="flagFarmer"><span class="glyphicon glyphicon-flag"></span></button>
-                                                </td>
-                                            </tr>
-                                            <%
-                                                }
-                                            %>
-                                        </tbody>
-                                    </table>
+                                    <form action="Employee">
+                                        <table id="datatable-buttons" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 25%">Full Name</th>
+                                                    <th style="width: 25%">Address</th>
+                                                    <th style="width: 15%">Contact Number</th>
+                                                    <th style="width: 5%">Office</th>
+                                                    <th style="width: 15%">Username</th>
+                                                    <th style="width: 15%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%
+                                                    ArrayList<Employee> employees = (ArrayList<Employee>) session.getAttribute("employees");
+                                                    for (int a = 0; a < employees.size(); a++) {
+                                                %>
+                                                <tr>
+                                                    <td><%=employees.get(a).getLastName() + ", " + employees.get(a).getFirstName() + " " + employees.get(a).getMiddleName()%></td>
+                                                    <td><%=employees.get(a).getAddress()%></td>
+                                                    <td><%=employees.get(a).getContactNo()%></td>
+                                                    <td><%=employees.get(a).getAuthority()%></td>
+                                                    <td><%=employees.get(a).getUsername()%></td>
+                                                    <td>
+                                                        <input type="hidden" name="employeeID" value="<%=employees.get(a).getEmployeeID()%>">
+                                                        <button class="btn btn-success" type="submit" name="action" value="viewEmployeeDetails"><span class="glyphicon glyphicon-eye-open"></span></button>
+                                                        <button class="btn btn-warning" type="submit" name="action" value="editEmployeeDetails"><span class="glyphicon glyphicon-edit"></span></button>
+                                                        <button class="btn btn-danger" type="submit" name="action" value="flagEmployee"><span class="glyphicon glyphicon-flag"></span></button>
+                                                    </td>
+                                                </tr>
+                                                <%
+                                                    }
+                                                %>
+                                            </tbody>
+                                        </table>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -114,6 +118,9 @@
         <!-- bootstrap-progressbar -->
         <script src="/BIGAS/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
 
+        <!-- Custom Theme Scripts -->
+        <script src="/BIGAS/build/js/custom.min.js"></script>
+
         <!-- Datatables-->
         <script src="/BIGAS/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
         <script src="/BIGAS/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -130,9 +137,6 @@
         <script src="/BIGAS/vendors/jszip/dist/jszip.min.js"></script>
         <script src="/BIGAS/vendors/pdfmake/build/pdfmake.min.js"></script>
         <script src="/BIGAS/vendors/pdfmake/build/vfs_fonts.js"></script>
-
-        <!-- Custom Theme Scripts -->
-        <script src="/BIGAS/build/js/custom.min.js"></script>
 
         <!-- Datatables -->
         <script>

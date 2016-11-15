@@ -4,6 +4,8 @@
     Author     : RubySenpaii
 --%>
 
+<%@page import="extra.GenericObject"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -95,7 +97,7 @@
                 var d2 = [];
                 var d3 = [];
                 var d4 = [];
-                
+
                 for (var a = 0; a < values[0].districtShare.length; a++) {
                     item2 = {};
                     if (values[0].districtShare[a].district === "District 1") {
@@ -205,7 +207,7 @@
                         series: districts
                     }
                 });
-                
+
                 $('#cropStagesProduction').highcharts({
                     chart: {
                         type: 'column'
@@ -281,7 +283,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-6 col-sm-6 col-xs-7">
                             <div class="x_panel">
                                 <div class="x_title">
@@ -295,7 +297,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
@@ -322,13 +324,29 @@
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Program ID</th>
+                                                <th>Program Name</th>
                                                 <th>Program Type</th>
                                                 <th>Description</th>
                                                 <th>Status</th>
                                                 <th>Date Started</th>
                                             </tr>
                                         </thead>
+                                        <tbody>
+                                            <%
+                                                ArrayList<GenericObject> activePrograms = (ArrayList<GenericObject>) session.getAttribute("activePrograms");
+                                                for (int a = 0; a < activePrograms.size(); a++) {
+                                            %>
+                                            <tr>
+                                                <td><%=activePrograms.get(a).getAttribute1()%></td>
+                                                <td><%=activePrograms.get(a).getAttribute2()%></td>
+                                                <td><%=activePrograms.get(a).getAttribute3()%></td>
+                                                <td><%=activePrograms.get(a).getAttribute4()%></td>
+                                                <td><%=activePrograms.get(a).getAttribute5()%></td>
+                                            </tr>
+                                            <%
+                                                }
+                                            %>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>

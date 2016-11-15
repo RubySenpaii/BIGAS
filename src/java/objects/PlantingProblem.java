@@ -14,6 +14,7 @@ public class PlantingProblem {
     public static final String COLUMN_DATE_REPORTED = "DateReported";
     public static final String COLUMN_AREA_AFFECTED = "AreaAffected";
     public static final String COLUMN_IMAGE = "Image";
+    public static final String COLUMN_DATE_AFFECTED = "DateAffected";
 
     private int problemReportID;
     private int plantingReportID;
@@ -22,17 +23,19 @@ public class PlantingProblem {
     private String dateReported;
     private double areaAffected;
     private String image;
+    private String dateAffected;
 
     public PlantingProblem() {
     }
 
-    public PlantingProblem(int problemReportID, int plantingReportID, int employeeID, int problemID, String dateReported, double areaAffected) {
+    public PlantingProblem(int problemReportID, int plantingReportID, int employeeID, int problemID, String dateReported, double areaAffected, String dateAffected) {
         this.problemReportID = problemReportID;
         this.plantingReportID = plantingReportID;
         this.employeeID = employeeID;
         this.problemID = problemID;
         this.dateReported = dateReported;
         this.areaAffected = areaAffected;
+        this.dateAffected = dateAffected;
     }
 
     public int getProblemID() {
@@ -95,5 +98,19 @@ public class PlantingProblem {
      */
     public void setImage(String image) {
         this.image = image;
+    }
+
+    /**
+     * @return the dateAffected
+     */
+    public String getDateAffected() {
+        return dateAffected;
+    }
+
+    /**
+     * @param dateAffected the dateAffected to set
+     */
+    public void setDateAffected(String dateAffected) {
+        this.dateAffected = dateAffected;
     }
 }

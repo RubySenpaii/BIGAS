@@ -15,20 +15,22 @@ public class ProgramDeployed {
     public static final String COLUMN_FERTILIZIER_PROVIDED = "FertilizerProvided";
     public static final String COLUMN_DATE_STARTED = "DateStarted";
     public static final String COLUMN_DATE_ENDED = "DateEnded";
+    public static final String COLUMN_STATUS = "Status";
 
     private int programDeployedID;
     private int programID;
-    private int seedVarietyID;
+    private String seedVarietyID;
     private double seedProvided;
     private int fertilizerID;
     private double fertilizerProvided;
     private String dateStarted;
     private String dateEnded;
+    private String status;
 
     public ProgramDeployed() {
     }
 
-    public ProgramDeployed(int programDeployedID, int programID, int seedVarietyID, double seedProvided, int fertilizerID, double fertilizerProvided, String dateStarted, String dateEnded) {
+    public ProgramDeployed(int programDeployedID, int programID, String seedVarietyID, double seedProvided, int fertilizerID, double fertilizerProvided, String dateStarted, String dateEnded, String status) {
         this.programDeployedID = programDeployedID;
         this.programID = programID;
         this.seedVarietyID = seedVarietyID;
@@ -37,6 +39,7 @@ public class ProgramDeployed {
         this.fertilizerProvided = fertilizerProvided;
         this.dateStarted = dateStarted;
         this.dateEnded = dateEnded;
+        this.status = status;
     }
 
     public int getProgramDeployedID() {
@@ -55,11 +58,11 @@ public class ProgramDeployed {
         this.programID = programID;
     }
 
-    public int getSeedVarietyID() {
+    public String getSeedVarietyID() {
         return seedVarietyID;
     }
 
-    public void setSeedVarietyID(int seedVarietyID) {
+    public void setSeedVarietyID(String seedVarietyID) {
         this.seedVarietyID = seedVarietyID;
     }
 
@@ -101,5 +104,19 @@ public class ProgramDeployed {
 
     public void setDateEnded(String dateEnded) {
         this.dateEnded = dateEnded;
+    }
+
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

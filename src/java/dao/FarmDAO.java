@@ -30,16 +30,17 @@ public class FarmDAO {
 
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + Farm.TABLE_NAME + " "
                     + "(" + Farm.COLUMN_BARANGAY_ID + ", " + Farm.COLUMN_ECOSYSTEM + ", " + Farm.COLUMN_FARM_AREA + ", " + Farm.COLUMN_FARM_ID + ", " + Farm.COLUMN_FARM_NAME
-                    + ", " + Farm.COLUMN_LATITUDE + ", " + Farm.COLUMN_LONGITUDE + ", " + Farm.COLUMN_FARM_UPDATED + ") "
-                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+                    + ", " + Farm.COLUMN_LATITUDE + ", " + Farm.COLUMN_LONGITUDE + ", " + Farm.COLUMN_FARM_UPDATED + ", " + Farm.COLUMN_FARM_ADDRESS + ") "
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, farm.getBarangayID());
             ps.setString(2, farm.getEcosystem());
             ps.setDouble(3, farm.getFarmArea());
             ps.setInt(4, farm.getFarmID());
             ps.setString(5, farm.getFarmName());
             ps.setDouble(6, farm.getLatitude());
-            ps.setDouble(7, farm.getLongtitude());
+            ps.setDouble(7, farm.getLongitude());
             ps.setInt(8, farm.getFarmUpdated());
+            ps.setString(9, farm.getFarmAddress());
 
             ps.executeUpdate();
             ps.close();
@@ -105,8 +106,9 @@ public class FarmDAO {
             farm.setFarmID(rs.getInt(Farm.COLUMN_FARM_ID));
             farm.setFarmName(rs.getString(Farm.COLUMN_FARM_NAME));
             farm.setLatitude(rs.getDouble(Farm.COLUMN_LATITUDE));
-            farm.setLongtitude(rs.getDouble(Farm.COLUMN_LONGITUDE));
+            farm.setLongitude(rs.getDouble(Farm.COLUMN_LONGITUDE));
             farm.setFarmUpdated(rs.getInt(Farm.COLUMN_FARM_UPDATED));
+            farm.setFarmAddress(rs.getString(Farm.COLUMN_FARM_ADDRESS));
             farms.add(farm);
         }
         return farms;

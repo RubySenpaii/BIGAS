@@ -16,7 +16,7 @@ public class Municipality {
 
     private int municipalityID;
     private String municipalityName;
-    private int disctrict;
+    private int district;
     private double area;
     private double longitude;
     private double latitude;
@@ -24,10 +24,10 @@ public class Municipality {
     public Municipality() {
     }
 
-    public Municipality(int municipalityID, String municipalityName, int disctrict, double area) {
+    public Municipality(int municipalityID, String municipalityName, int district, double area) {
         this.municipalityID = municipalityID;
         this.municipalityName = municipalityName;
-        this.disctrict = disctrict;
+        this.district = district;
         this.area = area;
     }
 
@@ -47,12 +47,12 @@ public class Municipality {
         this.municipalityName = municipalityName;
     }
 
-    public int getDisctrict() {
-        return disctrict;
+    public int getDistrict() {
+        return district;
     }
 
-    public void setDisctrict(int disctrict) {
-        this.disctrict = disctrict;
+    public void setDistrict(int district) {
+        this.district = district;
     }
 
     public double getArea() {

@@ -52,6 +52,8 @@ public class ProgramDeployment extends BaseServlet {
             if (action.equals("deployProgram")) {
                 System.out.println("Retrieving programs for deployment");
                 deployProgramForPAO(request, response);
+            } else {
+                session.setAttribute("action", "invalid");
             }
         }
     }
