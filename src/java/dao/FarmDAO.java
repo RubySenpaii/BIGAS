@@ -51,6 +51,36 @@ public class FarmDAO {
         }
         return true;
     }
+    
+    public boolean updateFarm(Farm farm) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+            
+            PreparedStatement ps = conn.prepareStatement("UPDATE " + Farm.TABLE_NAME + 
+                    " SET " + Farm.COLUMN_BARANGAY_ID + " = ?, " + Farm.COLUMN_ECOSYSTEM + " = ?, " + Farm.COLUMN_FARM_ADDRESS + " = ?, "
+                    + Farm.COLUMN_FARM_AREA + " = ?, " + Farm.COLUMN_FARM_ID + " = ?, " + Farm.COLUMN_FARM_NAME + " = ?, "
+                    + Farm.COLUMN_FARM_UPDATED + " = ?, " + Farm.COLUMN_LATITUDE + " = ?, " + Farm.COLUMN_LONGITUDE + " = ? "
+                    + "WHERE " + Farm.COLUMN_FARM_ID + " = ?");
+            ps.setInt(1, farm.getBarangayID());
+            ps.setString(2, farm.getEcosystem());
+            ps.setString(3, farm.getFarmAddress());
+            ps.setDouble(4, farm.getFarmArea());
+            ps.setInt(5, farm.getFarmID());
+            ps.setString(6, farm.getFarmName());
+            ps.setInt(7, farm.getFarmUpdated());
+            ps.setDouble(8, farm.getLatitude());
+            ps.setDouble(9, farm.getLongitude());
+            ps.setInt(10, farm.getFarmID());
+            
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PlantingProblemDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } return true;
+    }
 
     public ArrayList<Farm> getListOfFarms() {
         ArrayList<Farm> farms = new ArrayList<>();

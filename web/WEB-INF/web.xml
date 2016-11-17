@@ -64,6 +64,14 @@
         <servlet-name>PestDiseases</servlet-name>
         <servlet-class>servlet.web.PestDiseases</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PAODashboard</servlet-name>
+        <servlet-class>servlet.ajax.PAODashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Dashboard</servlet-name>
+        <servlet-class>servlet.web.Dashboard</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MobileLogin</servlet-name>
         <url-pattern>/MobileLogin</url-pattern>
@@ -127,6 +135,14 @@
     <servlet-mapping>
         <servlet-name>PestDiseases</servlet-name>
         <url-pattern>/PestDiseases</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PAODashboard</servlet-name>
+        <url-pattern>/PAODashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Dashboard</servlet-name>
+        <url-pattern>/Dashboard</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

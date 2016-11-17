@@ -46,6 +46,33 @@ public class WeeklyReportsDAO {
         }
         return true;
     }
+    
+    public boolean updateWeeklyReport(WeeklyReports weeklyReport) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+            
+            PreparedStatement ps = conn.prepareStatement("UPDATE " + WeeklyReports.TABLE_NAME + 
+                    " SET " + WeeklyReports.COLUMN_CROP_STAGE + " = ?, " + WeeklyReports.COLUMN_DATE_REPORTED + " = ?, " + WeeklyReports.COLUMN_HEIGHT + " = ?, "
+                    + WeeklyReports.COLUMN_IMAGE + " = ?, " + WeeklyReports.COLUMN_PLANTING_REPORT_ID + " = ?, " + WeeklyReports.COLUMN_WATER_LEVEL + " = ? "
+                    + "WHERE " + WeeklyReports.COLUMN_PLANTING_REPORT_ID + " = ? AND " + WeeklyReports.COLUMN_DATE_REPORTED + " = ?");
+            ps.setString(1, weeklyReport.getCropStage());
+            ps.setString(2, weeklyReport.getDateReported());
+            ps.setDouble(3, weeklyReport.getHeight());
+            ps.setString(4, weeklyReport.getImage());
+            ps.setInt(5, weeklyReport.getPlantingReportID());
+            ps.setDouble(6, weeklyReport.getWaterLevel());
+            ps.setInt(7, weeklyReport.getPlantingReportID());
+            ps.setString(8, weeklyReport.getDateReported());
+            
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PlantingProblemDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } return true;
+    }
 
     public ArrayList<WeeklyReports> getListOfWeeklyReports() {
         ArrayList<WeeklyReports> weeklyReports = new ArrayList<>();

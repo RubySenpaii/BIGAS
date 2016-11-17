@@ -7,6 +7,7 @@ package servlet.ajax;
 
 import dao.FarmDAO;
 import dao.MunicipalityDAO;
+import dao.PlantingProblemDAO;
 import dao.PlantingReportDAO;
 import dao.PlotDAO;
 import extra.GenericObject;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import objects.Farm;
 import objects.Municipality;
+import objects.PlantingProblem;
 import objects.PlantingReport;
 import objects.Plot;
 import org.json.JSONArray;
@@ -87,7 +89,7 @@ public class PAOProvinceStatus extends HttpServlet {
                 ArrayList<Plot> plots = new PlotDAO().getListOfPlotsFromFarm(farms.get(b).getFarmID());
                 for (int c = 0; c < plots.size(); c++) {
                     Plot plot = plots.get(c);
-                    ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getYearListOfPlantingReportsFor(plot.getPlotID());
+                    ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getListOfPlantingReportFromPlotID(plot.getPlotID());
                     for (int d = 0; d < plantingReports.size(); d++) {
                         double amountHarvest = plantingReports.get(d).getAmountHarvested();
                         double area = plot.getPlotSize();
@@ -140,7 +142,7 @@ public class PAOProvinceStatus extends HttpServlet {
         for (int a = 0; a < farms.size(); a++) {
             ArrayList<Plot> plots = new PlotDAO().getListOfPlotsFromFarm(farms.get(a).getFarmID());
             for (int b = 0; b < plots.size(); b++) {
-                ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getYearListOfPlantingReportsFor(plots.get(b).getPlotID());
+                ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getListOfPlantingReportFromPlotID(plots.get(b).getPlotID());
                 for (int c = 0; c < plantingReports.size(); c++) {
                     int month = Integer.parseInt(plantingReports.get(c).getDateHarvested().substring(0, 2));
                     int difference = 1;
@@ -175,6 +177,18 @@ public class PAOProvinceStatus extends HttpServlet {
         
         System.out.println("retrieve data for district stages");
         ArrayList<Municipality> municipalities = new MunicipalityDAO().getListOfMunicipalities();
+        for (int a = 0; a < municipalities.size(); a++) {
+            ArrayList<Farm> farms = new FarmDAO().getListOfFarmsInMunicipal(municipalities.get(a).getMunicipalityName());
+            for (int b = 0; b < farms.size(); b++) {
+                ArrayList<Plot> plots = new PlotDAO().getListOfPlotsFromFarm(farms.get(b).getFarmID());
+                for (int c = 0; c < plots.size(); c++) {
+                    ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getListOfPlantingReportFromPlotID(plots.get(c).getPlotID());
+                    for (int d = 0; d < plantingReports.size(); d++) {
+                        
+                    }
+                }
+            }
+        }
         
         return jarrayDistrictStages;
     }

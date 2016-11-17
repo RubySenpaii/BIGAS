@@ -45,6 +45,31 @@ public class PlotDAO {
         }
         return true;
     }
+    
+    public boolean updatePlantingProblem(Plot plot) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+            
+            PreparedStatement ps = conn.prepareStatement("UPDATE " + Plot.TABLE_NAME + 
+                    " SET " + Plot.COLUMN_FARM_ID + " = ?, " + Plot.COLUMN_PLOT_ID + " = ?, " + Plot.COLUMN_PLOT_NUMBER + " = ?, "
+                    + Plot.COLUMN_PLOT_PLANTED + " = ?, " + Plot.COLUMN_PLOT_SIZE + " = ? "
+                    + "WHERE " + Plot.COLUMN_PLOT_ID + " = ?");
+            ps.setInt(1, plot.getFarmID());
+            ps.setInt(2, plot.getPlotID());
+            ps.setInt(3, plot.getPlotNumber());
+            ps.setInt(4, plot.getPlotPlanted());
+            ps.setDouble(5, plot.getPlotSize());
+            ps.setInt(6, plot.getPlotID());
+            
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PlotDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } return true;
+    }
 
     public ArrayList<Plot> getListOfPlots() {
         ArrayList<Plot> plots = new ArrayList<>();

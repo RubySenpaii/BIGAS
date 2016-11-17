@@ -29,8 +29,9 @@ public class PlantingReportDAO {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + PlantingReport.TABLE_NAME + " "
                     + "(" + PlantingReport.COLUMN_AMOUNT_HARVESTED + ", " + PlantingReport.COLUMN_DATE_PLANTED + ", " + PlantingReport.COLUMN_PLANTING_REPORT_ID + ", "
                     + PlantingReport.COLUMN_PLOT_ID + ", " + PlantingReport.COLUMN_SEASON + ", " + PlantingReport.COLUMN_SEED_PLANTED + ", "
-                    + PlantingReport.COLUMN_SEED_VARIETY_ID + ", " + PlantingReport.COLUMN_YEAR + ", " + PlantingReport.COLUMN_PLANTING_METHOD +  ", " + PlantingReport.COLUMN_DATE_HARVESTED + ") "
-                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    + PlantingReport.COLUMN_SEED_VARIETY_ID + ", " + PlantingReport.COLUMN_YEAR + ", " + PlantingReport.COLUMN_PLANTING_METHOD +  ", " 
+                    + PlantingReport.COLUMN_DATE_HARVESTED + ", " + PlantingReport.COLUMN_SEED_ACQUISITION + ") "
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setDouble(1, plantingReport.getAmountHarvested());
             ps.setString(2, plantingReport.getDatePlanted());
             ps.setInt(3, plantingReport.getPlantingReportID());
@@ -41,6 +42,7 @@ public class PlantingReportDAO {
             ps.setString(8, plantingReport.getYear());
             ps.setString(9, plantingReport.getPlantingMethod());
             ps.setString(10, plantingReport.getDateHarvested());
+            ps.setString(11, plantingReport.getSeedAcquisition());
 
             ps.executeUpdate();
             ps.close();
@@ -50,6 +52,37 @@ public class PlantingReportDAO {
             return false;
         }
         return true;
+    }
+    
+    public boolean updatePlantingProblem(PlantingReport report) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+            
+            PreparedStatement ps = conn.prepareStatement("UPDATE " + PlantingReport.TABLE_NAME + 
+                    " SET " + PlantingReport.COLUMN_AMOUNT_HARVESTED + " = ?, " + PlantingReport.COLUMN_DATE_HARVESTED + " = ?, " + PlantingReport.COLUMN_DATE_PLANTED + " = ?, "
+                    + PlantingReport.COLUMN_PLANTING_METHOD + " = ?, " + PlantingReport.COLUMN_PLANTING_REPORT_ID + " = ?, " + PlantingReport.COLUMN_PLOT_ID + " = ?, "
+                    + PlantingReport.COLUMN_SEASON + " = ?, " + PlantingReport.COLUMN_SEED_PLANTED + " = ?, " + PlantingReport.COLUMN_SEED_VARIETY_ID + " = ?, " + PlantingReport.COLUMN_YEAR + " = ? "
+                    + "WHERE " + PlantingReport.COLUMN_PLANTING_REPORT_ID + " = ?");
+            ps.setDouble(1, report.getAmountHarvested());
+            ps.setString(2, report.getDateHarvested());
+            ps.setString(3, report.getDatePlanted());
+            ps.setString(4, report.getPlantingMethod());
+            ps.setInt(5, report.getPlantingReportID());
+            ps.setInt(6, report.getPlotID());
+            ps.setString(7, report.getSeason());
+            ps.setDouble(8, report.getSeedPlanted());
+            ps.setString(9, report.getSeedVarietyID());
+            ps.setString(10, report.getYear());
+            ps.setInt(11, report.getPlantingReportID());
+            
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PlantingReportDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } return true;
     }
 
     public ArrayList<PlantingReport> getListOfPlantingReports() {
@@ -72,7 +105,7 @@ public class PlantingReportDAO {
         return plantingReports;
     }
     
-    public ArrayList<PlantingReport> getYearListOfPlantingReportsFor(int plotID) {
+    public ArrayList<PlantingReport> getListOfPlantingReportFromPlotID(int plotID) {
         ArrayList<PlantingReport> plantingReports = new ArrayList<>();
         try {
             DBConnectionFactory myFactory = DBConnectionFactory.getInstance();

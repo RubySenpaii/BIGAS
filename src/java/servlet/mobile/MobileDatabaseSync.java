@@ -23,7 +23,6 @@ import dao.SeedVarietyDAO;
 import dao.TechnicianFarmDAO;
 import dao.WeeklyReportsDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -87,9 +86,9 @@ public class MobileDatabaseSync extends HttpServlet {
             sendProblemDatabaseData(request, response);
         }
 
-        if (dataToBeRetrieved.isEmpty()) {
-            int employeeID = Integer.parseInt(request.getParameter("employeeID"));
-            retriveDataFromMobile(request, response);
+        if (dataToBeRetrieved.equals("getData")) {
+            retrieveDataFromMobile(request, response);
+            response.getWriter().write("done download");
         }
     }
 
@@ -153,96 +152,159 @@ public class MobileDatabaseSync extends HttpServlet {
         response.getWriter().write(new Gson().toJson(problems));
     }
 
-    private void retriveDataFromMobile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("retrieving info from mobile");
+    private void retrieveDataFromMobile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("send problem database data to mobile");
+        
         int addCount = 0;
         int updateCount = 0;
-
-        System.out.println("planting problems from mobile upload");
-        ArrayList<PlantingProblem> plantingProblems = new Gson().fromJson(request.getParameter("plantingProblems"), new TypeToken<List<PlantingProblem>>() {
-        }.getType());
-        for (int a = new PlantingProblemDAO().getListOfPlantingProblems().size(); a < plantingProblems.size(); a++) {
-            if (new PlantingProblemDAO().reportPlantingProblem(plantingProblems.get(a))) {
-                addCount++;
-            }
-        }
-        System.out.println("planting problem input count added: " + addCount);
-
-        addCount = 0;
-        System.out.println("planting reports from mobile upload");
-        ArrayList<PlantingReport> plantingReports = new Gson().fromJson(request.getParameter("plantingReports"), new TypeToken<List<PlantingReport>>() {
-        }.getType());
-        for (int a = new PlantingReportDAO().getListOfPlantingReports().size(); a < plantingReports.size(); a++) {
-            if (new PlantingReportDAO().createPlantingReport(plantingReports.get(a))) {
-                addCount++;
-            }
-        }
-        System.out.println("planting report input count added: " + addCount);
-
-        addCount = 0;
         System.out.println("plot input form mobile upload");
         ArrayList<Plot> plots = new Gson().fromJson(request.getParameter("plots"), new TypeToken<List<Plot>>() {
         }.getType());
-        for (int a = new PlotDAO().getListOfPlots().size(); a < plots.size(); a++) {
-            if (new PlotDAO().createPlot(plots.get(a))) {
+        for (int a = 0; a < plots.size(); a++) {
+            if (a < new PlotDAO().getListOfPlots().size()) {
+                if (new PlotDAO().updatePlantingProblem(plots.get(a))) {
+                    updateCount++;
+                }
+            } else if (new PlotDAO().createPlot(plots.get(a))) {
                 addCount++;
+            } else {
+                System.out.println(plots.get(a).getPlotID() + " not added/updated");
             }
         }
+        System.out.println("plot input count updated: " + updateCount);
         System.out.println("plot input count added: " + addCount);
-
+        
         addCount = 0;
+        updateCount = 0;
         System.out.println("plot fertilizer input from mobile upload");
-        ArrayList<PlotFertilizer> plotFertilizer = new Gson().fromJson(request.getParameter("plotFertilizer"), new TypeToken<List<PlotFertilizer>>() {
+        ArrayList<PlotFertilizer> plotFertilizer = new Gson().fromJson(request.getParameter("plotFertilizers"), new TypeToken<List<PlotFertilizer>>() {
         }.getType());
-        for (int a = new PlotFertilizerDAO().getListOfPlotFertilizers().size(); a < plotFertilizer.size(); a++) {
-            if (new PlotFertilizerDAO().addPlotFertilizer(plotFertilizer.get(a))) {
+        for (int a = 0; a < plotFertilizer.size(); a++) {
+            if (a < new PlotFertilizerDAO().getListOfPlotFertilizers().size()) {
+                if (new PlotFertilizerDAO().updatePlotFertilizer(plotFertilizer.get(a))) {
+                    updateCount++;
+                }
+            } else if (new PlotFertilizerDAO().addPlotFertilizer(plotFertilizer.get(a))) {
                 addCount++;
+            } else {
+                System.out.println(plotFertilizer.get(a).getPlotID() + " " + plotFertilizer.get(a).getDateApplied() + " not added/updated");
             }
         }
+        System.out.println("plot fertilizer count updated: " + updateCount);
         System.out.println("plot fertilizer count added: " + addCount);
-
+        
         addCount = 0;
+        updateCount = 0;
+        System.out.println("planting reports from mobile upload");
+        ArrayList<PlantingReport> plantingReports = new Gson().fromJson(request.getParameter("plantingReports"), new TypeToken<List<PlantingReport>>() {
+        }.getType());
+        for (int a = 0; a < plantingReports.size(); a++) {
+            if (a < new PlantingReportDAO().getListOfPlantingReports().size()) {
+                if (new PlantingReportDAO().updatePlantingProblem(plantingReports.get(a))) {
+                    updateCount++;
+                }
+            } else if (new PlantingReportDAO().createPlantingReport(plantingReports.get(a))) {
+                addCount++;
+            } else {
+                System.out.println(plantingReports.get(a).getPlantingReportID() + " not added/updated");
+            }
+        }
+        System.out.println("planting report input count updated: " + updateCount);
+        System.out.println("planting report input count added: " + addCount);
+        
+        addCount = 0;
+        updateCount = 0;
         System.out.println("weekly reports from mobile upload");
         ArrayList<WeeklyReports> weeklyReports = new Gson().fromJson(request.getParameter("weeklyReports"), new TypeToken<List<WeeklyReports>>() {
         }.getType());
-        for (int a = new WeeklyReportsDAO().getListOfWeeklyReports().size(); a < weeklyReports.size(); a++) {
-            if (new WeeklyReportsDAO().createWeeklyReport(weeklyReports.get(a))) {
+        for (int a = 0; a < weeklyReports.size(); a++) {
+            if (a < new WeeklyReportsDAO().getListOfWeeklyReports().size()) {
+                if (new WeeklyReportsDAO().updateWeeklyReport(weeklyReports.get(a))) {
+                    updateCount++;
+                }
+            } else if (new WeeklyReportsDAO().createWeeklyReport(weeklyReports.get(a))) {
                 addCount++;
+            } else {
+                System.out.println(weeklyReports.get(a).getPlantingReportID() + " " + weeklyReports.get(a).getDateReported() + " not added/updated");
             }
         }
+        System.out.println("weekly reports count updated: " + updateCount);
         System.out.println("weekly reports count added: " + addCount);
-
+        
         addCount = 0;
+        updateCount = 0;
         System.out.println("problem database update from mobile");
-        ArrayList<ProblemDatabase> problemDatabase = new Gson().fromJson(request.getParameter("problemDatabase"), new TypeToken<List<ProblemDatabase>>() {
+        ArrayList<ProblemDatabase> problemDatabase = new Gson().fromJson(request.getParameter("problems"), new TypeToken<List<ProblemDatabase>>() {
         }.getType());
-        for (int a = new ProblemDatabaseDAO().getListOfProblems().size(); a < problemDatabase.size(); a++) {
-            if (new ProblemDatabaseDAO().recordProblem(problemDatabase.get(a))) {
+        for (int a = 0; a < problemDatabase.size(); a++) {
+            if (a < new ProblemDatabaseDAO().getListOfProblems().size()) {
+                if (new ProblemDatabaseDAO().updatePlantingProblem(problemDatabase.get(a))) {
+                    updateCount++;
+                }
+            } else if (new ProblemDatabaseDAO().recordProblem(problemDatabase.get(a))) {
                 addCount++;
+            } else {
+                System.out.println(problemDatabase.get(a).getProblemID() + " not added/updated");
             }
         }
+        System.out.println("problem database count updated: " + updateCount);
         System.out.println("problem database count added: " + addCount);
-
+        
         addCount = 0;
-        System.out.println("farmer updates from mobile");
-        ArrayList<Farmer> farmers = new Gson().fromJson(request.getParameter("farmers"), new TypeToken<List<Farmer>>() {
+        updateCount = 0;
+        System.out.println("planting problems from mobile upload");
+        ArrayList<PlantingProblem> plantingProblems = new Gson().fromJson(request.getParameter("plantingProblems"), new TypeToken<List<PlantingProblem>>() {
         }.getType());
-        for (int a = new FarmerDAO().getListOfFarmers().size(); a < farmers.size(); a++) {
-            if (new FarmerDAO().addFarmer(farmers.get(a))) {
+        for (int a = 0; a < plantingProblems.size(); a++) {
+            if (a < new PlantingProblemDAO().getListOfPlantingProblems().size()) {
+                if (new PlantingProblemDAO().updatePlantingProblem(plantingProblems.get(a))) {
+                    updateCount++;
+                }
+            } else if (new PlantingProblemDAO().reportPlantingProblem(plantingProblems.get(a))) {
                 addCount++;
+            } else {
+                System.out.println(plantingProblems.get(a).getProblemReportID() + " not added/updated");
             }
         }
-        System.out.println("farmer count added: " + addCount);
-
+        System.out.println("planting problem input count updated: " + updateCount);
+        System.out.println("planting problem input count added: " + addCount);
+        
         addCount = 0;
+        updateCount = 0;
         System.out.println("farm updates from mobile");
         ArrayList<Farm> farms = new Gson().fromJson(request.getParameter("farms"), new TypeToken<List<Farm>>() {
         }.getType());
-        for (int a = new FarmDAO().getListOfFarms().size(); a < farms.size(); a++) {
-            if (new FarmDAO().addFarm(farms.get(a))) {
+        for (int a = 0; a < farms.size(); a++) {
+            if (a < new FarmDAO().getListOfFarms().size()) {
+                if (new FarmDAO().updateFarm(farms.get(a))) {
+                    updateCount++;
+                }
+            } else if (new FarmDAO().addFarm(farms.get(a))) {
                 addCount++;
+            } else {
+                System.out.println(farms.get(a).getFarmID() + " not added/updated");
             }
         }
+        System.out.println("farm count updated: " + updateCount);
         System.out.println("farm count added: " + addCount);
+        
+        addCount = 0;
+        updateCount = 0;
+        System.out.println("farmer updates from mobile");
+        ArrayList<Farmer> farmers = new Gson().fromJson(request.getParameter("farmers"), new TypeToken<List<Farmer>>() {
+        }.getType());
+        for (int a = 0; a < farmers.size(); a++) {
+            if (a < new FarmerDAO().getListOfFarmers().size()) {
+                if (new FarmerDAO().updateFarmer(farmers.get(a))) {
+                    updateCount++;
+                }
+            } else if (new FarmerDAO().addFarmer(farmers.get(a))) {
+                addCount++;
+            } else {
+                System.out.println(farmers.get(a).getFarmerID() + " not added/updated");
+            }
+        }
+        System.out.println("farmer count updated: " + updateCount);
+        System.out.println("farmer count added: " + addCount);
     }
 }

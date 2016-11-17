@@ -49,6 +49,36 @@ public class FarmerDAO {
         }
         return true;
     }
+    
+    public boolean updateFarmer(Farmer farmer) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+            
+            PreparedStatement ps = conn.prepareStatement("UPDATE " + Farmer.TABLE_NAME + 
+                    " SET " + Farmer.COLUMN_ADDRESS + " = ?, " + Farmer.COLUMN_BIRTHDAY + " = ?, " + Farmer.COLUMN_CONTACT_NO + " = ?, "
+                    + Farmer.COLUMN_FARMER_ID + " = ?, " + Farmer.COLUMN_FARM_ID + " = ?, " + Farmer.COLUMN_FIRST_NAME + " = ?, "
+                    + Farmer.COLUMN_FLAG + " = ?, " + Farmer.COLUMN_LAST_NAME + " = ?, " + Farmer.COLUMN_MIDDLE_NAME + " = ? "
+                    + "WHERE " + Farmer.COLUMN_FARMER_ID + " = ?");
+            ps.setString(1, farmer.getAddress());
+            ps.setString(2, farmer.getBirthday());
+            ps.setString(3, farmer.getContactNo());
+            ps.setInt(4, farmer.getFarmerID());
+            ps.setInt(5, farmer.getFarmID());
+            ps.setString(6, farmer.getFirstName());
+            ps.setInt(7, farmer.getFlag());
+            ps.setString(8, farmer.getLastName());
+            ps.setString(9, farmer.getMiddleName());
+            ps.setInt(10, farmer.getFarmerID());
+            
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PlantingProblemDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } return true;
+    }
 
     public ArrayList<Farmer> getListOfFarmers() {
         ArrayList<Farmer> farmers = new ArrayList<>();

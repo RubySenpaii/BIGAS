@@ -45,6 +45,33 @@ public class PlotFertilizerDAO {
         }
         return true;
     }
+    
+    public boolean updatePlotFertilizer(PlotFertilizer plotFertilizer) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+            
+            PreparedStatement ps = conn.prepareStatement("UPDATE " + PlotFertilizer.TABLE_NAME + 
+                    " SET " + PlotFertilizer.COLUMN_DATE_APPLIED + " = ?, " + PlotFertilizer.COLUMN_FERTILIZER_APPLIED + " = ?, " + PlotFertilizer.COLUMN_FERTILIZER_ID + " = ?, "
+                    + PlotFertilizer.COLUMN_PLOT_ID + " = ?, " + PlotFertilizer.COLUMN_REMARKS + " = ? " 
+                    + "WHERE " + PlotFertilizer.COLUMN_PLOT_ID + " = ? AND " + PlotFertilizer.COLUMN_FERTILIZER_ID + " = ? AND " + PlotFertilizer.COLUMN_DATE_APPLIED + " = ?");
+            ps.setString(1, plotFertilizer.getDateApplied());
+            ps.setDouble(2, plotFertilizer.getFertilizerApplied());
+            ps.setInt(3, plotFertilizer.getFertilizerID());
+            ps.setInt(4, plotFertilizer.getPlotID());
+            ps.setString(5, plotFertilizer.getRemarks());
+            ps.setInt(6, plotFertilizer.getPlotID());
+            ps.setInt(7, plotFertilizer.getFertilizerID());
+            ps.setString(8, plotFertilizer.getDateApplied());
+            
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PlantingProblemDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } return true;
+    }
 
     public ArrayList<PlotFertilizer> getListOfPlotFertilizers() {
         ArrayList<PlotFertilizer> plotFertilizers = new ArrayList<>();

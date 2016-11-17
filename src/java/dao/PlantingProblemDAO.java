@@ -30,7 +30,7 @@ public class PlantingProblemDAO {
                     + "(" + PlantingProblem.COLUMN_AREA_AFFECTED + ", " + PlantingProblem.COLUMN_DATE_REPORTED + ", " + PlantingProblem.COLUMN_EMPLOYEE_ID + ", " 
                     + PlantingProblem.COLUMN_IMAGE + ", " + PlantingProblem.COLUMN_PLANTING_REPORT_ID + ", " + PlantingProblem.COLUMN_PROBLEM_ID + ", " 
                     + PlantingProblem.COLUMN_PROBLEM_REPORT_ID + ", " + PlantingProblem.COLUMN_DATE_AFFECTED + ") "
-                    + "VALUES(?, ?, ?, ?, ?, ?, ?)");
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setDouble(1, plantingProblem.getAreaAffected());
             ps.setString(2, plantingProblem.getDateReported());
             ps.setInt(3, plantingProblem.getEmployeeID());
@@ -48,6 +48,35 @@ public class PlantingProblemDAO {
             return false;
         }
         return true;
+    }
+    
+    public boolean updatePlantingProblem(PlantingProblem problem) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+            
+            PreparedStatement ps = conn.prepareStatement("UPDATE " + PlantingProblem.TABLE_NAME + 
+                    " SET " + PlantingProblem.COLUMN_AREA_AFFECTED + " = ?, " + PlantingProblem.COLUMN_DATE_AFFECTED + " = ?, " + PlantingProblem.COLUMN_DATE_REPORTED + " = ?, "
+                    + PlantingProblem.COLUMN_EMPLOYEE_ID + " = ?, " + PlantingProblem.COLUMN_IMAGE + " = ?, " + PlantingProblem.COLUMN_PLANTING_REPORT_ID + " = ?, "
+                    + PlantingProblem.COLUMN_PROBLEM_ID + " = ?, " + PlantingProblem.COLUMN_PROBLEM_REPORT_ID + " = ? "
+                    + "WHERE " + PlantingProblem.COLUMN_PROBLEM_REPORT_ID + " = ?");
+            ps.setDouble(1, problem.getAreaAffected());
+            ps.setString(2, problem.getDateAffected());
+            ps.setString(3, problem.getDateReported());
+            ps.setInt(4, problem.getEmployeeID());
+            ps.setString(5, problem.getImage());
+            ps.setInt(6, problem.getPlantingReportID());
+            ps.setInt(7, problem.getProblemID());
+            ps.setInt(8, problem.getProblemReportID());
+            ps.setInt(9, problem.getProblemReportID());
+            
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PlantingProblemDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } return true;
     }
 
     public ArrayList<PlantingProblem> getListOfPlantingProblems() {

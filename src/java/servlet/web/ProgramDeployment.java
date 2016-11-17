@@ -77,7 +77,7 @@ public class ProgramDeployment extends BaseServlet {
         for (int a = 0; a < farms.size(); a++) {
             ArrayList<Plot> plots = new PlotDAO().getListOfPlotsFromFarm(farms.get(a).getFarmID());
             for (int b = 0; b < plots.size(); b++) {
-                ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getYearListOfPlantingReportsFor(plots.get(b).getPlotID());
+                ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getListOfPlantingReportFromPlotID(plots.get(b).getPlotID());
                 for (int c = 0; c < plantingReports.size(); c++) {
                     ArrayList<PlantingProblem> plantingProblems = new PlantingProblemDAO().getListOfPlantingProblemsFromPlantingReport(plantingReports.get(c).getPlantingReportID());
                     for (int d = 0; d < plantingProblems.size(); d++) {

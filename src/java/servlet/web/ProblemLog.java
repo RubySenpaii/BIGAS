@@ -72,7 +72,7 @@ public class ProblemLog extends BaseServlet {
             for (int b = 0; b < farms.size(); b++) {
                 ArrayList<Plot> plots = new PlotDAO().getListOfPlotsFromFarm(farms.get(b).getFarmID());
                 for (int c = 0; c < plots.size(); c++) {
-                    ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getYearListOfPlantingReportsFor(plots.get(c).getPlotID());
+                    ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getListOfPlantingReportFromPlotID(plots.get(c).getPlotID());
                     for (int d = 0; d < plantingReports.size(); d++) {
                         ArrayList<PlantingProblem> plantingProblems = new PlantingProblemDAO().getListOfPlantingProblemsFromPlantingReport(plantingReports.get(d).getPlantingReportID());
                         for (int e = 0; e < plantingProblems.size(); e++) {

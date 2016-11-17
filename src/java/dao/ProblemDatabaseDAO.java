@@ -45,6 +45,31 @@ public class ProblemDatabaseDAO {
         }
         return true;
     }
+    
+    public boolean updatePlantingProblem(ProblemDatabase problem) {
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+            
+            PreparedStatement ps = conn.prepareStatement("UPDATE " + ProblemDatabase.TABLE_NAME + 
+                    " SET " + ProblemDatabase.COLUMN_DESCRIPTION + " = ?, " + ProblemDatabase.COLUMN_IMAGE + " = ?, " + ProblemDatabase.COLUMN_PROBLEM_ID + " = ?, "
+                    + ProblemDatabase.COLUMN_PROBLEM_NAME + " = ?, " + ProblemDatabase.COLUMN_TYPE + " = ? "
+                    + "WHERE " + ProblemDatabase.COLUMN_PROBLEM_ID + " = ?");
+            ps.setString(1, problem.getDescription());
+            ps.setString(2, problem.getImage());
+            ps.setInt(3, problem.getProblemID());
+            ps.setString(4, problem.getProblemName());
+            ps.setString(5, problem.getType());
+            ps.setInt(6, problem.getProblemID());
+            
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProblemDatabase.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } return true;
+    }
 
     public ArrayList<ProblemDatabase> getListOfProblems() {
         ArrayList<ProblemDatabase> problems = new ArrayList<>();
