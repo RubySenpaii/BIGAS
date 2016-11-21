@@ -13,6 +13,7 @@ public class PlantingReport {
     public static final String COLUMN_PLANTING_METHOD = "PlantingMethod";
     public static final String COLUMN_DATE_PLANTED = "DatePlanted";
     public static final String COLUMN_SEED_VARIETY_ID = "SeedVarietyID";
+    public static final String COLUMN_SEED_TYPE = "SeedType";
     public static final String COLUMN_SEED_PLANTED = "SeedPlanted";
     public static final String COLUMN_AMOUNT_HARVESTED = "AmountHarvested";
     public static final String COLUMN_DATE_HARVESTED = "DateHarvested";
@@ -25,6 +26,7 @@ public class PlantingReport {
     private String plantingMethod;
     private String datePlanted;
     private String seedVarietyID;
+    private String seedType;
     private double seedPlanted;
     private double amountHarvested;
     private String dateHarvested;
@@ -33,13 +35,14 @@ public class PlantingReport {
     public PlantingReport() {
     }
 
-    public PlantingReport(int plantingReportID, int plotID, String season, String year, String datePlanted, String seedVarietyID, double seedPlanted, double amountHarvested, String plantingMethod, String dateHarvested) {
+    public PlantingReport(int plantingReportID, int plotID, String season, String year, String datePlanted, String seedVarietyID, String seedType, double seedPlanted, double amountHarvested, String plantingMethod, String dateHarvested) {
         this.plantingReportID = plantingReportID;
         this.plotID = plotID;
         this.season = season;
         this.year = year;
         this.datePlanted = datePlanted;
         this.seedVarietyID = seedVarietyID;
+        this.seedType = seedType;
         this.seedPlanted = seedPlanted;
         this.amountHarvested = amountHarvested;
         this.plantingMethod = plantingMethod;
@@ -150,5 +153,19 @@ public class PlantingReport {
      */
     public void setSeedAcquisition(String seedAcquisition) {
         this.seedAcquisition = seedAcquisition;
+    }
+
+    /**
+     * @return the seedType
+     */
+    public String getSeedType() {
+        return seedType;
+    }
+
+    /**
+     * @param seedType the seedType to set
+     */
+    public void setSeedType(String seedType) {
+        this.seedType = seedType;
     }
 }

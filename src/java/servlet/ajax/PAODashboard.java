@@ -63,19 +63,20 @@ public class PAODashboard extends HttpServlet {
             Logger.getLogger(PAOProvinceStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private JSONArray getPlantingArea() {
         JSONArray jarrayProduction = new JSONArray();
-        
+
         ArrayList<GenericObject> plantings = new ArrayList<>();
-        
+
         ArrayList<Municipality> municipalities = new MunicipalityDAO().getListOfMunicipalities();
         for (int a = 0; a < municipalities.size(); a++) {
             GenericObject planting = new GenericObject();
-            
+
             planting.setAttribute1(municipalities.get(a).getMunicipalityName());
-            
+
             double plantingTotal = 0;
+            int count = 0;
             ArrayList<Farm> farms = new FarmDAO().getListOfFarmsInMunicipal(municipalities.get(a).getMunicipalityName());
             for (int b = 0; b < farms.size(); b++) {
                 ArrayList<Plot> plots = new PlotDAO().getListOfPlotsFromFarm(farms.get(b).getFarmID());
@@ -84,14 +85,18 @@ public class PAODashboard extends HttpServlet {
                     for (int d = 0; d < plantingReports.size(); d++) {
                         double plantingReport = plantingReports.get(d).getSeedPlanted() / plots.get(c).getPlotSize();
                         plantingTotal += plantingReport;
+                        count++;
                     }
                 }
             }
-            planting.setAttribute2(plantingTotal + "");
+            if (plantingTotal > 0) {
+                plantingTotal /= count;
+            }
+            planting.setAttribute2(String.valueOf(plantingTotal));
             plantings.add(planting);
             System.out.println(planting.getAttribute1() + " " + planting.getAttribute2() + " paodashboard planting added to list");
         }
-        
+
         for (int a = 0; a < plantings.size(); a++) {
             try {
                 JSONObject prodTotal = new JSONObject();
@@ -102,22 +107,23 @@ public class PAODashboard extends HttpServlet {
                 System.err.println(ex);
             }
         }
-        
+
         return jarrayProduction;
     }
-    
+
     private JSONArray getProductionArea() {
         JSONArray jarrayProduction = new JSONArray();
-        
+
         ArrayList<GenericObject> productions = new ArrayList<>();
-        
+
         ArrayList<Municipality> municipalities = new MunicipalityDAO().getListOfMunicipalities();
         for (int a = 0; a < municipalities.size(); a++) {
             GenericObject production = new GenericObject();
-            
+
             production.setAttribute1(municipalities.get(a).getMunicipalityName());
-            
+
             double productionTotal = 0;
+            int count = 0;
             ArrayList<Farm> farms = new FarmDAO().getListOfFarmsInMunicipal(municipalities.get(a).getMunicipalityName());
             for (int b = 0; b < farms.size(); b++) {
                 ArrayList<Plot> plots = new PlotDAO().getListOfPlotsFromFarm(farms.get(b).getFarmID());
@@ -126,15 +132,18 @@ public class PAODashboard extends HttpServlet {
                     for (int d = 0; d < plantingReports.size(); d++) {
                         double productionReport = plantingReports.get(d).getAmountHarvested() / plots.get(c).getPlotSize();
                         productionTotal += productionReport;
+                        count++;
                     }
                 }
             }
-            
-            production.setAttribute2(productionTotal + "");
+            if (productionTotal > 0) {
+                productionTotal /= count;
+            }
+            production.setAttribute2(String.valueOf(productionTotal));
             productions.add(production);
             System.out.println(production.getAttribute1() + " " + production.getAttribute2() + " paodashboard production added to list");
         }
-        
+
         for (int a = 0; a < productions.size(); a++) {
             try {
                 JSONObject prodTotal = new JSONObject();

@@ -90,12 +90,6 @@
                                                 <textarea style="width: 100%; resize: none" rows="2" maxlength="600" name="description"></textarea>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Key Personnel</label>
-                                            <div class="col-md-6">
-                                                <input type="text" class="form-control" name="keyPersonnel">
-                                            </div>
-                                        </div>
                                         <br/><br/>
                                         <div class="col-md-offset-5">
                                             <input type="hidden" name="action" value="goToStep2">

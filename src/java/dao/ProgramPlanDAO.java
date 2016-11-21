@@ -27,15 +27,14 @@ public class ProgramPlanDAO {
             Connection conn = myFactory.getConnection();
 
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + ProgramPlan.TABLE_NAME + " "
-                    + "(" + ProgramPlan.COLUMN_DESCRIPTION + ", " + ProgramPlan.COLUMN_HEADED_BY + ", " + ProgramPlan.COLUMN_PROGRAM_ID + ", " 
+                    + "(" + ProgramPlan.COLUMN_DESCRIPTION + ", " + ProgramPlan.COLUMN_PROGRAM_ID + ", " 
                     + ProgramPlan.COLUMN_PROGRAM_NAME + ", " + ProgramPlan.COLUMN_TYPE + ", " + ProgramPlan.COLUMN_PURPOSE + ") "
-                    + "VALUES(?, ?, ?, ?, ?, ?)");
+                    + "VALUES(?, ?, ?, ?, ?)");
             ps.setString(1, programPlan.getDescription());
-            ps.setString(2, programPlan.getHeadedBy());
-            ps.setInt(3, programPlan.getProgramID());
-            ps.setString(4, programPlan.getProgramName());
-            ps.setString(5, programPlan.getType());
-            ps.setString(6, programPlan.getPurpose());
+            ps.setInt(2, programPlan.getProgramID());
+            ps.setString(3, programPlan.getProgramName());
+            ps.setString(4, programPlan.getType());
+            ps.setString(5, programPlan.getPurpose());
 
             ps.executeUpdate();
             ps.close();
@@ -114,7 +113,6 @@ public class ProgramPlanDAO {
         while (rs.next()) {
             ProgramPlan programPlan = new ProgramPlan();
             programPlan.setDescription(rs.getString(ProgramPlan.COLUMN_DESCRIPTION));
-            programPlan.setHeadedBy(rs.getString(ProgramPlan.COLUMN_HEADED_BY));
             programPlan.setProgramID(rs.getInt(ProgramPlan.COLUMN_PROGRAM_ID));
             programPlan.setProgramName(rs.getString(ProgramPlan.COLUMN_PROGRAM_NAME));
             programPlan.setType(rs.getString(ProgramPlan.COLUMN_TYPE));

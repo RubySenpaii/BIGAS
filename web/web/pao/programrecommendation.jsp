@@ -68,7 +68,6 @@
                                                     <th>Type</th>
                                                     <th>Description</th>
                                                     <th>Purpose</th>
-                                                    <th>Handled By</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -81,7 +80,6 @@
                                                     <td><%=programPlans.get(a).getType()%></td>
                                                     <td><%=programPlans.get(a).getDescription()%></td>
                                                     <td><%=programPlans.get(a).getPurpose()%></td>
-                                                    <td><%=programPlans.get(a).getHeadedBy()%></td>
                                                 </tr>
                                                 <%
                                                     }

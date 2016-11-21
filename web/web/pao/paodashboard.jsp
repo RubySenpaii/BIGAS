@@ -4,6 +4,8 @@
     Author     : RubySenpaii
 --%>
 
+<%@page import="extra.GenericObject"%>
+<%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -56,22 +58,22 @@
                     categoriesP.push(values[0].planting[a].municipal);
                     plantData.push(values[0].planting[a].value);
                 }
-                
+
                 var harvestData = [];
                 var categoriesH = [];
                 for (var a = 0; a < values[0].production.length; a++) {
                     categoriesH.push(values[0].planting[a].municipal);
                     harvestData.push(values[0].production[a].value);
                 }
-                
-                
+
+
 
                 Highcharts.chart('plantingComparison', {
                     chart: {
                         zoomType: 'xy'
                     },
                     title: {
-                        text: 'Average Planted Area'
+                        text: 'Average Planted Area Per Municpality'
                     },
                     subtitle: {
                         text: ''
@@ -136,29 +138,13 @@
                             labels: {
                                 format: '{value}MT/ha',
                                 style: {
-                                    color: Highcharts.getOptions().colors[2]
+                                    color: Highcharts.getOptions().colors[1]
                                 }
                             },
                             title: {
-                                text: 'Target Yield',
+                                text: 'Yield',
                                 style: {
-                                    color: Highcharts.getOptions().colors[2]
-                                }
-                            },
-                            opposite: true
-
-                        }, {// Secondary yAxis
-                            gridLineWidth: 0,
-                            title: {
-                                text: 'Production Yield',
-                                style: {
-                                    color: Highcharts.getOptions().colors[0]
-                                }
-                            },
-                            labels: {
-                                format: '{value} MT/ha',
-                                style: {
-                                    color: Highcharts.getOptions().colors[0]
+                                    color: Highcharts.getOptions().colors[1]
                                 }
                             }
 
@@ -178,7 +164,6 @@
                     series: [{
                             name: 'Production Yield',
                             type: 'column',
-                            yAxis: 1,
                             data: harvestData,
                             tooltip: {
                                 valueSuffix: ' MT/ha'
@@ -187,7 +172,7 @@
                         }, {
                             name: 'Target Yield',
                             type: 'spline',
-                            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+                            data: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40],
                             tooltip: {
                                 valueSuffix: ' MT/ha'
                             }
@@ -241,6 +226,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <%
+                                                ArrayList<GenericObject> suggestedProgramsProduction = (ArrayList<GenericObject>) session.getAttribute("suggestedProgramsProduction");
+                                                for (int a = 0; a < suggestedProgramsProduction.size(); a++) {
+                                            %>
+                                            <tr>
+                                                <td><%=suggestedProgramsProduction.get(a).getAttribute1()%></td>
+                                                <td><%=suggestedProgramsProduction.get(a).getAttribute2()%></td>
+                                                <td>
+                                                    <input type="hidden" name="programID" value="<%=suggestedProgramsProduction.get(a).getAttribute1()%>">
+                                                    <button class="btn btn-sm btn-success">Submit</button>
+                                                </td>
+                                            </tr>
+                                            <%
+                                                }
+                                            %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -265,6 +265,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <%
+                                                ArrayList<GenericObject> activeProgramsProduction = (ArrayList<GenericObject>) session.getAttribute("activeProgramsProduction");
+                                                for (int a = 0; a < activeProgramsProduction.size(); a++) {
+                                            %>
+                                            <tr>
+                                                <td><%=activeProgramsProduction.get(a).getAttribute1()%></td>
+                                                <td><%=activeProgramsProduction.get(a).getAttribute2()%></td>
+                                                <td><%=activeProgramsProduction.get(a).getAttribute3()%></td>
+                                                <td><%=activeProgramsProduction.get(a).getAttribute4()%></td>
+                                            </tr>
+                                            <%
+                                                }
+                                            %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -290,7 +303,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Suggested Programs For Planting</h2>
+                                    <h2>Suggested Programs For Planting and Growth</h2>
 
                                     <div class="clearfix"></div>
                                 </div>
@@ -304,6 +317,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <%
+                                                ArrayList<GenericObject> suggestedProgramsPlanting = (ArrayList<GenericObject>) session.getAttribute("suggestedProgramsPlanting");
+                                                for (int a = 0; a < suggestedProgramsPlanting.size(); a++) {
+                                            %>
+                                            <tr>
+                                                <td><%=suggestedProgramsPlanting.get(a).getAttribute1()%></td>
+                                                <td><%=suggestedProgramsPlanting.get(a).getAttribute2()%></td>
+                                                <td>
+                                                    <input type="hidden" name="deployedID" value="<%=suggestedProgramsPlanting.get(a).getAttribute1()%>">
+                                                    <button class="btn btn-sm btn-success">Submit</button>
+                                                </td>
+                                            </tr>
+                                            <%
+                                                }
+                                            %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -313,7 +341,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Active Programs For Planting</h2>
+                                    <h2>Active Programs For Planting and Growth</h2>
 
                                     <div class="clearfix"></div>
                                 </div>
@@ -328,6 +356,20 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            
+                                            <%
+                                                ArrayList<GenericObject> activeProgramsPlanting = (ArrayList<GenericObject>) session.getAttribute("activeProgramsPlanting");
+                                                for (int a = 0; a < activeProgramsProduction.size(); a++) {
+                                            %>
+                                            <tr>
+                                                <td><%=activeProgramsPlanting.get(a).getAttribute1()%></td>
+                                                <td><%=activeProgramsPlanting.get(a).getAttribute2()%></td>
+                                                <td><%=activeProgramsPlanting.get(a).getAttribute3()%></td>
+                                                <td><%=activeProgramsPlanting.get(a).getAttribute4()%></td>
+                                            </tr>
+                                            <%
+                                                }
+                                            %>
                                         </tbody>
                                     </table>
                                 </div>

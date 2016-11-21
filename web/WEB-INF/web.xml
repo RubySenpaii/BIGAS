@@ -72,6 +72,10 @@
         <servlet-name>Dashboard</servlet-name>
         <servlet-class>servlet.web.Dashboard</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TargetProduction</servlet-name>
+        <servlet-class>servlet.web.TargetProduction</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MobileLogin</servlet-name>
         <url-pattern>/MobileLogin</url-pattern>
@@ -143,6 +147,10 @@
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
         <url-pattern>/Dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TargetProduction</servlet-name>
+        <url-pattern>/TargetProduction</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

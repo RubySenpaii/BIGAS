@@ -92,8 +92,7 @@ public class PAOProvinceStatus extends HttpServlet {
                     ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getListOfPlantingReportFromPlotID(plot.getPlotID());
                     for (int d = 0; d < plantingReports.size(); d++) {
                         double amountHarvest = plantingReports.get(d).getAmountHarvested();
-                        double area = plot.getPlotSize();
-                        double plotProductionYield = amountHarvest / area;
+                        double plotProductionYield = amountHarvest;
                         if (amountHarvest != 0) {
                             productionYield += plotProductionYield;
                         }

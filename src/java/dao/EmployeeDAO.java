@@ -75,14 +75,35 @@ public class EmployeeDAO {
         }
         return employees;
     }
-    
+
+    public ArrayList<Employee> getListOfEmployeeOfMunicipal(String municipal) {
+        ArrayList<Employee> employees = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Employee E JOIN Municipality M ON E.MunicipalityID = M.MunicipalityID WHERE M.MunicipalityName = ?");
+            ps.setString(1, municipal);
+
+            ResultSet rs = ps.executeQuery();
+            employees = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return employees;
+    }
+
     public Employee getEmployeeWithUsernameAndPassword(String username, String password) {
         ArrayList<Employee> employees = new ArrayList<>();
         try {
             DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
             Connection conn = myFactory.getConnection();
 
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Employee.TABLE_NAME 
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Employee.TABLE_NAME
                     + " WHERE " + Employee.COLUMN_USERNAME + " = ? AND " + Employee.COLUMN_PASSWORD + " = ?");
             ps.setString(1, username);
             ps.setString(2, password);
@@ -98,14 +119,36 @@ public class EmployeeDAO {
         }
         return employees.get(0);
     }
-    
+
+    public Employee getEmployeeWithName(String name) {
+        ArrayList<Employee> employees = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee e "
+                    + "WHERE concat_ws(', ',e.lastname,e.firstname) like ?");
+            ps.setString(1, name);
+
+            ResultSet rs = ps.executeQuery();
+            employees = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return employees.get(0);
+    }
+
     public Employee getEmployeeDetailsWithID(int employeeID) {
         ArrayList<Employee> employees = new ArrayList<>();
         try {
             DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
             Connection conn = myFactory.getConnection();
 
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Employee.TABLE_NAME 
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + Employee.TABLE_NAME
                     + " WHERE " + Employee.COLUMN_EMPLOYEE_ID + " = ?");
             ps.setInt(1, employeeID);
 

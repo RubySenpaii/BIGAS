@@ -30,8 +30,8 @@ public class PlantingReportDAO {
                     + "(" + PlantingReport.COLUMN_AMOUNT_HARVESTED + ", " + PlantingReport.COLUMN_DATE_PLANTED + ", " + PlantingReport.COLUMN_PLANTING_REPORT_ID + ", "
                     + PlantingReport.COLUMN_PLOT_ID + ", " + PlantingReport.COLUMN_SEASON + ", " + PlantingReport.COLUMN_SEED_PLANTED + ", "
                     + PlantingReport.COLUMN_SEED_VARIETY_ID + ", " + PlantingReport.COLUMN_YEAR + ", " + PlantingReport.COLUMN_PLANTING_METHOD +  ", " 
-                    + PlantingReport.COLUMN_DATE_HARVESTED + ", " + PlantingReport.COLUMN_SEED_ACQUISITION + ") "
-                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    + PlantingReport.COLUMN_DATE_HARVESTED + ", " + PlantingReport.COLUMN_SEED_ACQUISITION + ", " + PlantingReport.COLUMN_SEED_TYPE + ") "
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setDouble(1, plantingReport.getAmountHarvested());
             ps.setString(2, plantingReport.getDatePlanted());
             ps.setInt(3, plantingReport.getPlantingReportID());
@@ -43,6 +43,7 @@ public class PlantingReportDAO {
             ps.setString(9, plantingReport.getPlantingMethod());
             ps.setString(10, plantingReport.getDateHarvested());
             ps.setString(11, plantingReport.getSeedAcquisition());
+            ps.setString(12, plantingReport.getSeedType());
 
             ps.executeUpdate();
             ps.close();
@@ -62,7 +63,8 @@ public class PlantingReportDAO {
             PreparedStatement ps = conn.prepareStatement("UPDATE " + PlantingReport.TABLE_NAME + 
                     " SET " + PlantingReport.COLUMN_AMOUNT_HARVESTED + " = ?, " + PlantingReport.COLUMN_DATE_HARVESTED + " = ?, " + PlantingReport.COLUMN_DATE_PLANTED + " = ?, "
                     + PlantingReport.COLUMN_PLANTING_METHOD + " = ?, " + PlantingReport.COLUMN_PLANTING_REPORT_ID + " = ?, " + PlantingReport.COLUMN_PLOT_ID + " = ?, "
-                    + PlantingReport.COLUMN_SEASON + " = ?, " + PlantingReport.COLUMN_SEED_PLANTED + " = ?, " + PlantingReport.COLUMN_SEED_VARIETY_ID + " = ?, " + PlantingReport.COLUMN_YEAR + " = ? "
+                    + PlantingReport.COLUMN_SEASON + " = ?, " + PlantingReport.COLUMN_SEED_PLANTED + " = ?, " + PlantingReport.COLUMN_SEED_VARIETY_ID + " = ?, " 
+                    + PlantingReport.COLUMN_YEAR + " = ?, " + PlantingReport.COLUMN_SEED_TYPE + " = ? "
                     + "WHERE " + PlantingReport.COLUMN_PLANTING_REPORT_ID + " = ?");
             ps.setDouble(1, report.getAmountHarvested());
             ps.setString(2, report.getDateHarvested());
@@ -74,7 +76,8 @@ public class PlantingReportDAO {
             ps.setDouble(8, report.getSeedPlanted());
             ps.setString(9, report.getSeedVarietyID());
             ps.setString(10, report.getYear());
-            ps.setInt(11, report.getPlantingReportID());
+            ps.setString(11, report.getSeedType());
+            ps.setInt(12, report.getPlantingReportID());
             
             ps.executeUpdate();
             ps.close();
@@ -163,6 +166,7 @@ public class PlantingReportDAO {
             plantingReport.setYear(rs.getString(PlantingReport.COLUMN_YEAR));
             plantingReport.setPlantingMethod(rs.getString(PlantingReport.COLUMN_PLANTING_METHOD));
             plantingReport.setDateHarvested(rs.getString(PlantingReport.COLUMN_DATE_HARVESTED));
+            plantingReport.setSeedType(rs.getString(PlantingReport.COLUMN_SEED_TYPE));
             plantingReports.add(plantingReport);
         }
         return plantingReports;

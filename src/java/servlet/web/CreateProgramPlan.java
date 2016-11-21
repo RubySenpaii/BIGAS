@@ -80,7 +80,6 @@ public class CreateProgramPlan extends BaseServlet {
         programPlan.setType(programType);
         programPlan.setPurpose(purpose);
         programPlan.setDescription(description);
-        programPlan.setHeadedBy(keyPersonnel);
         programPlan.setProgramID((int) session.getAttribute("programID"));
 
         System.out.println(programName + " has been set in session");

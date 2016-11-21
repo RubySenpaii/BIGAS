@@ -11,25 +11,22 @@ public class ProgramPlan {
     public static final String COLUMN_PROGRAM_NAME = "ProgramName";
     public static final String COLUMN_DESCRIPTION = "Description";
     public static final String COLUMN_TYPE = "Type";
-    public static final String COLUMN_HEADED_BY = "HeadedBy";
     public static final String COLUMN_PURPOSE = "Purpose";
 
     private int programID;
     private String programName;
     private String description;
     private String type;
-    private String headedBy;
     private String purpose;
 
     public ProgramPlan() {
     }
 
-    public ProgramPlan(int programID, String programName, String description, String type, String headedBy, String purpose) {
+    public ProgramPlan(int programID, String programName, String description, String type, String purpose) {
         this.programID = programID;
         this.programName = programName;
         this.description = description;
         this.type = type;
-        this.headedBy = headedBy;
         this.purpose = purpose;
     }
 
@@ -64,15 +61,6 @@ public class ProgramPlan {
     public void setType(String type) {
         this.type = type;
     }
-
-    public String getHeadedBy() {
-        return headedBy;
-    }
-
-    public void setHeadedBy(String headedBy) {
-        this.headedBy = headedBy;
-    }
-
     public String getPurpose() {
         return purpose;
     }

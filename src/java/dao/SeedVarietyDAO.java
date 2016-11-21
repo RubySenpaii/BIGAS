@@ -29,9 +29,9 @@ public class SeedVarietyDAO {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + SeedVariety.TABLE_NAME + " "
                     + "(" + SeedVariety.COLUMN_AVG_YIELD + ", " + SeedVariety.COLUMN_CONDITION + ", " 
                     + SeedVariety.COLUMN_GRAIN_SIZE + ", " + SeedVariety.COLUMN_HEIGHT + ", " + SeedVariety.COLUMN_MATURITY + ", "
-                    + SeedVariety.COLUMN_MAXIMUM_YIELD + ", " + SeedVariety.COLUMN_MILLING_RECOVERY + ", " + SeedVariety.COLUMN_SEED_TYPE_ID + ", "
+                    + SeedVariety.COLUMN_MAXIMUM_YIELD + ", " + SeedVariety.COLUMN_MILLING_RECOVERY + ", "
                     + SeedVariety.COLUMN_SEED_VARIETY_ID + ", " + SeedVariety.COLUMN_VARIETY_NAME + ", " + SeedVariety.COLUMN_WATER_SOURCE  + ") "
-                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, seedVariety.getAcquired());
             ps.setDouble(2, seedVariety.getAverageYield());
             ps.setString(3, seedVariety.getCondition());
@@ -40,10 +40,9 @@ public class SeedVarietyDAO {
             ps.setInt(6, seedVariety.getMaturity());
             ps.setDouble(7, seedVariety.getMaximumYield());
             ps.setDouble(8, seedVariety.getMillingRecovery());
-            ps.setInt(9, seedVariety.getSeedTypeID());
-            ps.setString(10, seedVariety.getSeedVarietyID());
-            ps.setString(11, seedVariety.getVarietyName());
-            ps.setString(12, seedVariety.getWaterSource());
+            ps.setString(9, seedVariety.getSeedVarietyID());
+            ps.setString(10, seedVariety.getVarietyName());
+            ps.setString(11, seedVariety.getWaterSource());
 
             ps.executeUpdate();
             ps.close();
@@ -95,6 +94,27 @@ public class SeedVarietyDAO {
         }
         return seedVarieties.get(0);
     }
+    
+    public SeedVariety getSeedVarietyDetailsWithName(String seedVarietyName) {
+        ArrayList<SeedVariety> seedVarieties = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + SeedVariety.TABLE_NAME + " WHERE " + SeedVariety.COLUMN_VARIETY_NAME + " = ?");
+            ps.setString(1, seedVarietyName);
+
+            ResultSet rs = ps.executeQuery();
+            seedVarieties = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(SeedVarietyDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return seedVarieties.get(0);
+    }
 
     private ArrayList<SeedVariety> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<SeedVariety> seedVarieties = new ArrayList<>();
@@ -107,7 +127,6 @@ public class SeedVarietyDAO {
             seedVariety.setMaturity(rs.getInt(SeedVariety.COLUMN_MATURITY));
             seedVariety.setMaximumYield(rs.getDouble(SeedVariety.COLUMN_MAXIMUM_YIELD));
             seedVariety.setMillingRecovery(rs.getDouble(SeedVariety.COLUMN_MILLING_RECOVERY));
-            seedVariety.setSeedTypeID(rs.getInt(SeedVariety.COLUMN_SEED_TYPE_ID));
             seedVariety.setSeedVarietyID(rs.getString(SeedVariety.COLUMN_SEED_VARIETY_ID));
             seedVariety.setVarietyName(rs.getString(SeedVariety.COLUMN_VARIETY_NAME));
             seedVariety.setWaterSource(rs.getString(SeedVariety.COLUMN_WATER_SOURCE));

@@ -191,7 +191,7 @@
                             borderWidth: 0,
                             dataLabels: {
                                 enabled: true,
-                                format: '{point.y:.1f} MT/ha'
+                                format: '{point.y:.1f} MT'
                             }
                         }
                     },
@@ -230,21 +230,25 @@
                         enabled: false
                     },
                     plotOptions: {
-                        series: {
-                            stacking: 'normal',
-                            borderWidth: 0,
-                            dataLabels: {
-                                enabled: true,
-                                color: (Highcharts.theme && Highcarts.theme.dataLabelsColor) || 'white',
-                                format: '{point.y:.1f} MT/ha'
-                            }
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
                         }
                     },
                     tooltip: {
                         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}MT/ha</b> produced<br/>'
+                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f} ha</b> produced<br/>'
                     },
                     series: [{
+                            name: 'District',
+                            data: districtTotal
+                        }, {
+                            name: 'District',
+                            data: districtTotal
+                        }, {
+                            name: 'District',
+                            data: districtTotal
+                        }, {
                             name: 'District',
                             data: districtTotal
                         }, {

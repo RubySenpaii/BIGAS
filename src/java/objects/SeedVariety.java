@@ -9,7 +9,6 @@ public class SeedVariety {
     public static final String TABLE_NAME = "SeedVariety";
     public static final String COLUMN_SEED_VARIETY_ID = "SeedVarietyID";
     public static final String COLUMN_VARIETY_NAME = "VarietyName";
-    public static final String COLUMN_SEED_TYPE_ID = "SeedTypeID";
     public static final String COLUMN_WATER_SOURCE = "WaterSource";
     public static final String COLUMN_AVG_YIELD = "AverageYield";
     public static final String COLUMN_MAXIMUM_YIELD = "MaximumYield";
@@ -21,7 +20,6 @@ public class SeedVariety {
 
     private String seedVarietyID;
     private String varietyName;
-    private int seedTypeID;
     private String acquired;
     private String waterSource;
     private double averageYield;
@@ -35,10 +33,9 @@ public class SeedVariety {
     public SeedVariety() {
     }
 
-    public SeedVariety(String seedVarietyID, String varietyName, int seedTypeID, String acquired, String waterSource, double averageYield, double maximumYield, int maturity, double height, String grainSize, double millingRecovery, String condition) {
+    public SeedVariety(String seedVarietyID, String varietyName, String acquired, String waterSource, double averageYield, double maximumYield, int maturity, double height, String grainSize, double millingRecovery, String condition) {
         this.seedVarietyID = seedVarietyID;
         this.varietyName = varietyName;
-        this.seedTypeID = seedTypeID;
         this.acquired = acquired;
         this.waterSource = waterSource;
         this.averageYield = averageYield;
@@ -76,20 +73,6 @@ public class SeedVariety {
      */
     public void setVarietyName(String varietyName) {
         this.varietyName = varietyName;
-    }
-
-    /**
-     * @return the seedTypeID
-     */
-    public int getSeedTypeID() {
-        return seedTypeID;
-    }
-
-    /**
-     * @param seedTypeID the seedTypeID to set
-     */
-    public void setSeedTypeID(int seedTypeID) {
-        this.seedTypeID = seedTypeID;
     }
 
     /**

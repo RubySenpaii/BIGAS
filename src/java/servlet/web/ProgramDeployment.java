@@ -6,17 +6,24 @@
 package servlet.web;
 
 import dao.BarangayDAO;
+import dao.EmployeeDAO;
 import dao.FarmDAO;
+import dao.FertilizerDAO;
 import dao.PlantingProblemDAO;
 import dao.PlantingReportDAO;
 import dao.PlotDAO;
+import dao.ProgramDeployedDAO;
+import dao.ProgramEmployeesDAO;
 import dao.ProgramObjectivesDAO;
 import dao.ProgramPlanDAO;
 import dao.ProgramProcedureDAO;
+import dao.SeedVarietyDAO;
 import extra.GenericObject;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -27,12 +34,16 @@ import javax.servlet.http.HttpSession;
 import objects.Barangay;
 import objects.Employee;
 import objects.Farm;
+import objects.Fertilizer;
 import objects.PlantingProblem;
 import objects.PlantingReport;
 import objects.Plot;
+import objects.ProgramDeployed;
+import objects.ProgramEmployees;
 import objects.ProgramObjectives;
 import objects.ProgramPlan;
 import objects.ProgramProcedure;
+import objects.SeedVariety;
 
 /**
  *
@@ -52,6 +63,9 @@ public class ProgramDeployment extends BaseServlet {
             if (action.equals("deployProgram")) {
                 System.out.println("Retrieving programs for deployment");
                 deployProgramForPAO(request, response);
+            } else if (action.equals("submitProgramDetail")) {
+                System.out.println("Submit program deployment details");
+                submitPAOProgramDetails(request, response);
             } else {
                 session.setAttribute("action", "invalid");
             }
@@ -116,13 +130,61 @@ public class ProgramDeployment extends BaseServlet {
             }
         }
         
+        ArrayList<SeedVariety> seedVarieties = new SeedVarietyDAO().getListOfSeedVarieties();
+        ArrayList<Fertilizer> fertilizers = new FertilizerDAO().getListOfFertilizers();
+        ArrayList<Employee> employees = new EmployeeDAO().getListOfEmployeeOfMunicipal(municipality);
+        
         System.out.println("adding data gathered to session");
         session.setAttribute("programProcedures", programProcedures);
         session.setAttribute("programObjectives", programObjectives);
         session.setAttribute("barangayBeneficiaries", barangayBeneficiaries);
         session.setAttribute("programPlan", programPlan);
+        session.setAttribute("seedVarieties", seedVarieties);
+        session.setAttribute("fertilizers", fertilizers);
+        session.setAttribute("employees", employees);
         
         RequestDispatcher rd = context.getRequestDispatcher("/web/pao/programdeployment.jsp");
+        rd.forward(request, response);
+    }
+    
+    private void submitPAOProgramDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        HttpSession session = request.getSession();
+        ServletContext context = getServletContext();
+        String path = "";
+        
+        String seedVariety = request.getParameter("seedVariety");
+        double seedProvided = Double.parseDouble(request.getParameter("seedAmount"));
+        int fertilizerID = new FertilizerDAO().getFertilizerDetails(request.getParameter("fertilizer")).getFertilizerID();
+        double fertilizerProvided = Double.parseDouble(request.getParameter("fertilizerAmount"));
+        ProgramPlan programPlan = (ProgramPlan) session.getAttribute("programPlan");
+        
+        ProgramDeployedDAO pddao = new ProgramDeployedDAO();
+        ProgramDeployed programDeployed = new ProgramDeployed();
+        programDeployed.setProgramDeployedID(pddao.getListOfProgramsDeployed().size() + 1);
+        programDeployed.setProgramID(programPlan.getProgramID());
+        programDeployed.setSeedVarietyID(new SeedVarietyDAO().getSeedVarietyDetailsWithName(seedVariety).getSeedVarietyID());
+        programDeployed.setSeedProvided(seedProvided);
+        programDeployed.setFertilizerID(fertilizerID);
+        programDeployed.setFertilizerProvided(fertilizerProvided);
+        programDeployed.setDateStarted(sdf.format(Calendar.getInstance().getTime()));
+        programDeployed.setDateEnded("12/31/9999");
+        programDeployed.setStatus("Created");
+        boolean created = pddao.addProgramDeployed(programDeployed);
+        
+        int employeeID = new EmployeeDAO().getEmployeeWithName(request.getParameter("projectLead")).getEmployeeID();
+        ProgramEmployees progEmp = new ProgramEmployees();
+        progEmp.setEmployeeID(employeeID);
+        progEmp.setPosition("Project Lead");
+        progEmp.setProgramDeployedID(pddao.getListOfProgramsDeployed().size() + 1);
+        boolean pecreated = new ProgramEmployeesDAO().addProgramEmployee(progEmp);
+        
+        if (created && pecreated) {
+            path = "/Dashboard?action=goToDashboard";
+        } else {
+            path = "/ProblemLog?action=viewProblemLogs";
+        }
+        RequestDispatcher rd = context.getRequestDispatcher(path);
         rd.forward(request, response);
     }
 }

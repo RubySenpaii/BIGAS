@@ -4,6 +4,8 @@
     Author     : RubySenpaii
 --%>
 
+<%@page import="objects.Fertilizer"%>
+<%@page import="objects.SeedVariety"%>
 <%@page import="extra.GenericObject"%>
 <%@page import="objects.ProgramProcedure"%>
 <%@page import="objects.ProgramObjectives"%>
@@ -61,58 +63,81 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <div class="row">
-                                        <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <h4>Program Details</h4>
+                                    <form class="ProgramDeployment">
+                                        <div class="row">
+                                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                                <h4>Program Details</h4>
 
-                                            <%
-                                                ProgramPlan programPlan = (ProgramPlan) session.getAttribute("programPlan");
-                                            %>
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <div class="col-md-4">
-                                                        <div class="project_detail">
-                                                            <p class="title">Program Name:</p>
-                                                            <p><%=programPlan.getProgramName()%></p>
-                                                        </div><br/>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="project_detail">
-                                                            <p class="title">Type:</p>
-                                                            <p><%=programPlan.getType()%></p>
-                                                        </div><br/>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="project_detail">
-                                                            <p class="title">Headed By:</p>
-                                                            <p><%=programPlan.getHeadedBy()%></p>
-                                                        </div><br/>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="project_detail">
-                                                            <p class="title">Description:</p>
-                                                            <p><%=programPlan.getDescription()%></p>
+                                                <%
+                                                    ProgramPlan programPlan = (ProgramPlan) session.getAttribute("programPlan");
+                                                %>
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="col-md-4">
+                                                            <div class="project_detail">
+                                                                <p class="title">Program Name:</p>
+                                                                <p><%=programPlan.getProgramName()%></p>
+                                                            </div><br/>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="project_detail">
+                                                                <p class="title">Type:</p>
+                                                                <p><%=programPlan.getType()%></p>
+                                                            </div><br/>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="project_detail">
+                                                                <p class="title">Description:</p>
+                                                                <p><%=programPlan.getDescription()%></p>
+                                                            </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-md-4">
+                                                        <h4>Objectives</h4>
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Indicator</th>
+                                                                    <th>Target Value</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <%
+                                                                    ArrayList<ProgramObjectives> objectives = (ArrayList<ProgramObjectives>) session.getAttribute("programObjectives");
+                                                                    for (int a = 0; a < objectives.size(); a++) {
+                                                                %>
+                                                                <tr>
+                                                                    <td><%=objectives.get(a).getIndicator()%></td>
+                                                                    <td><%=objectives.get(a).getTargetValue()%></td>
+                                                                </tr>
+                                                                <%
+                                                                    }
+                                                                %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
 
-                                                <div class="col-md-4">
-                                                    <h4>Objectives</h4>
+                                                <div class="col-md-12">
+                                                    <h4>Activities for Program</h4>
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
-                                                                <th>Indicator</th>
-                                                                <th>Target Value</th>
+                                                                <th style="width: 30px">#</th>
+                                                                <th style="width: 35%">Phase</th>
+                                                                <th style="width: 65%">Activity</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <%
-                                                                ArrayList<ProgramObjectives> objectives = (ArrayList<ProgramObjectives>) session.getAttribute("programObjectives");
-                                                                for (int a = 0; a < objectives.size(); a++) {
+                                                                ArrayList<ProgramProcedure> procedures = (ArrayList<ProgramProcedure>) session.getAttribute("programProcedures");
+                                                                for (int a = 0; a < procedures.size(); a++) {
                                                             %>
                                                             <tr>
-                                                                <td><%=objectives.get(a).getIndicator()%></td>
-                                                                <td><%=objectives.get(a).getTargetValue()%></td>
+                                                                <td><%=procedures.get(a).getProcedureNo()%></td>
+                                                                <td><%=procedures.get(a).getPhase()%></td>
+                                                                <td><%=procedures.get(a).getActivity()%></td>
                                                             </tr>
                                                             <%
                                                                 }
@@ -122,100 +147,98 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12">
-                                                <h4>Activities for Program</h4>
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width: 30px">#</th>
-                                                            <th style="width: 35%">Phase</th>
-                                                            <th style="width: 65%">Activity</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <%
-                                                            ArrayList<ProgramProcedure> procedures = (ArrayList<ProgramProcedure>) session.getAttribute("programProcedures");
-                                                            for (int a = 0; a < procedures.size(); a++) {
-                                                        %>
-                                                        <tr>
-                                                            <td><%=procedures.get(a).getProcedureNo()%></td>
-                                                            <td><%=procedures.get(a).getPhase()%></td>
-                                                            <td><%=procedures.get(a).getActivity()%></td>
-                                                        </tr>
-                                                        <%
-                                                            }
-                                                        %>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <h4>Program Beneficiaries</h4>
 
-                                        <div class="col-md-4 col-sm-4 col-xs-12">
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                                    <h4>Program Beneficiaries</h4>
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="width: 40%">Barangay</th>
+                                                                    <th style="width: 30%">Area Affected</th>
+                                                                    <th style="width: 30%">No of Farmers</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <%
+                                                                    ArrayList<extra.GenericObject> beneficiaries = (ArrayList<extra.GenericObject>) session.getAttribute("barangayBeneficiaries");
+                                                                    for (int a = 0; a < beneficiaries.size(); a++) {
+                                                                %>
+                                                                <tr>
+                                                                    <td><%=beneficiaries.get(a).getAttribute1()%></td>
+                                                                    <td><%=beneficiaries.get(a).getAttribute2()%></td>
+                                                                    <td><%=beneficiaries.get(a).getAttribute3()%></td>
+                                                                </tr>
+                                                                <%
+                                                                    }
+                                                                %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
 
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th style="width: 40%">Barangay</th>
-                                                                <th style="width: 30%">Area Affected</th>
-                                                                <th style="width: 30%">No of Farmers</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <%
-                                                                ArrayList<extra.GenericObject> beneficiaries = (ArrayList<extra.GenericObject>) session.getAttribute("barangayBeneficiaries");
-                                                                for (int a = 0; a < beneficiaries.size(); a++) {
-                                                            %>
-                                                            <tr>
-                                                                <td><%=beneficiaries.get(a).getAttribute1()%></td>
-                                                                <td><%=beneficiaries.get(a).getAttribute2()%></td>
-                                                                <td><%=beneficiaries.get(a).getAttribute3()%></td>
-                                                            </tr>
-                                                            <%
-                                                                }
-                                                            %>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>Project Lead: </label>
+                                                                <input type="text" class="form-control" name="projectLead">
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                                    <h4>Provisions (Optional)</h4>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <h4>Provisions (Optional)</h4>
 
-                                                    <form>
                                                         <div class="row">
                                                             <div class="col-md-8">
                                                                 <label>Seed Variety</label>
-                                                                <input type="text" class="form-control">
+                                                                <select name="seedVariety" class="form-control">
+                                                                    <%
+                                                                        ArrayList<SeedVariety> varieties = (ArrayList<SeedVariety>) session.getAttribute("seedVarieties");
+                                                                        for (int a = 0; a < varieties.size(); a++) {
+                                                                    %>
+                                                                    <option><%=varieties.get(a).getVarietyName()%></option>
+                                                                    <%
+                                                                        }
+                                                                    %>
+                                                                </select>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label>Amount Provided</label>
-                                                                <input type="text" class="form-control">
+                                                                <input type="text" class="form-control" name="seedAmount">
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-8">
                                                                 <label>Fertilizer</label>
-                                                                <input type="text" class="form-control">
+                                                                <select name="fertilizer" class="form-control">
+                                                                    <%
+                                                                        ArrayList<Fertilizer> fertilizers = (ArrayList<Fertilizer>) session.getAttribute("fertilizers");
+                                                                        for (int a = 0; a < fertilizers.size(); a++) {
+                                                                    %>
+                                                                    <option><%=fertilizers.get(a).getFertilizerName()%></option>
+                                                                    <%
+                                                                        }
+                                                                    %>
+                                                                </select>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label>Amount Provided</label>
-                                                                <input type="text" class="form-control">
+                                                                <input type="text" class="form-control" name="fertilizerAmount">
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div>
-                                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
-                                            <button type="submit" class="btn btn-lg btn-primary">Cancel</button>
-                                            <button type="submit" class="btn btn-lg btn-success">Next</button>
+                                        <div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
+                                                <button type="submit" class="btn btn-lg btn-primary" name="action">Cancel</button>
+                                                <button type="submit" class="btn btn-lg btn-success" name="action" value="submitProgramDetail">Next</button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
