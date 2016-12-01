@@ -8,6 +8,5 @@ and open the template in the editor.
     Author     : RubySenpaii
 */
 
-.report-table {
-    overflow-x: scroll;
-}
+.report-table { overflow-x: scroll; }
+th, td { min-width: 300px; }

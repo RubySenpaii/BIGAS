@@ -76,6 +76,22 @@
         <servlet-name>TargetProduction</servlet-name>
         <servlet-class>servlet.web.TargetProduction</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PAOProgramProdAutoComplete</servlet-name>
+        <servlet-class>servlet.ajax.PAOProgramProdAutoComplete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PAOTargetProductionCharts</servlet-name>
+        <servlet-class>servlet.ajax.PAOTargetProductionCharts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Report</servlet-name>
+        <servlet-class>servlet.web.Report</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TechnicianFarms</servlet-name>
+        <servlet-class>servlet.web.TechnicianFarms</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MobileLogin</servlet-name>
         <url-pattern>/MobileLogin</url-pattern>
@@ -151,6 +167,22 @@
     <servlet-mapping>
         <servlet-name>TargetProduction</servlet-name>
         <url-pattern>/TargetProduction</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PAOProgramProdAutoComplete</servlet-name>
+        <url-pattern>/PAOProgramProdAutoComplete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PAOTargetProductionCharts</servlet-name>
+        <url-pattern>/PAOTargetProductionCharts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Report</servlet-name>
+        <url-pattern>/Report</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TechnicianFarms</servlet-name>
+        <url-pattern>/TechnicianFarms</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

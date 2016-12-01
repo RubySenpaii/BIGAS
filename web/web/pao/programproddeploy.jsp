@@ -1,12 +1,11 @@
 <%-- 
-    Document   : programdeployment
-    Created on : Nov 5, 2016, 11:06:03 PM
+    Document   : programproddeploy
+    Created on : Nov 23, 2016, 1:59:13 PM
     Author     : RubySenpaii
 --%>
 
 <%@page import="objects.Fertilizer"%>
 <%@page import="objects.SeedVariety"%>
-<%@page import="extra.GenericObject"%>
 <%@page import="objects.ProgramProcedure"%>
 <%@page import="objects.ProgramObjectives"%>
 <%@page import="java.util.ArrayList"%>
@@ -36,13 +35,47 @@
 
         <!-- Custom Theme Style -->
         <link href="/BIGAS/build/css/custom.min.css" rel="stylesheet">
+        <link href="/BIGAS/build/css/styles.css" rel="stylesheet">
 
         <!-- jQuery -->
         <script src="/BIGAS/vendors/jquery/dist/jquery.min.js"></script>
         <!--highchart.js -->
         <script src="/BIGAS/web/js/highchart/highcharts.js"></script>
         <script src="/BIGAS/web/js/highchart/modules/exporting.js"></script>
+        <script src="/BIGAS/build/js/jquery.autocomplete.js"></script>
+        <script src="/BIGAS/build/js/jquery.mockjax.js"></script>
 
+        <script>
+            function autoCompleteMunicipality() {
+                var municipalityName = "search";
+                $("#municipalityName").devbridgeAutocomplete({
+                    serviceUrl: 'PAOProgramProdAutoComplete',
+                    params: {municipalityName: municipalityName},
+                    dataType: 'json',
+                    showNoSuggestionNotice: true,
+                    noSuggestionNotice: 'municipality not found',
+                    onSelect: function (suggestion) {
+                        $.ajax({
+                            url: 'PAOProgramProdAutoComplete',
+                            dataType: 'json',
+                            data: {municipalityName: suggestion.value},
+                            success: function (data) {
+                                var projLeadDropDown = document.getElementById("projectLead");
+                                var length = projLeadDropDown.options.length;
+                                for (var a = 0; a < length; a++) {
+                                    projLeadDropDown.options[a] = null;
+                                }
+                                var option = document.createElement("option");
+                                for (var a = 0; a < data.suggestions.length; a++) {
+                                    option.text = data.suggestions[0];
+                                    projLeadDropDown.add(option);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
     </head>
 
     <body class="nav-md">
@@ -67,11 +100,10 @@
                                         <div class="row">
                                             <div class="col-md-8 col-sm-8 col-xs-12">
                                                 <h4>Program Details</h4>
-
-                                                <%
-                                                    ProgramPlan programPlan = (ProgramPlan) session.getAttribute("programPlan");
-                                                %>
                                                 <div class="row">
+                                                    <%
+                                                        ProgramPlan programPlan = (ProgramPlan) session.getAttribute("programPlan");
+                                                    %>
                                                     <div class="col-md-8">
                                                         <div class="col-md-4">
                                                             <div class="project_detail">
@@ -150,42 +182,24 @@
                                             <div class="col-md-4 col-sm-4 col-xs-12">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                                        <h4>Program Beneficiaries</h4>
-
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th style="width: 40%">Barangay</th>
-                                                                    <th style="width: 30%">Area Affected</th>
-                                                                    <th style="width: 30%">No of Farmers</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <%
-                                                                    ArrayList<extra.GenericObject> beneficiaries = (ArrayList<extra.GenericObject>) session.getAttribute("barangayBeneficiaries");
-                                                                    for (int a = 0; a < beneficiaries.size(); a++) {
-                                                                %>
-                                                                <tr>
-                                                                    <td><%=beneficiaries.get(a).getAttribute1()%></td>
-                                                                    <td><%=beneficiaries.get(a).getAttribute2()%></td>
-                                                                    <td><%=beneficiaries.get(a).getAttribute3()%></td>
-                                                                </tr>
-                                                                <%
-                                                                    }
-                                                                %>
-                                                            </tbody>
-                                                        </table>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>Municipality: </label>
+                                                                <input type="text" class="form-control" name="municipalityName" id="municipalityName" autocomplete="off" required onkeypress="autoCompleteMunicipality()">
+                                                            </div>
+                                                        </div>
+                                                        <br/>
                                                     </div>
-
                                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <label>Project Lead: </label>
-                                                                <input type="text" class="form-control" name="projectLead">
+                                                                <select class="form-control" name="projectLead" id="projectLead">
+                                                                </select>
                                                             </div>
                                                         </div>
+                                                        <br/>
                                                     </div>
-
                                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                                         <h4>Provisions (Optional)</h4>
 
@@ -194,10 +208,10 @@
                                                                 <label>Seed Variety</label>
                                                                 <select name="seedVariety" class="form-control">
                                                                     <%
-                                                                        ArrayList<SeedVariety> varieties = (ArrayList<SeedVariety>) session.getAttribute("seedVarieties");
-                                                                        for (int a = 0; a < varieties.size(); a++) {
+                                                                        ArrayList<SeedVariety> seedVarieties = (ArrayList<SeedVariety>) session.getAttribute("seedVarieties");
+                                                                        for (int a = 0; a < seedVarieties.size(); a++) {
                                                                     %>
-                                                                    <option><%=varieties.get(a).getVarietyName()%></option>
+                                                                    <option><%=seedVarieties.get(a).getVarietyName()%></option>
                                                                     <%
                                                                         }
                                                                     %>

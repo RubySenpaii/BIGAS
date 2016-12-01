@@ -167,6 +167,7 @@ public class PlantingReportDAO {
             plantingReport.setPlantingMethod(rs.getString(PlantingReport.COLUMN_PLANTING_METHOD));
             plantingReport.setDateHarvested(rs.getString(PlantingReport.COLUMN_DATE_HARVESTED));
             plantingReport.setSeedType(rs.getString(PlantingReport.COLUMN_SEED_TYPE));
+            plantingReport.setSeedAcquisition(rs.getString(PlantingReport.COLUMN_SEED_ACQUISITION));
             plantingReports.add(plantingReport);
         }
         return plantingReports;

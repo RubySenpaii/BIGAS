@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="dao.WeeklyReportsDAO"%>
+<%@page import="servlet.web.Dashboard"%>
+<%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,20 +18,121 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>B.I.G.A.S. System | Dashboard</title>
-
+        <!-- jQuery -->
+        <script src="/BIGAS/vendors/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap -->
-        <link href="../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome -->
-        <link href="../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <!-- iCheck -->
-        <link href="../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
         <!-- bootstrap-progressbar -->
-        <link href="../../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-        <!-- jVectorMap -->
-        <link href="../css/maps/jquery-jvectormap-2.0.3.css" rel="stylesheet"/>
+        <link href="/BIGAS/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
 
+        <!-- jVectorMap -->
+        <link href="/BIGAS/web/css/maps/jquery-jvectormap-2.0.3.css" rel="stylesheet"/>
+        <!--highchart.js -->
+        <script src="/BIGAS/web/js/highchart/highcharts.js" type="text/javascript"></script>
+        <script src="/BIGAS/web/js/highchart/modules/exporting.js" type="text/javascript"></script>
         <!-- Custom Theme Style -->
-        <link href="../../build/css/custom.min.css" rel="stylesheet">
+        <link href="/BIGAS/build/css/custom.min.css" rel="stylesheet">
+        <!-- Datatables -->
+        <link href="/BIGAS/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+        <link href="/BIGAS/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+        <script type="text/javascript">
+            $(function () {
+                $('#productionGraph').highcharts({
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Planted Area by Week'
+                    },
+                    xAxis: {
+                        categories: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7']
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Hectares'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: false
+                        }
+                    },
+                    series: [{
+                            name: 'Actual',
+                            data: [7.0, 7.8, 9.5, 14.5, 18.4, 21.5, 25.2]
+                        }, {
+                            name: 'Total Area',
+                            data: [30, 30, 30, 30, 30, 30, 30]
+                        }]
+                });
+
+//                PIE CHART
+                $('#pie').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: 0,
+                        plotShadow: false
+                    },
+                    title: {
+                        text: 'Wet<br>Season<br>2016',
+                        align: 'center',
+                        verticalAlign: 'middle',
+                        y: 40
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            dataLabels: {
+                                enabled: true,
+                                distance: -50,
+                                style: {
+                                    fontWeight: 'bold',
+                                    color: 'white'
+                                }
+                            },
+                            startAngle: -90,
+                            endAngle: 90,
+                            center: ['50%', '75%']
+                        }
+                    },
+                    series: [{
+                            type: 'pie',
+                            name: 'Contribution',
+                            innerSize: '50%',
+                            data: [
+                                ['Newly Planted', 10.38],
+                                ['Tillering', 56.33],
+                                ['Reproductive', 29.71],
+                                ['Harvest', 0.0],
+                                {
+                                    name: 'Proprietary or Undetectable',
+                                    y: 0.2,
+                                    dataLabels: {
+                                        enabled: false
+                                    }
+                                }
+                            ]
+                        }]
+                });
+
+            });
+
+
+        </script>
+
     </head>
 
     <body class="nav-md">
@@ -40,156 +144,348 @@
 
                 <!-- page content -->
                 <div class="right_col" role="main">
+                    <div class="x_title">
+                        <h2>Dashboard - San Rafael, Bulacan - <%=session.getAttribute("Season")%></h2>
+                        <div class="clearfix"></div>
+                    </div>
                     <!-- top tiles -->
                     <div class="row tile_count">
                         <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
-                            <span class="count_top"><i class="fa fa-pagelines"></i> Planted Area</span>
-                            <div class="count">400 ha</div>
-                            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>4% </i> From last Week</span>
+                            <span class="count_top"><i class="fa fa-pagelines"></i> Current Ideal Stage</span>
+                            <div class="count"><%=(String) session.getAttribute("currStage")%></div>
+                            <span class="count_bottom"><p class="green"><%=(Double) session.getAttribute("farmPercentage")%> % of Farms are in this stage</p></span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
-                            <span class="count_top"><i class="fa fa-clock-o"></i> Harvested</span>
-                            <div class="count">----- MT</div>
-                            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>-% </i> From last Week</span>
+                            <span class="count_top"><i class="fa fa-clock-o"></i> Planting Reports</span>
+                            <div class="count"><a href="/BIGAS/web/mao/monitoringcropgrowth.jsp">8 New</a></div>
+                            <span class="count_bottom">Click to View</span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
-                            <span class="count_top"><i class="fa fa-bug"></i> Damages</span>
-                            <div class="count green">20 ha</div>
-                            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+                            <span class="count_top"><i class="fa fa-bug"></i> Damage Reports</span>
+                            <div class="count"><a href="/BIGAS/web/mao/monitoringdamages.jsp">2 New</a></div>
+                            <span class="count_bottom">Click to View</span>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-6 tile_stats_count">
-                            <span class="count_top"><i class="fa fa-line-chart"></i>Projected Production</span>
-                            <div class="count">3000 MT</div>
-                            <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>6% </i> From Last Year</span>
+                            <span class="count_top"><i class="fa fa-line-chart"></i> Target Production</span>
+                            <div class="count"><a href="/BIGAS/web/mao/monitoringproduction.jsp">3000 MT</a></div>                 
                         </div>
                     </div>
                     <!-- /top tiles -->
-
                     <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-5 col-sm-5 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2><a href="">Production</a></h2>
-
+                                    <h2>Total Planted Area - -% Complete</h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
-                                    <canvas id="lineChart"></canvas>
+                                    <div id="productionGraph" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                </div>
+                            </div>
+
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Current Palay Stages</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div id="pie" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <div class="tile-stats">
-                                    <div class="icon"><i class="fa fa-comments-o"></i>
-                                    </div>
-                                    <div class="count"><a href="../pages-monitoring/notifications.jsp">3</a></div>
+                        <div class="col-md-7 col-sm-7 col-xs-12">
 
-                                    <h3><a href="../pages-monitoring/notifications.jsp">New Notifications</a></h3>
-                                    <p>Click Header to View All</p>
-                                </div>
-                            </div>
-                            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <div class="tile-stats">
-                                    <div class="icon"><i class="fa fa-sort-amount-desc"></i>
-                                    </div>
-                                    <div class="count"><a href="../pages-database/farmerlist.jsp">179</a></div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 
-                                    <h3><a href="../pages-employee/assigntechnician.jsp">Farmers to Visit</a></h3>
-                                    <p>Accomplish within earliest Harvest date</p>
-                                </div>
                             </div>
-                            <div class="col-lg-6 col-md-3 col-sm-6 col-xs-12">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat=14.794273&lon=120.879901&name=San Rafael&units=si"> </iframe>
                             </div>
 
+                            <div class="x_panel">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2><a href="viewassignedfarms.jsp">Unvisited Farms</a></h2>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
 
+
+
+                                            <table id="datatable" class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Address</th>
+                                                        <th>Land Area</th>
+                                                        <th>Assigned Technician</th>
+                                                        <th>View</th>
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Tatyana Fitzpatrick</td>
+                                                        <td>Regional Director</td>
+                                                        <td>London</td>
+                                                        <td>19</td>
+                                                        <td>2010/03/17</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Michael Silva</td>
+                                                        <td>Marketing Designer</td>
+                                                        <td>London</td>
+                                                        <td>66</td>
+                                                        <td>2012/11/27</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Paul Byrd</td>
+                                                        <td>Chief Financial Officer (CFO)</td>
+                                                        <td>New York</td>
+                                                        <td>64</td>
+                                                        <td>2010/06/09</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gloria Little</td>
+                                                        <td>Systems Administrator</td>
+                                                        <td>New York</td>
+                                                        <td>59</td>
+                                                        <td>2009/04/10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Bradley Greer</td>
+                                                        <td>Software Engineer</td>
+                                                        <td>London</td>
+                                                        <td>41</td>
+                                                        <td>2012/10/13</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Dai Rios</td>
+                                                        <td>Personnel Lead</td>
+                                                        <td>Edinburgh</td>
+                                                        <td>35</td>
+                                                        <td>2012/09/26</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jenette Caldwell</td>
+                                                        <td>Development Lead</td>
+                                                        <td>New York</td>
+                                                        <td>30</td>
+                                                        <td>2011/09/03</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gavin Joyce</td>
+                                                        <td>Developer</td>
+                                                        <td>Edinburgh</td>
+                                                        <td>42</td>
+                                                        <td>2010/12/22</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jennifer Chang</td>
+                                                        <td>Regional Director</td>
+                                                        <td>Singapore</td>
+                                                        <td>28</td>
+                                                        <td>2010/11/14</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Brenden Wagner</td>
+                                                        <td>Software Engineer</td>
+                                                        <td>San Francisco</td>
+                                                        <td>28</td>
+                                                        <td>2011/06/07</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Fiona Green</td>
+                                                        <td>Chief Operating Officer (COO)</td>
+                                                        <td>San Francisco</td>
+                                                        <td>48</td>
+                                                        <td>2010/03/11</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Shou Itou</td>
+                                                        <td>Regional Marketing</td>
+                                                        <td>Tokyo</td>
+                                                        <td>20</td>
+                                                        <td>2011/08/14</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Michelle House</td>
+                                                        <td>Integration Specialist</td>
+                                                        <td>Sidney</td>
+                                                        <td>37</td>
+                                                        <td>2011/06/02</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Suki Burks</td>
+                                                        <td>Developer</td>
+                                                        <td>London</td>
+                                                        <td>53</td>
+                                                        <td>2009/10/22</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Prescott Bartlett</td>
+                                                        <td>Technical Author</td>
+                                                        <td>London</td>
+                                                        <td>27</td>
+                                                        <td>2011/05/07</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Gavin Cortez</td>
+                                                        <td>Team Leader</td>
+                                                        <td>San Francisco</td>
+                                                        <td>22</td>
+                                                        <td>2008/10/26</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Martena Mccray</td>
+                                                        <td>Post-Sales support</td>
+                                                        <td>Edinburgh</td>
+                                                        <td>46</td>
+                                                        <td>2011/03/09</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Unity Butler</td>
+                                                        <td>Marketing Designer</td>
+                                                        <td>San Francisco</td>
+                                                        <td>47</td>
+                                                        <td>2009/12/09</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Howard Hatfield</td>
+                                                        <td>Office Manager</td>
+                                                        <td>San Francisco</td>
+                                                        <td>51</td>
+                                                        <td>2008/12/16</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Hope Fuentes</td>
+                                                        <td>Secretary</td>
+                                                        <td>San Francisco</td>
+                                                        <td>41</td>
+                                                        <td>2010/02/12</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Vivian Harrell</td>
+                                                        <td>Financial Controller</td>
+                                                        <td>San Francisco</td>
+                                                        <td>62</td>
+                                                        <td>2009/02/14</td>
+                                                        <td>$452,500</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Timothy Mooney</td>
+                                                        <td>Office Manager</td>
+                                                        <td>London</td>
+                                                        <td>37</td>
+                                                        <td>2008/12/11</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jackson Bradshaw</td>
+                                                        <td>Director</td>
+                                                        <td>New York</td>
+                                                        <td>65</td>
+                                                        <td>2008/09/26</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Olivia Liang</td>
+                                                        <td>Support Engineer</td>
+                                                        <td>Singapore</td>
+                                                        <td>64</td>
+                                                        <td>2011/02/03</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- /page content -->
-                <jsp:include page="pagefooter.jsp"/>
             </div>
+            <!-- /page content -->
+            <jsp:include page="pagefooter.jsp"/>
         </div>
+    </div>
 
-        <!-- jQuery -->
-        <script src="../../vendors/jquery/dist/jquery.min.js"></script>
-        <!-- Bootstrap -->
-        <script src="../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-        <!-- FastClick -->
-        <script src="../../vendors/fastclick/lib/fastclick.js"></script>
-        <!-- NProgress -->
-        <script src="../../vendors/nprogress/nprogress.js"></script>
-        <!-- Chart.js -->
-        <script src="../../vendors/Chart.js/dist/Chart.min.js"></script>
-        <!-- gauge.js -->
-        <script src="../../vendors/bernii/gauge.js/dist/gauge.min.js"></script>
-        <!-- bootstrap-progressbar -->
-        <script src="../../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-        <!-- morris.js -->
-        <script src="../../vendors/raphael/raphael.min.js"></script>
-        <script src="../../vendors/morris.js/morris.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/BIGAS/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/BIGAS/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/BIGAS/vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="/BIGAS/vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="/BIGAS/vendors/bernii/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="/BIGAS/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/BIGAS/web/js/moment/moment.min.js"></script>
+    <script src="/BIGAS/web/js/datepicker/daterangepicker.js"></script>
+    <!-- Datatables -->
+    <script src="/BIGAS/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="/BIGAS/vendors/datatables.net-scroller/js/datatables.scroller.min.js"></script>
+    <script src="/BIGAS/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="/BIGAS/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/BIGAS/vendors/pdfmake/build/vfs_fonts.js"></script>
+    <!-- morris.js -->
+    <script src="/BIGAS/vendors/raphael/raphael.min.js"></script>
+    <script src="/BIGAS/vendors/morris.js/morris.min.js"></script>
 
-        <!-- Custom Theme Scripts -->
-        <script src="../../build/js/custom.min.js"></script>
 
-        <script>
-            // Line chart
-            var ctx = document.getElementById("lineChart");
-            var lineChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016"],
-                    datasets: [{
-                            label: "Target",
-                            backgroundColor: "rgba(38, 185, 154, 0.31)",
-                            borderColor: "rgba(38, 185, 154, 0.7)",
-                            pointBorderColor: "rgba(38, 185, 154, 0.7)",
-                            pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-                            pointHoverBackgroundColor: "#fff",
-                            pointHoverBorderColor: "rgba(220,220,220,1)",
-                            pointBorderWidth: 1,
-                            data: [31, 74, 6, 39, 20, 85, 7]
-                        }, {
-                            label: "Actual",
-                            backgroundColor: "rgba(3, 88, 106, 0.3)",
-                            borderColor: "rgba(3, 88, 106, 0.70)",
-                            pointBorderColor: "rgba(3, 88, 106, 0.70)",
-                            pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-                            pointHoverBackgroundColor: "#fff",
-                            pointHoverBorderColor: "rgba(151,187,205,1)",
-                            pointBorderWidth: 1,
-                            data: [82, 23, 66, 9, 99, 4, 2]
-                        }]
-                },
+    <!-- Custom Theme Scripts -->
+    <script src="/BIGAS/build/js/custom.min.js"></script>
+
+    <!-- Datatables -->
+    <script>
+            $(document).ready(function () {
+                TableManageButtons = function () {
+                    "use strict";
+                    return {
+                        init: function () {
+                            handleDataTableButtons();
+                        }
+                    };
+                }();
+
+                $('#datatable').dataTable();
+                $('#datatable-keytable').DataTable({
+                    keys: true
+                });
+
+                $('#datatable-responsive').DataTable();
+
+                $('#datatable-scroller').DataTable({
+                    ajax: "js/datatables/json/scroller-demo.json",
+                    deferRender: true,
+                    scrollY: 380,
+                    scrollCollapse: true,
+                    scroller: true
+                });
+
+                var table = $('#datatable-fixed-header').DataTable({
+                    fixedHeader: true
+                });
+
+                TableManageButtons.init();
             });
-
-            // Bar chart
-            var ctx = document.getElementById("mybarChart");
-            var mybarChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ["Municipal1", "Municipal2", "Municipal3", "Municipal4", "Municipal5", "Municipal6", "Municipal7", "Municipal8",
-                        "Municipal9", "Municipal10", "Municipal11", "Municipal12", "Municipal13", "Municipal14", "Municipal15", "Municipal16", "Municipal17", "Municipal18",
-                        "Municipal19", "Municipal20", "Municipal21", "Municipal22", "Municipal23", "Municipal24"],
-                    datasets: [{
-                            label: 'Production',
-                            backgroundColor: "#26B99A",
-                            data: [51, 30, 40, 28, 92, 50, 45, 35, 69, 19, 25, 51, 30, 40, 28, 92, 50, 45, 35, 69, 19, 25, 32, 56]
-                        }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
-                    }
-                }
-            });
-
-        </script>
-    </body>
+    </script>
+    <!-- /Datatables -->
+</body>
 </html>

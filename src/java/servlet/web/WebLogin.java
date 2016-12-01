@@ -39,7 +39,9 @@ public class WebLogin extends BaseServlet {
                 System.out.println("Directing to PAO homepage - View Problem List");
                 path = "/Dashboard?action=goToDashboard";
             } else if (employee.getAuthority().equals("MAO")) {
-                path = "/web/mao/";
+                path = "/Dashboard?action=goToDashboard";
+            } else {
+                path = "/web/login.jsp";
             }
 
             ServletContext context = getServletContext();

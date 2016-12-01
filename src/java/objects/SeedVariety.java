@@ -20,7 +20,6 @@ public class SeedVariety {
 
     private String seedVarietyID;
     private String varietyName;
-    private String acquired;
     private String waterSource;
     private double averageYield;
     private double maximumYield;
@@ -36,7 +35,6 @@ public class SeedVariety {
     public SeedVariety(String seedVarietyID, String varietyName, String acquired, String waterSource, double averageYield, double maximumYield, int maturity, double height, String grainSize, double millingRecovery, String condition) {
         this.seedVarietyID = seedVarietyID;
         this.varietyName = varietyName;
-        this.acquired = acquired;
         this.waterSource = waterSource;
         this.averageYield = averageYield;
         this.maximumYield = maximumYield;
@@ -73,20 +71,6 @@ public class SeedVariety {
      */
     public void setVarietyName(String varietyName) {
         this.varietyName = varietyName;
-    }
-
-    /**
-     * @return the acquired
-     */
-    public String getAcquired() {
-        return acquired;
-    }
-
-    /**
-     * @param acquired the acquired to set
-     */
-    public void setAcquired(String acquired) {
-        this.acquired = acquired;
     }
 
     /**

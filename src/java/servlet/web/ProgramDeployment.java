@@ -9,6 +9,7 @@ import dao.BarangayDAO;
 import dao.EmployeeDAO;
 import dao.FarmDAO;
 import dao.FertilizerDAO;
+import dao.MunicipalityDAO;
 import dao.PlantingProblemDAO;
 import dao.PlantingReportDAO;
 import dao.PlotDAO;
@@ -16,6 +17,7 @@ import dao.ProgramDeployedDAO;
 import dao.ProgramEmployeesDAO;
 import dao.ProgramObjectivesDAO;
 import dao.ProgramPlanDAO;
+import dao.ProgramProblemDAO;
 import dao.ProgramProcedureDAO;
 import dao.SeedVarietyDAO;
 import extra.GenericObject;
@@ -35,6 +37,7 @@ import objects.Barangay;
 import objects.Employee;
 import objects.Farm;
 import objects.Fertilizer;
+import objects.Municipality;
 import objects.PlantingProblem;
 import objects.PlantingReport;
 import objects.Plot;
@@ -42,6 +45,7 @@ import objects.ProgramDeployed;
 import objects.ProgramEmployees;
 import objects.ProgramObjectives;
 import objects.ProgramPlan;
+import objects.ProgramProblem;
 import objects.ProgramProcedure;
 import objects.SeedVariety;
 
@@ -63,6 +67,9 @@ public class ProgramDeployment extends BaseServlet {
             if (action.equals("deployProgram")) {
                 System.out.println("Retrieving programs for deployment");
                 deployProgramForPAO(request, response);
+            } else if (action.equals("submitProgramProdDetail")) {
+                System.out.println("Submit program production deployment details");
+                deployProgramProdForPAO(request, response);
             } else if (action.equals("submitProgramDetail")) {
                 System.out.println("Submit program deployment details");
                 submitPAOProgramDetails(request, response);
@@ -70,6 +77,31 @@ public class ProgramDeployment extends BaseServlet {
                 session.setAttribute("action", "invalid");
             }
         }
+    }
+
+    private void deployProgramProdForPAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        ServletContext context = getServletContext();
+
+        String programName = request.getParameter("programName");
+        ProgramPlan programPlan = new ProgramPlanDAO().getProgramPlanInfo(programName);
+
+        ArrayList<ProgramProcedure> programProcedures = new ProgramProcedureDAO().getListOfProgramProceduresForProgram(programPlan.getProgramID());
+        ArrayList<ProgramObjectives> programObjectives = new ProgramObjectivesDAO().getListOfProgramObjectivesFromProgramID(programPlan.getProgramID());
+
+        ArrayList<SeedVariety> seedVarieties = new SeedVarietyDAO().getListOfSeedVarieties();
+        ArrayList<Fertilizer> fertilizers = new FertilizerDAO().getListOfFertilizers();
+        ArrayList<Municipality> municipalities = new MunicipalityDAO().getListOfMunicipalities();
+
+        session.setAttribute("programProcedures", programProcedures);
+        session.setAttribute("programObjectives", programObjectives);
+        session.setAttribute("programPlan", programPlan);
+        session.setAttribute("seedVarieties", seedVarieties);
+        session.setAttribute("fertilizers", fertilizers);
+        session.setAttribute("municipalities", municipalities);
+
+        RequestDispatcher rd = context.getRequestDispatcher("/web/pao/programproddeploy.jsp");
+        rd.forward(request, response);
     }
 
     private void deployProgramForPAO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -96,7 +128,8 @@ public class ProgramDeployment extends BaseServlet {
                     ArrayList<PlantingProblem> plantingProblems = new PlantingProblemDAO().getListOfPlantingProblemsFromPlantingReport(plantingReports.get(c).getPlantingReportID());
                     for (int d = 0; d < plantingProblems.size(); d++) {
                         System.out.println(problemDatabaseID + " databaseid vs " + plantingProblems.get(d).getProblemID() + " problemid");
-                        if (plantingProblems.get(d).getProblemID() == problemDatabaseID) {
+                        ArrayList<ProgramProblem> programProblems = new ProgramProblemDAO().getProgramsForProblemReport(plantingProblems.get(d).getProblemReportID());
+                        if (plantingProblems.get(d).getProblemID() == problemDatabaseID && programProblems.isEmpty()) {
                             Barangay barangay = new BarangayDAO().getBarangayInfoWithBrgyID(farms.get(a).getBarangayID());
                             if (barangayBeneficiaries.isEmpty()) {
                                 GenericObject barangayBeneficiary = new GenericObject();
@@ -129,11 +162,11 @@ public class ProgramDeployment extends BaseServlet {
                 }
             }
         }
-        
+
         ArrayList<SeedVariety> seedVarieties = new SeedVarietyDAO().getListOfSeedVarieties();
         ArrayList<Fertilizer> fertilizers = new FertilizerDAO().getListOfFertilizers();
         ArrayList<Employee> employees = new EmployeeDAO().getListOfEmployeeOfMunicipal(municipality);
-        
+
         System.out.println("adding data gathered to session");
         session.setAttribute("programProcedures", programProcedures);
         session.setAttribute("programObjectives", programObjectives);
@@ -142,26 +175,27 @@ public class ProgramDeployment extends BaseServlet {
         session.setAttribute("seedVarieties", seedVarieties);
         session.setAttribute("fertilizers", fertilizers);
         session.setAttribute("employees", employees);
-        
+
         RequestDispatcher rd = context.getRequestDispatcher("/web/pao/programdeployment.jsp");
         rd.forward(request, response);
     }
-    
+
     private void submitPAOProgramDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         HttpSession session = request.getSession();
         ServletContext context = getServletContext();
         String path = "";
-        
+
         String seedVariety = request.getParameter("seedVariety");
         double seedProvided = Double.parseDouble(request.getParameter("seedAmount"));
         int fertilizerID = new FertilizerDAO().getFertilizerDetails(request.getParameter("fertilizer")).getFertilizerID();
         double fertilizerProvided = Double.parseDouble(request.getParameter("fertilizerAmount"));
         ProgramPlan programPlan = (ProgramPlan) session.getAttribute("programPlan");
-        
+
         ProgramDeployedDAO pddao = new ProgramDeployedDAO();
+        int deployedID = pddao.getListOfProgramsDeployed().size() + 1;
         ProgramDeployed programDeployed = new ProgramDeployed();
-        programDeployed.setProgramDeployedID(pddao.getListOfProgramsDeployed().size() + 1);
+        programDeployed.setProgramDeployedID(deployedID);
         programDeployed.setProgramID(programPlan.getProgramID());
         programDeployed.setSeedVarietyID(new SeedVarietyDAO().getSeedVarietyDetailsWithName(seedVariety).getSeedVarietyID());
         programDeployed.setSeedProvided(seedProvided);
@@ -171,14 +205,41 @@ public class ProgramDeployment extends BaseServlet {
         programDeployed.setDateEnded("12/31/9999");
         programDeployed.setStatus("Created");
         boolean created = pddao.addProgramDeployed(programDeployed);
-        
+
         int employeeID = new EmployeeDAO().getEmployeeWithName(request.getParameter("projectLead")).getEmployeeID();
         ProgramEmployees progEmp = new ProgramEmployees();
         progEmp.setEmployeeID(employeeID);
         progEmp.setPosition("Project Lead");
-        progEmp.setProgramDeployedID(pddao.getListOfProgramsDeployed().size() + 1);
+        progEmp.setProgramDeployedID(deployedID);
         boolean pecreated = new ProgramEmployeesDAO().addProgramEmployee(progEmp);
-        
+
+        if (!(programPlan.getPurpose().equalsIgnoreCase("production") || programPlan.getPurpose().equalsIgnoreCase("growth"))) {
+            int count = 0;
+            String municipality = (String) session.getAttribute("municipalityName");
+            int problemID = Integer.parseInt((String) session.getAttribute("problemDatabaseID"));
+            ArrayList<Farm> farms = new FarmDAO().getListOfFarmsInMunicipal(municipality);
+            for (int a = 0; a < farms.size(); a++) {
+                ArrayList<Plot> plots = new PlotDAO().getListOfPlotsFromFarm(farms.get(a).getFarmID());
+                for (int b = 0; b < plots.size(); b++) {
+                    ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getListOfPlantingReportFromPlotID(plots.get(b).getPlotID());
+                    for (int c = 0; c < plantingReports.size(); c++) {
+                        ArrayList<PlantingProblem> plantingProblems = new PlantingProblemDAO().getListOfPlantingProblemsFromPlantingReport(plantingReports.get(c).getPlantingReportID());
+                        for (int d = 0; d < plantingProblems.size(); d++) {
+                            if (plantingProblems.get(d).getProblemID() == problemID) {
+                                ProgramProblem programProblem = new ProgramProblem();
+                                programProblem.setProblemReportID(plantingProblems.get(d).getProblemReportID());
+                                programProblem.setProgramDeployedID(deployedID);
+                                if (new ProgramProblemDAO().reportProgramProblem(programProblem)) {
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            System.out.println("deployed on number of problems: " + count);
+        }
+
         if (created && pecreated) {
             path = "/Dashboard?action=goToDashboard";
         } else {

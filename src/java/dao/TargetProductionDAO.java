@@ -62,6 +62,27 @@ public class TargetProductionDAO {
         }
         return targetProductions;
     }
+    
+    public TargetProduction getListOfTargetProductionForYear(int year) {
+        ArrayList<TargetProduction> targetProductions = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + TargetProduction.TABLE_NAME + " WHERE " + TargetProduction.COLUMN_YEAR + " = ?");
+            ps.setInt(1, year);
+            
+            ResultSet rs = ps.executeQuery();
+            targetProductions = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(TargetProductionDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return targetProductions.get(0);
+    }
 
     private ArrayList<TargetProduction> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<TargetProduction> targetProductions = new ArrayList<>();

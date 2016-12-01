@@ -82,6 +82,27 @@ public class ProgramProblemDAO {
         }
         return programProblems.get(0);
     }
+    
+    public ArrayList<ProgramProblem> getProgramsForProblemReport(int problemReportID) {
+        ArrayList<ProgramProblem> programProblems = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + ProgramProblem.TABLE_NAME + " WHERE " + ProgramProblem.COLUMN_PROBLEM_REPORT_ID + " = ?");
+            ps.setInt(1, problemReportID);
+
+            ResultSet rs = ps.executeQuery();
+            programProblems = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException x) {
+            Logger.getLogger(ProgramProblemDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return programProblems;
+    }
 
     private ArrayList<ProgramProblem> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<ProgramProblem> programProblems = new ArrayList<>();

@@ -62,10 +62,19 @@
                 var harvestData = [];
                 var categoriesH = [];
                 for (var a = 0; a < values[0].production.length; a++) {
-                    categoriesH.push(values[0].planting[a].municipal);
+                    categoriesH.push(values[0].production[a].municipal);
                     harvestData.push(values[0].production[a].value);
                 }
 
+                var targetHarvest = [];
+                for (var a = 0; a < values[0].productionTarget.length; a++) {
+                    targetHarvest.push(values[0].productionTarget[a].value);
+                }
+
+                var targetPlanting = [];
+                for (var a = 0; a < values[0].plantingTarget.length; a++) {
+                    targetPlanting.push(values[0].plantingTarget[a].value);
+                }
 
 
                 Highcharts.chart('plantingComparison', {
@@ -73,7 +82,7 @@
                         zoomType: 'xy'
                     },
                     title: {
-                        text: 'Average Planted Area Per Municpality'
+                        text: 'Planted Area Per Municpality'
                     },
                     subtitle: {
                         text: ''
@@ -113,7 +122,7 @@
                         }, {
                             name: 'Target Seeds Planted/Area',
                             type: 'spline',
-                            data: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+                            data: targetPlanting,
                             tooltip: {
                                 valueSuffix: ' kg/ha'
                             }
@@ -125,7 +134,7 @@
                         zoomType: 'xy'
                     },
                     title: {
-                        text: 'Average Production Yield Per Municipality'
+                        text: 'Production Yield Per Municipality'
                     },
                     subtitle: {
                         text: ''
@@ -172,7 +181,7 @@
                         }, {
                             name: 'Target Yield',
                             type: 'spline',
-                            data: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40],
+                            data: targetHarvest,
                             tooltip: {
                                 valueSuffix: ' MT/ha'
                             }
@@ -234,8 +243,11 @@
                                                 <td><%=suggestedProgramsProduction.get(a).getAttribute1()%></td>
                                                 <td><%=suggestedProgramsProduction.get(a).getAttribute2()%></td>
                                                 <td>
-                                                    <input type="hidden" name="programID" value="<%=suggestedProgramsProduction.get(a).getAttribute1()%>">
-                                                    <button class="btn btn-sm btn-success">Submit</button>
+                                                    <form action="ProgramDeployment">
+                                                        <input type="hidden" name="programName" value="<%=suggestedProgramsProduction.get(a).getAttribute1()%>">
+                                                        <input type="hidden" name="action" value="submitProgramProdDetail">
+                                                        <button type="submit" class="btn btn-sm btn-success">Deploy</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             <%
@@ -325,8 +337,11 @@
                                                 <td><%=suggestedProgramsPlanting.get(a).getAttribute1()%></td>
                                                 <td><%=suggestedProgramsPlanting.get(a).getAttribute2()%></td>
                                                 <td>
-                                                    <input type="hidden" name="deployedID" value="<%=suggestedProgramsPlanting.get(a).getAttribute1()%>">
-                                                    <button class="btn btn-sm btn-success">Submit</button>
+                                                    <form action="ProgramDeployment">
+                                                        <input type="hidden" name="programName" value="<%=suggestedProgramsPlanting.get(a).getAttribute1()%>">
+                                                        <input type="hidden" name="action" value="submitProgramProdDetail">
+                                                        <button class="btn btn-sm btn-success">Deploy</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             <%
@@ -356,10 +371,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            
                                             <%
                                                 ArrayList<GenericObject> activeProgramsPlanting = (ArrayList<GenericObject>) session.getAttribute("activeProgramsPlanting");
-                                                for (int a = 0; a < activeProgramsProduction.size(); a++) {
+                                                for (int a = 0; a < activeProgramsPlanting.size(); a++) {
                                             %>
                                             <tr>
                                                 <td><%=activeProgramsPlanting.get(a).getAttribute1()%></td>

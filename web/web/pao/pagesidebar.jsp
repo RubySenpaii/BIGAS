@@ -36,17 +36,17 @@
                                 <li><a href="/BIGAS/Employee?action=viewEmployeeList">Employee List</a></li>
                                 <!--<li><a href="/BIGAS/web/pages-database/maoemployee.jsp">MAO Employee</a></li>-->
                                 <li><a href="/BIGAS/Farmer?action=viewFarmerList">Farmers List</a></li>
-                                <li><a href="/BIGAS/PestDiseases?action=viewPestDiseases">Pest and Diseases</a></li>
+                                <!--li><a href="/BIGAS/PestDiseases?action=viewPestDiseases">Pest and Diseases</a></li-->
                             </ul>
                         </li>
-                        <li><a><i class="fa fa-bar-chart"></i> Reports <span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
+                        <li><a href="/BIGAS/Report?action=getReports"><i class="fa fa-bar-chart"></i> Reports</a>
+                            <!--ul class="nav child_menu">
                                 <li><a href="/BIGAS/web/pages-reports/plantingreports.jsp">Planting Report</a></li>
                                 <li><a href="/BIGAS/web/pages-reports/harvestreport.jsp">Harvest Report</a></li>
                                 <!--<li><a href="/BIGAS/web/pages-reports/damagereports.jsp">Avg Yield Report</a></li>
-                                <li><a href="/BIGAS/web/pages-reports/damagereports.jsp">Pest and Diseases Report</a></li>-->
+                                <li><a href="/BIGAS/web/pages-reports/damagereports.jsp">Pest and Diseases Report</a></li>>
                                 <li><a href="/BIGAS/web/pages-reports/damagereports.jsp">Damage Estimate Report</a></li>
-                            </ul>
+                            </ul-->
                         </li>
                     </ul>
                 </div>
@@ -57,7 +57,7 @@
                         <!--<li><a href="/BIGAS/ProblemLog?action=viewProblemLogs"><i class="fa fa-mobile"></i> Problem Log</a></li>
                         <li><a href=""><i class="fa fa-mobile"></i> Create Disaster Warning</a></li>
                         <li><a href=""><i class="fa fa-mobile"></i> Generate Reports</a></li>-->
-                        <li><a href="/BIGAS/web/pao/targetproduction.jsp"><i class="fa fa-mobile"></i> Set Target Production</a></li>
+                        <li><a href="/BIGAS/TargetProduction?action=goToTargetProduction"><i class="fa fa-mobile"></i> Set Target Production</a></li>
                     </ul>
                 </div>
             </div>

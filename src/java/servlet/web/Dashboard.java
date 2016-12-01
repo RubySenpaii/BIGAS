@@ -7,10 +7,13 @@ package servlet.web;
 
 import dao.ProgramDeployedDAO;
 import dao.ProgramPlanDAO;
+import dao.WeeklyReportsDAO;
+import extra.Formatter;
 import extra.GenericObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -38,6 +41,11 @@ public class Dashboard extends BaseServlet {
             System.out.println(userLogged.getUsername() + " has authority level: " + userLogged.getAuthority());
             if (action.equals("goToDashboard")) {
                 goToDashboard(request, response);
+            }
+        } else if (userLogged.getAuthority().equals("MAO")) {
+            System.out.println(userLogged.getUsername() + " has authority level: " + userLogged.getAuthority());
+            if (action.equals("goToDashboard")) {
+                goToMAODashboard(request, response);
             }
         }
     }
@@ -92,13 +100,54 @@ public class Dashboard extends BaseServlet {
                 activeProgramsPlanting.add(activeProgramPlanting);
             }
         }
-        
+
         session.setAttribute("suggestedProgramsProduction", suggestedProgramsProduction);
         session.setAttribute("suggestedProgramsPlanting", suggestedProgramsPlanting);
         session.setAttribute("activeProgramsPlanting", activeProgramsPlanting);
         session.setAttribute("activeProgramsProduction", activeProgramsProduction);
 
         RequestDispatcher rd = context.getRequestDispatcher("/web/pao/paodashboard.jsp");
+        rd.forward(request, response);
+    }
+
+    private void goToMAODashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ServletContext context = getServletContext();
+        HttpSession session = request.getSession();
+
+        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        String stage = "";
+        String season = "";
+
+        if (month >= 10 && month <= 4) {
+            season = "Wet Season";
+        } else {
+            season = "Dry Season";
+        }
+
+        WeeklyReportsDAO wrdao = new WeeklyReportsDAO();
+        double farmPercentage = 0;
+        if (month == 4 || month == 10) {
+            stage = "Newly Planted";
+            farmPercentage = (double) wrdao.getNewlyPlanted().size() / wrdao.getListOfWeeklyReports().size() * 100;
+        } else if (month == 5 || month == 11) {
+            stage = "Vegetative";
+            farmPercentage = (double) wrdao.getVegetative().size() / wrdao.getListOfWeeklyReports().size() * 100;
+        } else if (month == 6 || month == 12) {
+            stage = "Reproductive";
+            farmPercentage = (double) wrdao.getReproductive().size() / wrdao.getListOfWeeklyReports().size() * 100;
+        } else {
+            stage = "Maturity";
+            farmPercentage = (double) wrdao.getHarvested().size() / wrdao.getListOfWeeklyReports().size() * 100;
+        }
+
+        farmPercentage = Formatter.round(farmPercentage, 2);
+        System.out.println(stage + farmPercentage);
+
+        session.setAttribute("currStage", stage);
+        session.setAttribute("farmPercentage", farmPercentage);
+        session.setAttribute("season", season);
+        
+        RequestDispatcher rd = context.getRequestDispatcher("/web/mao/homepage.jsp");
         rd.forward(request, response);
     }
 }

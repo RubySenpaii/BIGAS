@@ -4,6 +4,8 @@
     Author     : RubySenpaii
 --%>
 
+<%@page import="extra.GenericObject"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -36,6 +38,136 @@
         <script src="/BIGAS/web/js/highchart/highcharts.js"></script>
         <script src="/BIGAS/web/js/highchart/modules/exporting.js"></script>
 
+        <script>
+            $(function () {
+                var values;
+                
+                $.ajax({
+                    url: "PAOTargetProductionCharts",
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        values = data;
+                    },
+                    async: false
+                });
+                
+                var municipal = [];
+                var planted = [];
+                var harvested = [];
+                var damaged = [];
+                
+                for (var a = 0; a < values[0].chartValues.length; a++) {
+                    municipal.push(values[0].chartValues[a].municipality);
+                    planted.push(values[0].chartValues[a].planted);
+                    harvested.push(values[0].chartValues[a].harvested);
+                    damaged.push(values[0].chartValues[a].damaged);
+                }
+                
+                Highcharts.chart('production', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Planted Area Per Muncipality'
+                    },
+                    xAxis: {
+                        categories: municipal,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Planted Area (ha)'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y:.1f} ha</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{ data: planted }]
+                });
+
+                Highcharts.chart('harvest', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Harvest Amount Per Municipality'
+                    },
+                    xAxis: {
+                        categories: municipal,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Harvested (MT)'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y:.1f} MT</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{ data: harvested }]
+                });
+
+                Highcharts.chart('damaged', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Damaged Area Per Municipality'
+                    },
+                    xAxis: {
+                        categories: municipal,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Damaged Area (ha)'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y:.1f} ha</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{ data: damaged }]
+                });
+            });
+        </script>
+
     </head>
 
     <body class="nav-md">
@@ -51,39 +183,44 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Production Details</h2>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <form class="form-horizontal form-label-left TargetProduction">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Target Production</label>
+                                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                                        <input type="number" class="form-control" name="targetProd">
+                                                    </div>
+                                                    <button class="btn btn-sm" type="submit" name="action" value="submitTargetProd">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
 
 
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
                                     <div class="row">
-                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <form class="form-horizontal form-label-left">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Target Production</label>
-                                                    <div class="col-md-4 col-sm-4 col-xs-12">
-                                                        <input type="number" class="form-control">
-                                                    </div>
-                                                    <button class="btn btn-sm">Submit</button>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <h2>Planted Area Comparison</h2>
+                                                    <div id="production" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                                                 </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <h2>Monthly Production Chart</h2>
-                                            <br/>
-                                            <div class="col-md-offset-3">
-                                                <label>Select Year: </label>
-                                                <select>
-                                                    <option>2015-2016</option>
-                                                </select>
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <h2>Harvest Amount Comparison</h2>
+                                                    <div id="harvest" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <h2>Damaged Area Comparison</h2>
+                                                    <div id="damaged" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
                                             <h2>Production Table Contributed by Municipals</h2>
 
                                             <table class="table table-bordered">
@@ -95,6 +232,21 @@
                                                         <th>Damaged Area</th>
                                                     </tr>
                                                 </thead>
+                                                <tbody>
+                                                    <%
+                                                        ArrayList<GenericObject> objects = (ArrayList<GenericObject>) session.getAttribute("municipalitiesProduction");
+                                                        for (int a = 0; a < objects.size(); a++) {
+                                                    %>
+                                                    <tr>
+                                                        <td><%=objects.get(a).getAttribute1()%></td>
+                                                        <td><%=objects.get(a).getAttribute2()%></td>
+                                                        <td><%=objects.get(a).getAttribute3()%></td>
+                                                        <td><%=objects.get(a).getAttribute4()%></td>
+                                                    </tr>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>

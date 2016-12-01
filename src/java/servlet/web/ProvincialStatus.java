@@ -64,6 +64,7 @@ public class ProvincialStatus extends BaseServlet {
             activeProgram.setAttribute3(programplan.getDescription());
             activeProgram.setAttribute4(programDeployment.get(a).getStatus());
             activeProgram.setAttribute5(programDeployment.get(a).getDateStarted());
+            activeProgram.setAttribute6(String.valueOf(programDeployment.get(a).getProgramDeployedID()));
             activePrograms.add(activeProgram);
         }
         

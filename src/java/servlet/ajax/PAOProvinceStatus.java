@@ -10,11 +10,14 @@ import dao.MunicipalityDAO;
 import dao.PlantingProblemDAO;
 import dao.PlantingReportDAO;
 import dao.PlotDAO;
+import dao.TargetProductionDAO;
+import extra.Formatter;
 import extra.GenericObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -50,14 +53,11 @@ public class PAOProvinceStatus extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("Attempting to connect to PAOProvinceStatus servlet");
 
-        //get additional info for populating charts
-        HttpSession session = request.getSession();
-        String season = (String) session.getAttribute("season");
-
         JSONObject jsonObjects = new JSONObject();
         try {
             jsonObjects.put("districtShare", getDistrictProductionShareData());
-            //jsonObjects.put("targetMonitoring", getActualVsTargetData(season));
+            jsonObjects.put("targetMonitoring", getActualVsTargetData());
+            jsonObjects.put("target", new TargetProductionDAO().getListOfTargetProductionForYear(Calendar.getInstance().get(Calendar.YEAR)).getTarget());
 
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
@@ -99,6 +99,7 @@ public class PAOProvinceStatus extends HttpServlet {
                     }
                 }
             }
+            productionYield = Formatter.round(productionYield, 2);
             object.setAttribute3(Double.toString(productionYield));
             System.out.println(object.getAttribute1() + " " + object.getAttribute2() + " " + object.getAttribute3());
             districtProductionShare.add(object);
@@ -119,7 +120,7 @@ public class PAOProvinceStatus extends HttpServlet {
     }
 
     //this method will retrieve data for the line graph in monitoring the actual vs target
-    private JSONArray getActualVsTargetData(String season) {
+    private JSONArray getActualVsTargetData() {
         JSONArray jarrayProduction = new JSONArray();
 
         System.out.println("Data gathering for actual vs target:");
@@ -127,15 +128,11 @@ public class PAOProvinceStatus extends HttpServlet {
          * attr1 = month attr2 = value
          */
         ArrayList<GenericObject> actualVsTarget = new ArrayList<>();
-        for (int a = 0; a < 6; a++) {
+        for (int a = 0; a < 12; a++) {
             GenericObject object = new GenericObject();
-            if (season.equals("Wet")) {
-                object.setAttribute1(new DateFormatSymbols().getMonths()[a]);
-                object.setAttribute2("0");
-            } else {
-                object.setAttribute1(new DateFormatSymbols().getMonths()[a + 6]);
-                object.setAttribute2("0");
-            }
+            object.setAttribute1(new DateFormatSymbols().getMonths()[a] + " " + Calendar.getInstance().get(Calendar.YEAR));
+            object.setAttribute2("0");
+            actualVsTarget.add(object);
         }
         ArrayList<Farm> farms = new FarmDAO().getListOfFarms();
         for (int a = 0; a < farms.size(); a++) {
@@ -144,16 +141,77 @@ public class PAOProvinceStatus extends HttpServlet {
                 ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getListOfPlantingReportFromPlotID(plots.get(b).getPlotID());
                 for (int c = 0; c < plantingReports.size(); c++) {
                     int month = Integer.parseInt(plantingReports.get(c).getDateHarvested().substring(0, 2));
-                    int difference = 1;
-                    if (month < 7) {
-                        difference = 7;
-                    }
-                    if (month == 1 || month == 6) {
-                        double actualValue = Double.parseDouble(actualVsTarget.get(month - difference).getAttribute2());
+                    
+                    if (month == 1) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
                         actualValue += plantingReports.get(c).getAmountHarvested();
-                        actualVsTarget.get(month - difference).setAttribute2(String.valueOf(actualValue));
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 2) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 3) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 4) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 5) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 6) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 7) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 8) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 9) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 10) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 11) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
+                    } else if (month == 12) {
+                        double actualValue = Double.parseDouble(actualVsTarget.get(month - 1).getAttribute2());
+                        actualValue += plantingReports.get(c).getAmountHarvested();
+                        actualValue = Formatter.round(actualValue, 2);
+                        actualVsTarget.get(month - 1).setAttribute2(String.valueOf(actualValue));
                     }
                 }
+            }
+        }
+
+        for (int a = 0; a < actualVsTarget.size(); a++) {
+            if (a > 0) {
+                double value = Double.parseDouble(actualVsTarget.get(a - 1).getAttribute2());
+                value += Double.parseDouble(actualVsTarget.get(a).getAttribute2());
+                actualVsTarget.get(a).setAttribute2(String.valueOf(value));
             }
         }
 
@@ -162,6 +220,7 @@ public class PAOProvinceStatus extends HttpServlet {
                 JSONObject object = new JSONObject();
                 object.put("month", actualVsTarget.get(a).getAttribute1());
                 object.put("value", Double.parseDouble(actualVsTarget.get(a).getAttribute2()));
+                System.out.println(actualVsTarget.get(a).getAttribute1() + " - " + actualVsTarget.get(a).getAttribute2() + " added for actual vs target");
                 jarrayProduction.put(object);
             } catch (JSONException ex) {
                 Logger.getLogger(PAOProvinceStatus.class.getName()).log(Level.SEVERE, null, ex);
@@ -169,11 +228,11 @@ public class PAOProvinceStatus extends HttpServlet {
         }
         return jarrayProduction;
     }
-    
+
     //this method will retrieve info for district planting share
     private JSONArray getDistrictStagesValue() {
         JSONArray jarrayDistrictStages = new JSONArray();
-        
+
         System.out.println("retrieve data for district stages");
         ArrayList<Municipality> municipalities = new MunicipalityDAO().getListOfMunicipalities();
         for (int a = 0; a < municipalities.size(); a++) {
@@ -183,12 +242,12 @@ public class PAOProvinceStatus extends HttpServlet {
                 for (int c = 0; c < plots.size(); c++) {
                     ArrayList<PlantingReport> plantingReports = new PlantingReportDAO().getListOfPlantingReportFromPlotID(plots.get(c).getPlotID());
                     for (int d = 0; d < plantingReports.size(); d++) {
-                        
+
                     }
                 }
             }
         }
-        
+
         return jarrayDistrictStages;
     }
 

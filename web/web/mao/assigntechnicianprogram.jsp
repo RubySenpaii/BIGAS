@@ -16,7 +16,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>B.I.G.A.S. System | Farm Assignment</title>
+        <title>B.I.G.A.S. System | Technician Assignment - Programs</title>
 
         <!-- Bootstrap -->
         <link href="/BIGAS/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -31,50 +31,9 @@
         <!--bootstrap progressbar-->
         <link href="/BIGAS/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
 
+
         <!-- Custom Theme Style -->
         <link href="/BIGAS/build/css/custom.min.css" rel="stylesheet">
-
-        <!-- jQuery -->
-        <script src="/BIGAS/vendors/jquery/dist/jquery.min.js"></script>
-
-        <!--highchart.js -->
-        <script src="/BIGAS/web/js/highchart/highcharts.js"></script>
-        <script src="/BIGAS/web/js/highchart/highcharts-3d.js"></script>
-        <script src="/BIGAS/web/js/highchart/modules/exporting.js"></script>
-
-        <script>
-            $(function () {
-                Highcharts.chart('donut', {
-                    chart: {
-                        type: 'pie',
-                        options3d: {
-                            enabled: true,
-                            alpha: 45
-                        }
-                    },
-                    title: {
-                        text: 'Soil Analysis Results'
-                    },
-                    subtitle: {
-                        text: 'N P K Analysis'
-                    },
-                    plotOptions: {
-                        pie: {
-                            innerSize: 100,
-                            depth: 45
-                        }
-                    },
-                    series: [{
-                            name: 'Percentage',
-                            data: [
-                                ['Nitrogen (N)', 70],
-                                ['Phosphorus (P)', 20],
-                                ['Potassium (K)', 10],
-                            ]
-                        }]
-                });
-            });
-        </script>
     </head>
 
     <body class="nav-md">
@@ -91,63 +50,56 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title">
-                                        <h2>Soil Monitoring - San Rafael, Bulacan</h2>
+                                        <h2>Assign Technician - Programs</h2>
                                         <div class="clearfix"></div>
                                     </div>
+                                    <h3>Assign Technicians for Program: Rat Killing Program</h3>
                                     <br>
-                                    <div class="row">
-                                        <div class="col-md-5 col-sm-5 col-xs-5">
-                                            <div class="x_title">
-                                                <%=session.getAttribute("Season")%></div>
-                                            <div id="donut"></div>
-                                            
-                                        </div>
-
-
-                                        <div class="col-md-7 col-sm-6 col-xs-5">
-                                            <h3>Recommended Fertilizers:</h3>
-                                            <div class="x_content">
-                                                <table class="table table-bordered table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Fertilizer Name</th>
-                                                            <th>N Amount</th>
-                                                            <th>P Amount</th>
-                                                            <th>K Amount</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Charot Fertilizer</td>
-                                                            <td>30</td>
-                                                            <td>80</td>
-                                                            <td>90</td>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
-                                            <br>
-                                            <br>
-                                            <h3>Recommended Seeds:</h3>
-                                            <div class="x_content">
-                                                <table class="table table-bordered table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Seed Variety ID</th>
-                                                            <th>Variety Name</th>
-                                                            <th>Water Source</th>
-                                                            <th>Condition</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>NSIC RC238</td>
-                                                            <td>TUBIGAN 21</td>
-                                                            <td>Irrigated</td>
-                                                            <td>-</td>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </div>
+                                    <h4>Type: Intervention</h4>
+                                    <h4>Description: Eradicate Rat Infestations</h4>
+                                    <div class="form-group">
+                                        <h4 class="control-label col-md-2 col-sm-2 col-xs-12"># of Team Members:</h4>                                      <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <select class="form-control">
+                                                <option>...</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
                                         </div>
                                     </div>
-
+                                    <div class='clearfix'></div>
+                                    <div class="form-group">
+                                        <h4 class="control-label col-md-2 col-sm-2 col-xs-12">Team Member #1:</h4>                                      <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <select class="form-control">
+                                                <option>...</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='clearfix'></div>
+                                    <div class="form-group">
+                                        <h4 class="control-label col-md-2 col-sm-2 col-xs-12">Team Member #2:</h4>                                      <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <select class="form-control">
+                                                <option>...</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class='clearfix'></div>
+                                    <div class='ln_solid'></div>
+                                    <div class="form-group">
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <button type="submit" class="btn btn-primary">Cancel</button>
+                                            <button type="submit" class="btn btn-success">Submit</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,6 +110,9 @@
             <!-- /page content -->
             <jsp:include page="pagefooter.jsp"/>
         </div>
+
+        <!-- jQuery -->
+        <script src="/BIGAS/vendors/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap -->
         <script src="/BIGAS/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- FastClick -->

@@ -93,6 +93,85 @@ public class WeeklyReportsDAO {
         }
         return weeklyReports;
     }
+    public ArrayList<WeeklyReports> getNewlyPlanted() {
+        ArrayList<WeeklyReports> NewlyPlanted = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + WeeklyReports.TABLE_NAME + " WHERE CROPSTAGE='NEWLY PLANTED'");
+            ResultSet rs = ps.executeQuery();
+            NewlyPlanted = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (SQLException x) {
+            Logger.getLogger(WeeklyReportsDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return NewlyPlanted;
+    }
+
+    public ArrayList<WeeklyReports> getVegetative() {
+        ArrayList<WeeklyReports> Vegetative = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + WeeklyReports.TABLE_NAME + " WHERE CROPSTAGE='TILLERING'");
+            ResultSet rs = ps.executeQuery();
+            Vegetative = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (SQLException x) {
+            Logger.getLogger(WeeklyReportsDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return Vegetative;
+    }
+
+    public ArrayList<WeeklyReports> getReproductive() {
+        ArrayList<WeeklyReports> Reproductive = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + WeeklyReports.TABLE_NAME + " WHERE CROPSTAGE='Reproductive'");
+            ResultSet rs = ps.executeQuery();
+            Reproductive = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (SQLException x) {
+            Logger.getLogger(WeeklyReportsDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return Reproductive;
+    }
+
+    public ArrayList<WeeklyReports> getHarvested() {
+        ArrayList<WeeklyReports> Harvested = new ArrayList<>();
+        try {
+            DBConnectionFactory myFactory = DBConnectionFactory.getInstance();
+            Connection conn = myFactory.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + WeeklyReports.TABLE_NAME + " WHERE CROPSTAGE='HARVESTING'");
+            ResultSet rs = ps.executeQuery();
+            Harvested = getDataFromResultSet(rs);
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (SQLException x) {
+            Logger.getLogger(WeeklyReportsDAO.class.getName()).log(Level.SEVERE, null, x);
+        }
+        return Harvested;
+}
 
     private ArrayList<WeeklyReports> getDataFromResultSet(ResultSet rs) throws SQLException {
         ArrayList<WeeklyReports> weeklyReports = new ArrayList<>();

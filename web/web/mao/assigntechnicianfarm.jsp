@@ -16,7 +16,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>B.I.G.A.S. System | Farm Assignment</title>
+        <title>B.I.G.A.S. System | Technician Assignment - Farms</title>
 
         <!-- Bootstrap -->
         <link href="/BIGAS/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -31,50 +31,9 @@
         <!--bootstrap progressbar-->
         <link href="/BIGAS/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
 
+
         <!-- Custom Theme Style -->
         <link href="/BIGAS/build/css/custom.min.css" rel="stylesheet">
-
-        <!-- jQuery -->
-        <script src="/BIGAS/vendors/jquery/dist/jquery.min.js"></script>
-
-        <!--highchart.js -->
-        <script src="/BIGAS/web/js/highchart/highcharts.js"></script>
-        <script src="/BIGAS/web/js/highchart/highcharts-3d.js"></script>
-        <script src="/BIGAS/web/js/highchart/modules/exporting.js"></script>
-
-        <script>
-            $(function () {
-                Highcharts.chart('donut', {
-                    chart: {
-                        type: 'pie',
-                        options3d: {
-                            enabled: true,
-                            alpha: 45
-                        }
-                    },
-                    title: {
-                        text: 'Soil Analysis Results'
-                    },
-                    subtitle: {
-                        text: 'N P K Analysis'
-                    },
-                    plotOptions: {
-                        pie: {
-                            innerSize: 100,
-                            depth: 45
-                        }
-                    },
-                    series: [{
-                            name: 'Percentage',
-                            data: [
-                                ['Nitrogen (N)', 70],
-                                ['Phosphorus (P)', 20],
-                                ['Potassium (K)', 10],
-                            ]
-                        }]
-                });
-            });
-        </script>
     </head>
 
     <body class="nav-md">
@@ -91,63 +50,58 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title">
-                                        <h2>Soil Monitoring - San Rafael, Bulacan</h2>
+                                        <h2>Assign Technician - Farms</h2>
                                         <div class="clearfix"></div>
                                     </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-md-5 col-sm-5 col-xs-5">
-                                            <div class="x_title">
-                                                <%=session.getAttribute("Season")%></div>
-                                            <div id="donut"></div>
-                                            
-                                        </div>
+                                    <div class="x_content">
+                                        <div class="row">
+                                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                                <form class="form-horizontal">
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Technician: </label>
+                                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                                <select class="form-control" name="technicianName">
 
-
-                                        <div class="col-md-7 col-sm-6 col-xs-5">
-                                            <h3>Recommended Fertilizers:</h3>
-                                            <div class="x_content">
-                                                <table class="table table-bordered table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Fertilizer Name</th>
-                                                            <th>N Amount</th>
-                                                            <th>P Amount</th>
-                                                            <th>K Amount</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Charot Fertilizer</td>
-                                                            <td>30</td>
-                                                            <td>80</td>
-                                                            <td>90</td>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th>Farm Name</th>
+                                                                        <th>Location</th>
+                                                                        <th>Area</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn btn-sm" type="submit" name="action" value="submitTargetProd">Submit</button>
+                                                </form>
                                             </div>
-                                            <br>
-                                            <br>
-                                            <h3>Recommended Seeds:</h3>
-                                            <div class="x_content">
-                                                <table class="table table-bordered table-striped">
+
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                <h4>List of Technicians</h4>
+
+                                                <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
-                                                            <th>Seed Variety ID</th>
-                                                            <th>Variety Name</th>
-                                                            <th>Water Source</th>
-                                                            <th>Condition</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>NSIC RC238</td>
-                                                            <td>TUBIGAN 21</td>
-                                                            <td>Irrigated</td>
-                                                            <td>-</td>
+                                                            <th>Technician Name</th>
+                                                            <th>Number of Farms Assigned</th>
                                                         </tr>
                                                     </thead>
+                                                    <tbody>
+
+                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -158,6 +112,9 @@
             <!-- /page content -->
             <jsp:include page="pagefooter.jsp"/>
         </div>
+
+        <!-- jQuery -->
+        <script src="/BIGAS/vendors/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap -->
         <script src="/BIGAS/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- FastClick -->

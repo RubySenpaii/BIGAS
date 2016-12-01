@@ -9,10 +9,13 @@ import dao.FarmDAO;
 import dao.MunicipalityDAO;
 import dao.PlantingReportDAO;
 import dao.PlotDAO;
+import dao.TargetProductionDAO;
+import extra.Formatter;
 import extra.GenericObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -24,6 +27,7 @@ import objects.Farm;
 import objects.Municipality;
 import objects.PlantingReport;
 import objects.Plot;
+import objects.TargetProduction;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,13 +58,15 @@ public class PAODashboard extends HttpServlet {
         try {
             jsonObjects.put("production", getProductionArea());
             jsonObjects.put("planting", getPlantingArea());
+            jsonObjects.put("productionTarget", getProductionTarget());
+            jsonObjects.put("plantingTarget", getPlantingTarget());
 
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             System.out.println("data written for transfer");
             response.getWriter().write("[" + jsonObjects.toString() + "]");
         } catch (JSONException ex) {
-            Logger.getLogger(PAOProvinceStatus.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PAODashboard.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -89,9 +95,11 @@ public class PAODashboard extends HttpServlet {
                     }
                 }
             }
-            if (plantingTotal > 0) {
-                plantingTotal /= count;
-            }
+            plantingTotal = Formatter.round(plantingTotal, 2);
+//            if (plantingTotal > 0) {
+//                plantingTotal /= count;
+//            }
+
             planting.setAttribute2(String.valueOf(plantingTotal));
             plantings.add(planting);
             System.out.println(planting.getAttribute1() + " " + planting.getAttribute2() + " paodashboard planting added to list");
@@ -136,9 +144,10 @@ public class PAODashboard extends HttpServlet {
                     }
                 }
             }
-            if (productionTotal > 0) {
-                productionTotal /= count;
-            }
+            productionTotal = Formatter.round(productionTotal, 2);
+//            if (productionTotal > 0) {
+//                productionTotal /= count;
+//            }
             production.setAttribute2(String.valueOf(productionTotal));
             productions.add(production);
             System.out.println(production.getAttribute1() + " " + production.getAttribute2() + " paodashboard production added to list");
@@ -155,6 +164,93 @@ public class PAODashboard extends HttpServlet {
             }
         }
         return jarrayProduction;
+    }
+    
+    private JSONArray getProductionTarget() {
+        JSONArray jarrayProductionTarget = new JSONArray();
+
+        ArrayList<GenericObject> productionTargets = new ArrayList<>();
+        
+        double totalHectares = 0;
+        TargetProduction targetProduction  = new TargetProductionDAO().getListOfTargetProductionForYear(Calendar.getInstance().get(Calendar.YEAR));
+        ArrayList<Municipality> municipalities = new MunicipalityDAO().getListOfMunicipalities();
+        for (int a = 0; a < municipalities.size(); a++) {
+            totalHectares += municipalities.get(a).getArea();
+        }
+        
+        double totalProdYield = targetProduction.getTarget() / totalHectares;
+        for (int a = 0; a < municipalities.size(); a++) {
+            GenericObject productionTarget = new GenericObject();
+            productionTarget.setAttribute1(municipalities.get(a).getMunicipalityName());
+            
+            double percentage = municipalities.get(a).getArea() / totalHectares;
+            System.out.println("percentage for muni " + percentage);
+            double targetProductionForHarvest = totalProdYield * percentage;
+            System.out.println("target prod harvest " + targetProductionForHarvest);
+//            double averageProductionHarvest = targetProductionForHarvest / municipalities.get(a).getArea();
+//            System.out.println("avg prod harvest " + averageProductionHarvest);
+            targetProductionForHarvest = Formatter.round(targetProductionForHarvest, 2);
+            productionTarget.setAttribute2(String.valueOf(targetProductionForHarvest));
+            productionTargets.add(productionTarget);
+            System.out.println(productionTarget.getAttribute1() + " " + productionTarget.getAttribute2() + " added to the list  ");
+        }
+        
+        for (int a = 0; a < productionTargets.size(); a++) {
+            try {
+                JSONObject prodTarget = new JSONObject();
+                prodTarget.put("municipal", productionTargets.get(a).getAttribute1());
+                prodTarget.put("value", Double.parseDouble(productionTargets.get(a).getAttribute2()));
+                jarrayProductionTarget.put(prodTarget);
+            } catch (JSONException ex) {
+                System.err.println(ex);
+            }
+        }
+        
+        return jarrayProductionTarget;
+    }
+    
+    private JSONArray getPlantingTarget() {
+        JSONArray jarrayPlantingTarget = new JSONArray();
+
+        ArrayList<GenericObject> plantingTargets = new ArrayList<>();
+        
+        double totalHectares = 0;
+        TargetProduction targetProduction  = new TargetProductionDAO().getListOfTargetProductionForYear(Calendar.getInstance().get(Calendar.YEAR));
+        double totalPlantingTarget = targetProduction.getTarget() / 12.5;
+        ArrayList<Municipality> municipalities = new MunicipalityDAO().getListOfMunicipalities();
+        for (int a = 0; a < municipalities.size(); a++) {
+            totalHectares += municipalities.get(a).getArea();
+        }
+        
+        double totalPlantingAvg = totalPlantingTarget / totalHectares;
+        for (int a = 0; a < municipalities.size(); a++) {
+            GenericObject plantingTarget = new GenericObject();
+            plantingTarget.setAttribute1(municipalities.get(a).getMunicipalityName());
+            
+            double percentage = municipalities.get(a).getArea() / totalHectares;
+            System.out.println("percentage for muni " + percentage);
+            double targetPlantingAverage = totalPlantingAvg * percentage;
+            System.out.println("target prod harvest " + targetPlantingAverage);
+//            double averageProductionHarvest = targetProductionForHarvest / municipalities.get(a).getArea();
+//            System.out.println("avg prod harvest " + averageProductionHarvest);
+            targetPlantingAverage = Formatter.round(targetPlantingAverage, 2);
+            plantingTarget.setAttribute2(String.valueOf(targetPlantingAverage));
+            plantingTargets.add(plantingTarget);
+            System.out.println(plantingTarget.getAttribute1() + " " + plantingTarget.getAttribute2() + " added to the list  ");
+        }
+        
+        for (int a = 0; a < plantingTargets.size(); a++) {
+            try {
+                JSONObject plantTarget = new JSONObject();
+                plantTarget.put("municipal", plantingTargets.get(a).getAttribute1());
+                plantTarget.put("value", Double.parseDouble(plantingTargets.get(a).getAttribute2()));
+                jarrayPlantingTarget.put(plantTarget);
+            } catch (JSONException ex) {
+                System.err.println(ex);
+            }
+        }
+        
+        return jarrayPlantingTarget;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

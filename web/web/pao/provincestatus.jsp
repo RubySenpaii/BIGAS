@@ -52,6 +52,15 @@
                     },
                     async: false
                 });
+                
+                var prodGraphCat = [];
+                var prodGraphTarget = [];
+                var prodGraphMonthVal = [];
+                for (var a = 0; a < values[0].targetMonitoring.length; a++) {
+                    prodGraphCat.push(values[0].targetMonitoring[a].month);
+                    prodGraphTarget.push(values[0].target);
+                    prodGraphMonthVal.push(values[0].targetMonitoring[a].value);
+                }
 
                 $('#productionGraph').highcharts({
                     chart: {
@@ -61,7 +70,7 @@
                         text: 'Actual vs Target'
                     },
                     xAxis: {
-                        categories: ['Jan2015', 'Feb2015', 'March2015', 'Apr2015', 'May2015', 'Jun2015']
+                        categories: prodGraphCat
                     },
                     yAxis: {
                         title: {
@@ -78,10 +87,10 @@
                     },
                     series: [{
                             name: 'Actual',
-                            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5]
+                            data: prodGraphMonthVal
                         }, {
                             name: 'Target',
-                            data: [40, 40, 40, 40, 40, 40]
+                            data: prodGraphTarget
                         }]
                 });
 
@@ -170,7 +179,7 @@
                         type: 'column'
                     },
                     title: {
-                        text: 'Browser market shares. January, 2015 to May, 2015'
+                        text: 'Production Share For The Year 2016'
                     },
                     subtitle: {
                         text: '<a href="http://localhost:8084/BIGAS/WebLogin">For more info click here</a>'
@@ -274,7 +283,7 @@
                 <div class="right_col" role="main">
                     <jsp:include page="notifications.jsp"/>
                     <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2>Annual Target and Production</h2>
@@ -288,7 +297,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-7">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
                                     <h2>Production Share By District</h2>
@@ -302,7 +311,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <!--div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
@@ -314,7 +323,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div-->
 
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -341,7 +350,7 @@
                                                 for (int a = 0; a < activePrograms.size(); a++) {
                                             %>
                                             <tr>
-                                                <td><%=activePrograms.get(a).getAttribute1()%></td>
+                                                <td><a href="/BIGAS/ViewProgram?action=viewProgramDetails&deployedID=<%=activePrograms.get(a).getAttribute6()%>"><%=activePrograms.get(a).getAttribute1()%></a></td>
                                                 <td><%=activePrograms.get(a).getAttribute2()%></td>
                                                 <td><%=activePrograms.get(a).getAttribute3()%></td>
                                                 <td><%=activePrograms.get(a).getAttribute4()%></td>

@@ -32,17 +32,16 @@ public class SeedVarietyDAO {
                     + SeedVariety.COLUMN_MAXIMUM_YIELD + ", " + SeedVariety.COLUMN_MILLING_RECOVERY + ", "
                     + SeedVariety.COLUMN_SEED_VARIETY_ID + ", " + SeedVariety.COLUMN_VARIETY_NAME + ", " + SeedVariety.COLUMN_WATER_SOURCE  + ") "
                     + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, seedVariety.getAcquired());
-            ps.setDouble(2, seedVariety.getAverageYield());
-            ps.setString(3, seedVariety.getCondition());
-            ps.setString(4, seedVariety.getGrainSize());
-            ps.setDouble(5, seedVariety.getHeight());
-            ps.setInt(6, seedVariety.getMaturity());
-            ps.setDouble(7, seedVariety.getMaximumYield());
-            ps.setDouble(8, seedVariety.getMillingRecovery());
-            ps.setString(9, seedVariety.getSeedVarietyID());
-            ps.setString(10, seedVariety.getVarietyName());
-            ps.setString(11, seedVariety.getWaterSource());
+            ps.setDouble(1, seedVariety.getAverageYield());
+            ps.setString(2, seedVariety.getCondition());
+            ps.setString(3, seedVariety.getGrainSize());
+            ps.setDouble(4, seedVariety.getHeight());
+            ps.setInt(5, seedVariety.getMaturity());
+            ps.setDouble(6, seedVariety.getMaximumYield());
+            ps.setDouble(7, seedVariety.getMillingRecovery());
+            ps.setString(8, seedVariety.getSeedVarietyID());
+            ps.setString(9, seedVariety.getVarietyName());
+            ps.setString(10, seedVariety.getWaterSource());
 
             ps.executeUpdate();
             ps.close();
